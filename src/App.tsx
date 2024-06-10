@@ -1,22 +1,29 @@
 import { Routes, Route } from "react-router-dom";
-import { AuthPage } from "./pages/AuthPage"
-import { Registration } from "./pages/Registration";
-import { Layout } from "./layouts/Layout";
-import { MainPage } from "./pages/MainPage";
-import { Shoes } from "./pages/Shoes";
-import { Clothes } from "./pages/Clothes";
-import { PasswordRecovery } from "./pages/PasswordRecovery";
+import { Layout } from "./components";
+import {
+	AuthPage,
+	ClothesPage,
+	HomePage,
+	RegistrationPage,
+	ShoesPage,
+	SignUpConfirmPage,
+	NewPasswordPage,
+	SendRecoveryMailPage
+} from "./pages";
 
 function App() {
 	return (
 		<Routes >
-			<Route path="/" element={<Layout><MainPage /></Layout>} />
+			<Route path="/" element={<Layout><HomePage /></Layout>} />
 			<Route path="/auth" element={<Layout><AuthPage /></Layout>} />
-			<Route path="/registration" element={< Layout > <Registration /></ Layout>} />
+			<Route path="/registration" element={<Layout > <RegistrationPage /></ Layout>} />
 
-			<Route path="/category/shoes" element={<Layout><Shoes /></Layout>} />
-			<Route path="/category/clothes" element={<Layout><Clothes /></Layout>} />
-			<Route path="/password-recovery" element={<Layout><PasswordRecovery /></Layout>} />
+			<Route path="/category/shoes" element={<Layout><ShoesPage /></Layout>} />
+			<Route path="/category/clothes" element={<Layout><ClothesPage /></Layout>} />
+			<Route path="/signupconfirm" element={<Layout><SignUpConfirmPage /></Layout>} />
+
+			<Route path="/password-recovery" element={<Layout><SendRecoveryMailPage /></Layout>} />
+			<Route path="/recoverpassword" element={<Layout><NewPasswordPage /></Layout>} />
 			<Route path="*" element={<></>} />
 		</Routes >
 	)

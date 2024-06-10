@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { TypographyH2 } from "@/components/ui/typography/h2"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -10,6 +9,8 @@ import { RegistrationFormSchema, RegistrationFormSchemaType } from ".."
 import { Separator } from "@/components/ui/separator"
 import { backendInstance } from "@/services/backendService"
 import { toast } from "sonner"
+import { Send, User } from "lucide-react"
+import { TypographyH3 } from "@/components/ui/typography"
 
 export const RegistrationForm = () => {
 	const navigate = useNavigate()
@@ -39,7 +40,9 @@ export const RegistrationForm = () => {
 					action: { label: 'Скрыть', onClick: () => { } }
 				}
 			)
-			setTimeout(() => { navigate('/auth') }, 500);
+
+			// setTimeout(() => { navigate('/signupconfirm', { state: { token: response. } }) }, 500);
+			setTimeout(() => { navigate('/auth') });
 		} catch (e: any) {
 			console.log(e)
 			toast(
@@ -57,8 +60,12 @@ export const RegistrationForm = () => {
 	return (
 		<div className="max-w-lg m-auto p-12 bg-white rounded-xl shadow-lg">
 			<Form {...form}>
-				<TypographyH2>Регистрация</TypographyH2>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-8">
+				<div className="flex gap-2 items-center">
+					<User />
+					<TypographyH3>Регистрация</TypographyH3>
+				</div>
+				<Separator className="mt-2" />
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
 					<FormField
 						control={form.control}
 						name="email"
@@ -161,7 +168,7 @@ export const RegistrationForm = () => {
 							<FormItem>
 								<FormLabel>Юридический адрес</FormLabel>
 								<FormControl>
-									<Input placeholder="Ромашкину Роману Романовичу" {...field} />
+									<Input placeholder="Введите юридический адресс вашей компании" {...field} />
 								</FormControl>
 								<FormDescription>
 									Юр. адрес будет использоваться для заполнения документов
@@ -195,7 +202,7 @@ export const RegistrationForm = () => {
 							<FormItem>
 								<FormLabel>Грузополучатель (Полный адрес получателя товаров)</FormLabel>
 								<FormControl>
-									<Input placeholder="Ромашкину Роману Романовичу" {...field} />
+									<Input placeholder="Введите полный адрес получателя товаров" {...field} />
 								</FormControl>
 								<FormDescription>
 									Эти данные будут использоваться для заполнения документов
@@ -210,9 +217,9 @@ export const RegistrationForm = () => {
 						name="cargo_city"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Город получатель товаров (г. Гомель)</FormLabel>
+								<FormLabel>Город получатель товаров (например: г. Гомель)</FormLabel>
 								<FormControl>
-									<Input placeholder="Ромашкину Роману Романовичу" {...field} />
+									<Input placeholder="Введите город получателя товаров" {...field} />
 								</FormControl>
 								<FormDescription>
 									Эти данные будут использоваться для заполнения документов
@@ -223,11 +230,14 @@ export const RegistrationForm = () => {
 					/>
 
 					<div className="flex justify-between">
-						<Button type="submit">Зарегистрироваться</Button>
+						<Button type="submit" className="gap-2">
+							<Send />
+							Зарегистрироваться
+						</Button>
 						<Link to="/auth"><Button variant="ghost">Уже есть аккаунт? Войти</Button></Link>
 					</div>
 				</form>
-			</Form>
-		</div>
+			</Form >
+		</div >
 	)
 }

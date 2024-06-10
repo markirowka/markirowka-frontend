@@ -1,19 +1,19 @@
 import { LogIn } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "./button"
-import { useEffect } from "react"
-import { backendInstance } from "@/services/backendService"
+// import { useEffect } from "react"
+// import { backendInstance } from "@/services/backendService"
 
 export const Header = () => {
 
-	useEffect(() => {
-		const getUser = async () => {
-			const res = await backendInstance.getUser()
-			console.log(res)
-		}
+	// useEffect(() => {
+	// 	const getUser = async () => {
+	// 		const res = await backendInstance.getUser()
+	// 		console.log(res)
+	// 	}
 
-		getUser()
-	}, [])
+	// 	getUser()
+	// }, [])
 
 	return (
 		<header className="header">

@@ -2,20 +2,18 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "
 import { Input } from "../../../components/ui/input"
 import { TypographyH3 } from "../../../components/ui/typography"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { ShoesFormSchema, ShoesFormSchemaType } from "../config/shoes.zod"
+// import { ShoesFormSchema, ShoesFormSchemaType } from "../config/shoes.zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "../../../components/ui/button"
 import { FormSelect } from "../../../components/ui/form-select"
-import { SHOES_COLORS, SHOES_SIZES, SHOES_TYPES } from "../config/shoes.data"
 import { useAtom } from "jotai"
-import { shoesAtom } from "../store/shoesStore"
+// import { shoesAtom } from "../store/shoesStore"
 import { Separator } from "@/components/ui/separator"
 import { PackageSearch } from "lucide-react"
 import { OrderFormSchema, OrderFormSchemaType } from "../config"
 
 
 export const OrderForm = () => {
-	const [shoes, setShoes] = useAtom(shoesAtom)
+	// const [shoes, setShoes] = useAtom(shoesAtom)
 
 	const form = useForm<OrderFormSchemaType>({
 		resolver: zodResolver(OrderFormSchema),

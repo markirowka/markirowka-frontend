@@ -1,7 +1,7 @@
 import { TypographyH2 } from "@/components/ui/typography"
 import { ClothesForm, ClothesTable } from "@/feature/clothes"
 
-export const Clothes = () => {
+export const ClothesPage = () => {
 
 	return (
 		<>

@@ -1,5 +1,5 @@
 import { RegistrationForm } from "@/feature/registration"
 
-export const Registration = () => {
+export const RegistrationPage = () => {
 	return <RegistrationForm />
 }

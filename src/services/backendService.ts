@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse } from "@/feature/auth"
+import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 
 class BackendService {
@@ -13,15 +14,31 @@ class BackendService {
 	}
 
 	async signUp(data: RegistrationFormSchemaType): Promise<IRegistrationResponse> {
-		return await this.post('api/signup', data, "POST")
+		return await this.post('/api/signup', data, "POST")
 	}
 
 	async signIn(data: AuthFormSchemaType): Promise<IAuthResponse> {
-		return await this.post('api/signin', data, "POST")
+		return await this.post('/api/signin', data, "POST")
 	}
 
 	async getUser(): Promise<IAuthResponse> {
-		return await this.get('api/userdata')
+		return await this.get('/api/userdata')
+	}
+
+	async sendEmailConfirm(token: string): Promise<{message: string}> {
+		return await this.post('/api/signupconfirm', { token: token }, 'POST')
+	}
+
+	async logout() {
+		return await this.get('/api/logout')
+	}
+
+	async sendResetPasswordRequest(data: PasswordRecoveryFormSchemaType) {
+		return await this.post('/api/resetpassword', data, 'POST')
+	}
+
+	async sendNewPassword(token: string, data: NewPasswordFormSchemaType) {
+		return await this.post('/api/resetpassword', {token: token, newPassword: data.password}, 'POST')
 	}
 
 	static getInstance(): BackendService {
@@ -47,6 +64,9 @@ class BackendService {
 				method: 'GET',
 				credentials: 'include',
 				mode: 'cors',
+				headers: {
+					'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE3MTgwNDU2NzYsImV4cCI6MTcxODEzMjA3Nn0.GM4D99THZ0jNy8oyHwLEOoPCw2DjczCI9Z3D6EqcdRs'
+				}
 			})
 
 			const json = await res.json()

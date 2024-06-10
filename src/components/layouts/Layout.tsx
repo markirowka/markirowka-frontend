@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useEffect } from 'react'
 import styles from './Layout.module.scss'
-import '../assets/style.css'
+import '../../assets/style.css'
 import { Header, Footer } from '@/components/ui'
 import { Toaster } from '@/components/ui/sonner'
 import { useParams } from 'react-router-dom'

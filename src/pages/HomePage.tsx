@@ -1,7 +1,7 @@
 import { TypographyH3 } from "@/components/ui/typography"
 import { Link } from "react-router-dom"
 
-export const MainPage = () => {
+export const HomePage = () => {
 	return (
 		<div className="m-w-lg flex flex-col">
 			<TypographyH3><Link to={'/category/shoes'}>Форма обувь</Link></TypographyH3>
