@@ -19,9 +19,9 @@ export const Header = () => {
 		<header className="header">
 			<div className="container">
 				<div className="flex justify-between items-center">
-					<div className="logo">
+					<Link to="/" className="logo">
 						<img className="header__logo" src="/logo.svg" alt="" />
-					</div>
+					</Link>
 					<div className="header__burger">
 						<span></span>
 					</div>
