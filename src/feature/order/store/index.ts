@@ -1,1 +1,1 @@
-export * from './orderStore.ts'
+export * from './orderStore'

@@ -64,9 +64,6 @@ class BackendService {
 				method: 'GET',
 				credentials: 'include',
 				mode: 'cors',
-				headers: {
-					'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE3MTgwNDU2NzYsImV4cCI6MTcxODEzMjA3Nn0.GM4D99THZ0jNy8oyHwLEOoPCw2DjczCI9Z3D6EqcdRs'
-				}
 			})
 
 			const json = await res.json()

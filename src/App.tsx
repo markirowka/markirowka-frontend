@@ -8,7 +8,8 @@ import {
 	ShoesPage,
 	SignUpConfirmPage,
 	NewPasswordPage,
-	SendRecoveryMailPage
+	SendRecoveryMailPage,
+	OrderPage
 } from "./pages";
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
 
 			<Route path="/password-recovery" element={<Layout><SendRecoveryMailPage /></Layout>} />
 			<Route path="/recoverpassword" element={<Layout><NewPasswordPage /></Layout>} />
+
+			<Route path="/new-order" element={<Layout><OrderPage /></Layout>} />
 			<Route path="*" element={<></>} />
 		</Routes >
 	)
