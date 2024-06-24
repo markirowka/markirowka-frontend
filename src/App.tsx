@@ -9,13 +9,17 @@ import {
 	SignUpConfirmPage,
 	NewPasswordPage,
 	SendRecoveryMailPage,
-	OrderPage
+	OrderPage,
+	ProfilePage,
+	EditProfilePage
 } from "./pages";
+import { MainPage } from "./pages/MainPage";
+import { MainLayout } from "./components/layouts/MainLayout";
 
 function App() {
 	return (
-		<Routes >
-			<Route path="/" element={<Layout><HomePage /></Layout>} />
+		<Routes>
+			<Route path="/home" element={<Layout><HomePage /></Layout>} />
 			<Route path="/auth" element={<Layout><AuthPage /></Layout>} />
 			<Route path="/registration" element={<Layout > <RegistrationPage /></ Layout>} />
 
@@ -27,8 +31,13 @@ function App() {
 			<Route path="/recoverpassword" element={<Layout><NewPasswordPage /></Layout>} />
 
 			<Route path="/new-order" element={<Layout><OrderPage /></Layout>} />
+
+			<Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
+			<Route path="/edit-profile" element={<Layout><EditProfilePage /></Layout>} />
 			<Route path="*" element={<></>} />
-		</Routes >
+
+			<Route path="/" element={<MainLayout><MainPage /></MainLayout>} />
+		</Routes>
 	)
 }
 

@@ -165,7 +165,7 @@ h6 {
 p {
   font-weight: 500;
   font-size: 18px;
-  line-height: 100%;
+  line-height: 150%;
   text-align: left;
 }
 
@@ -197,10 +197,9 @@ p {
 /**ICONS**/
 .top__icons {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  column-gap: 24px;
-  grid-row-gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
   margin-bottom: 24px;
 }
 
@@ -216,17 +215,18 @@ p {
 
 .icons__img p {
   font-size: 17px;
-  font-weight: 400;
-  line-height: 20px;
+  font-weight: 500;
+  line-height: 115%;
+  margin-top: 8px;
   text-align: center;
   color: #00000080;
 }
 
 .bottom__icons {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  grid-row-gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
 }
 
 /* ??? */

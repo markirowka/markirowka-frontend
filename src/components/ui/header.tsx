@@ -1,19 +1,9 @@
 import { LogIn } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "./button"
-// import { useEffect } from "react"
-// import { backendInstance } from "@/services/backendService"
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
 
 export const Header = () => {
-
-	// useEffect(() => {
-	// 	const getUser = async () => {
-	// 		const res = await backendInstance.getUser()
-	// 		console.log(res)
-	// 	}
-
-	// 	getUser()
-	// }, [])
 
 	return (
 		<header className="header">
@@ -49,6 +39,16 @@ export const Header = () => {
 							Войти
 							<LogIn />
 						</Button>
+					</Link>
+					<Link to={'/profile'} className="flex flex-row gap-2 items-center">
+						<Avatar>
+							<AvatarImage src="https://github.com/shadcn.png" />
+							<AvatarFallback>EH</AvatarFallback>
+						</Avatar>
+						<div className="flex flex-col">
+							<h5 className="text-base font-medium">John Jonson</h5>
+							<p className="text-sm">example@gmail.com</p>
+						</div>
 					</Link>
 				</div>
 			</div>
