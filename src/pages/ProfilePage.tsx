@@ -4,11 +4,16 @@ import { CardDescription } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { TypographyH2 } from "@/components/ui/typography"
+import { userAtom } from "@/feature/common"
 import { ProfileOrders } from "@/feature/profile"
+import { useAtom } from "jotai"
 import { Edit2 } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export const ProfilePage = () => {
+
+	const [user] = useAtom(userAtom);
+
 	return (
 		<div className="flex flex-row max-w-full w-full justify-between gap-8">
 			<div className="w-full max-w-[75%]">
@@ -25,8 +30,8 @@ export const ProfilePage = () => {
 						<AvatarFallback>EH</AvatarFallback>
 					</Avatar>
 					<div className="flex flex-col">
-						<h5 className="text-base font-medium">John Jonson</h5>
-						<p className="text-sm">example@gmail.com</p>
+						<h5 className="text-base font-medium">{user? user.full_name || user.inn : ""}</h5>
+						<p className="text-sm">{user? user.email || "" : ""}</p>
 					</div>
 				</Link>
 				<Separator className="my-4" />

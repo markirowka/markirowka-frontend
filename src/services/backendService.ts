@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/config/env"
-import { AuthFormSchemaType, IAuthResponse } from "@/feature/auth"
+import { AuthFormSchemaType, IAuthResponse, IUserDataResponse } from "@/feature/auth"
 import { EditProfileFormSchemaType } from "@/feature/edit-profile"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
@@ -27,7 +27,7 @@ class BackendService {
 		return await this.post('/api/signin', data, "POST")
 	}
 
-	async getUser(): Promise<IAuthResponse> {
+	async getUser(): Promise<IUserDataResponse> {
 		return await this.get('/api/userdata')
 	}
 

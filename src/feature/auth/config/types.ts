@@ -4,6 +4,11 @@ export interface IAuthResponse {
   error?: string;
 }
 
+export interface IUserDataResponse {
+  data: UserData;
+  error?: string;
+}
+
 export interface UserData {
   bank_account?: string | null;
   bank_code?: string | null;

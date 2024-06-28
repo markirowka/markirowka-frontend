@@ -14,7 +14,7 @@ export const Header = () => {
 	useMemo(() => {
 		console.log(user)
 		backendInstance.getUser().then((usr) =>{
-			setUser(usr.error ? false : usr)
+			setUser(usr.error ? false : usr.data)
 		}).catch(() => {
 			setUser(false)
 		})
@@ -61,8 +61,8 @@ export const Header = () => {
 							<AvatarFallback>EH</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col">
-							<h5 className="text-base font-medium">John Jonson</h5>
-							<p className="text-sm">example@gmail.com</p>
+							<h5 className="text-base font-medium">{user? user.full_name || user.inn : ""}</h5>
+							<p className="text-sm">{user?.email || ""}</p>
 						</div>
 					</Link>}
 				</div>
