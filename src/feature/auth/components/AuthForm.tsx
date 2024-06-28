@@ -39,7 +39,7 @@ export const AuthForm = () => {
 			localStorage.setItem('bearerToken', response.token)
 			setAuthStore({ ...authStore, id: response.userId, bearerToken: response.token })
 
-			const res: UserData = await backendInstance.getUser()
+			const res: UserData = await (await backendInstance.getUser()).data
 			console.log(res)
 
 			toast(

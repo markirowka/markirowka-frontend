@@ -37,32 +37,32 @@ export const ProfilePage = () => {
 				<Separator className="my-4" />
 				<div className="my-2">
 					<Label>E-mail</Label>
-					<CardDescription className="mb-2">example@gmail.com</CardDescription>
+					<CardDescription className="mb-2">{user? user.email || "" : ""}</CardDescription>
 					<Separator />
 				</div>
 				<div className="my-2">
-					<Label>ИП</Label>
-					<CardDescription className="mb-2">ИП Ромашкин Роман</CardDescription>
+					<Label>Организация</Label>
+					<CardDescription className="mb-2">{user? user.full_name || "" : ""}</CardDescription>
 					<Separator />
 				</div>
 				<div className="my-2">
 					<Label>ФИО Директора</Label>
-					<CardDescription className="mb-2">Ромашкин Роман Романович</CardDescription>
+					<CardDescription className="mb-2">{user? user.ceo || "" : ""}</CardDescription>
 					<Separator />
 				</div>
 				<div className="my-2">
 					<Label>ИНН</Label>
-					<CardDescription className="mb-2">11111111111111</CardDescription>
+					<CardDescription className="mb-2">{user? user.inn || "" : ""}</CardDescription>
 					<Separator />
 				</div>
 				<div className="my-2">
 					<Label>Грузополучатель</Label>
-					<CardDescription className="mb-2">Советский рай-он, ул. н.м. Грибачева, д 3</CardDescription>
+					<CardDescription className="mb-2">{user? user.cargo_recevier || "" : ""}</CardDescription>
 					<Separator />
 				</div>
 				<div className="mt-2 mb-10">
 					<Label>Город получатель товаров</Label>
-					<CardDescription className="mb-2">Москва</CardDescription>
+					<CardDescription className="mb-2">{user? user.cargo_city || "" : ""}</CardDescription>
 
 				</div>
 

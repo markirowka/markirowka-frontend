@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/config/env"
-import { AuthFormSchemaType, IAuthResponse, IUserDataResponse } from "@/feature/auth"
-import { EditProfileFormSchemaType } from "@/feature/edit-profile"
+import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
+import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
 	private headers: Record<string, string> = {}
@@ -18,9 +18,12 @@ class BackendService {
 		return await this.post('/api/signup', data, "POST")
 	}
 
-	async editProfile(data: EditProfileFormSchemaType): Promise<IRegistrationResponse> {
+	async editProfile(data: UserData): Promise<IRegistrationResponse> {
 		//TODO: Add edit profile POST request
-		return await this.post('/api/', data, "POST")
+		const sendingData = {
+			paramsToEdit: ObjectToKVArray(data)
+		}
+		return await this.post('/api/edituser', sendingData, "POST")
 	}
 
 	async signIn(data: AuthFormSchemaType): Promise<IAuthResponse> {
