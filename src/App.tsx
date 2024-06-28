@@ -17,6 +17,7 @@ import { MainPage } from "./pages/MainPage";
 import { MainLayout } from "./components/layouts/MainLayout";
 
 function App() {
+	
 	return (
 		<Routes>
 			<Route path="/home" element={<Layout><HomePage /></Layout>} />

@@ -1,20 +1,29 @@
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AuthFormSchema, AuthFormSchemaType } from "../config"
+import { AuthFormSchema, AuthFormSchemaType, UserData } from "../config"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { TypographyH2 } from "@/components/ui/typography/h2"
 import { Input } from "@/components/ui/input"
-import { Link } from 'react-router-dom'
 import { RegistrationToast } from "@/feature/registration"
 import { backendInstance } from "@/services/backendService"
 import { toast } from "sonner"
 import { useAtom } from "jotai"
 import { authAtom } from "../store"
+import { userAtom } from "@/feature/common"
 
 export const AuthForm = () => {
-	const [authStore, setAuthStore] = useAtom(authAtom)
-	// const navigate = useNavigate()
+	const [authStore, setAuthStore] = useAtom(authAtom);
+	const [user, setUser] = useAtom(userAtom);
+	const navigate = useNavigate()
+
+    useEffect(() => {
+         if (user) {
+            navigate("/profile")
+		 }
+	}, [user])
 
 	const form = useForm<AuthFormSchemaType>({
 		resolver: zodResolver(AuthFormSchema),
@@ -30,7 +39,7 @@ export const AuthForm = () => {
 			localStorage.setItem('bearerToken', response.token)
 			setAuthStore({ ...authStore, id: response.userId, bearerToken: response.token })
 
-			const res = await backendInstance.getUser()
+			const res: UserData = await backendInstance.getUser()
 			console.log(res)
 
 			toast(
@@ -38,7 +47,8 @@ export const AuthForm = () => {
 				{
 					action: { label: 'Скрыть', onClick: () => { } }
 				}
-			)
+			);
+			setUser(res);
 			// setTimeout(() => { navigate('/') }, 500);
 		} catch (e: any) {
 			console.log(e)

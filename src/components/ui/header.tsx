@@ -1,9 +1,24 @@
+import { useMemo } from "react"
 import { LogIn } from "lucide-react"
+import { useAtom } from "jotai"
 import { Link } from "react-router-dom"
 import { Button } from "./button"
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
+import { userAtom } from "@/feature/common"
+import { backendInstance } from "@/services/backendService"
 
 export const Header = () => {
+
+	const [user, setUser] = useAtom(userAtom);
+
+	useMemo(() => {
+		console.log(user)
+		backendInstance.getUser().then((usr) =>{
+			setUser(usr.error ? false : usr)
+		}).catch(() => {
+			setUser(false)
+		})
+	}, [])
 
 	return (
 		<header className="header">
@@ -34,12 +49,12 @@ export const Header = () => {
 							</li>
 						</ul>
 					</div>
-					<Link to={'/auth'}>
+					{!user ? <Link to={'/auth'}>
 						<Button className="flex gap-2 items-center">
 							Войти
 							<LogIn />
 						</Button>
-					</Link>
+					</Link> : 
 					<Link to={'/profile'} className="flex flex-row gap-2 items-center">
 						<Avatar>
 							<AvatarImage src="https://github.com/shadcn.png" />
@@ -49,7 +64,7 @@ export const Header = () => {
 							<h5 className="text-base font-medium">John Jonson</h5>
 							<p className="text-sm">example@gmail.com</p>
 						</div>
-					</Link>
+					</Link>}
 				</div>
 			</div>
 		</header>

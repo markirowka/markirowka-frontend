@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { TypographyH2 } from "@/components/ui/typography"
 import { Link } from "react-router-dom"
 
 export const MainPage = () => {
