@@ -13,9 +13,9 @@ export const MainPage = () => {
 								Наши инновации делают ваш бизнес процветающим и надежным, давая
 								вам преимущество в современной среде конкуренции.
 							</p>
-							<Link to={'/home'}>
+							<Link to={'/auth'}>
 								<Button>
-									Подключиться платформе
+									Подключиться к платформе
 									<img className="icon__btn" src="/images/icons/service/stamp 1.png" alt="#" />
 								</Button>
 							</Link>
@@ -182,9 +182,9 @@ export const MainPage = () => {
 				<div className="container">
 					<div className="product__wrapper">
 						<h2 className="order__title">Почему надо начинать сейчас?</h2>
-						<Link to={'/home'}>
+						<Link to={'/auth'}>
 							<Button>
-								Подключиться платформе
+								Подключиться к платформе
 								<img className="icon__btn" src="/images/icons/service/stamp 1.png" alt="#" />
 							</Button>
 						</Link>

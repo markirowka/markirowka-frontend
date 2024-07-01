@@ -18,6 +18,22 @@ class BackendService {
 		return await this.post('/api/signup', data, "POST")
 	}
 
+	async getUserOrders(page = 1) : Promise<any[]> {
+		return (await this.get(`/api/orderhistory/${page}`))?.orders || []
+	}
+
+	async getUserOrderCount() : Promise<number> {
+		return (await this.get('/api/userordercount'))?.count || 0
+	}
+
+	async getTotalCount() : Promise<number> {
+		return (await this.get('/api/admin/ordercount'))?.count || 0
+	}
+	
+	async getOrders(page = 1) : Promise<any[]> {
+		return (await this.get(`/api/admin/allorders/${page}`))?.orders || []
+	}
+
 	async editProfile(data: UserData): Promise<IRegistrationResponse> {
 		//TODO: Add edit profile POST request
 		const sendingData = {
@@ -79,7 +95,8 @@ class BackendService {
 
 			return json
 		} catch (e: any) {
-			throw new Error(e)
+			console.log(Error(e));
+			return null
 		}
 	}
 

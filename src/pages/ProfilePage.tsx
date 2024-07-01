@@ -18,7 +18,7 @@ export const ProfilePage = () => {
 		<div className="flex flex-row max-w-full w-full justify-between gap-8">
 			<div className="w-full max-w-[75%]">
 				<div className="">
-					<TypographyH2>Список актиsвных заказов</TypographyH2>
+					<TypographyH2>Список активных заказов</TypographyH2>
 				</div>
 				<ProfileOrders />
 			</div>
