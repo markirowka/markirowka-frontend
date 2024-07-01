@@ -38,6 +38,7 @@ import { orderHistoryAtom, orderTotalCountAtom, ordersPageAtom, userAtom } from 
 import { backendInstance } from "@/services/backendService";
 import { ordersPerPage } from "@/config/env";
 import { OrderData } from "@/feature/types";
+import { downloadFileById, formatTimestamp } from "@/utils";
 
 
 export const columns: ColumnDef<OrderData>[] = [
@@ -67,24 +68,23 @@ export const columns: ColumnDef<OrderData>[] = [
     accessorKey: "orderId",
     header: "Номер заказа",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("id")}</div>
+      <div className="capitalize">{row.original.id}</div>
     ),
   },
   {
     accessorKey: "date",
     header: "Дата заказа",
     cell: ({ row }) => { 
-		console.log("Row: ", row)
 		return(
-	<div className="lowercase">{row.original.order_date}</div>
+	<div className="lowercase">{formatTimestamp(row.original.order_date * 1000)}</div>
 )},
   },
   {
     accessorKey: "status",
     header: () => <div className="text-right">Статус заказа</div>,
-    cell: () => {
+    cell: ({ row }) => {
       return (
-        <div className="text-right font-medium text-lime-500">Выполнен</div>
+        <div className="text-right font-medium text-lime-500">{row.original.order_status}</div>
       );
     },
   },
@@ -93,7 +93,7 @@ export const columns: ColumnDef<OrderData>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
-
+	  const [user] = useAtom(userAtom);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -110,8 +110,8 @@ export const columns: ColumnDef<OrderData>[] = [
               Скопировать номер заказа
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Просмотреть заказ</DropdownMenuItem>
-            <DropdownMenuItem>Просмотреть накладную</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => downloadFileById(row.original.document_ids[0], user ? user?.id || 0 : 0)}>Скачать</DropdownMenuItem>
+            {/* <DropdownMenuItem>Просмотреть накладную</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

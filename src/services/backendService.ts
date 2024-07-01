@@ -29,9 +29,18 @@ class BackendService {
 	async getTotalCount() : Promise<number> {
 		return (await this.get('/api/admin/ordercount'))?.count || 0
 	}
-	
+
 	async getOrders(page = 1) : Promise<any[]> {
 		return (await this.get(`/api/admin/allorders/${page}`))?.orders || []
+	}
+
+	async getDownloads() : Promise<any[]> {
+		return (await this.get(`/api/downloads`))?.files || []
+	}
+
+	async gownloadFile(fileName: string, userId: number) : Promise<boolean> {
+		const responce = await fetch(`${API_URL}/api/file/${userId}/${fileName}`);
+		return responce.status === 200  ? true : false;
 	}
 
 	async editProfile(data: UserData): Promise<IRegistrationResponse> {
