@@ -89,7 +89,7 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
         return () => {
           backendInstance
             .editProfileParamsByAdmin({
-              userId: row.original.id,
+              id: row.original.id,
               user_role: newRole,
             })
             .then(async () => {
