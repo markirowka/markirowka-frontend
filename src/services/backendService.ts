@@ -3,6 +3,7 @@ import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
+import { UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -22,6 +23,10 @@ class BackendService {
 		return (await this.get(`/api/orderhistory/${page}`))?.orders || []
 	}
 
+	async getAllUsers() : Promise<UserDisplayData[]> {
+		return (await this.get(`/api/admin/allusers`))?.users || []
+	}
+
 	async getUserOrderCount() : Promise<number> {
 		return (await this.get('/api/userordercount'))?.count || 0
 	}
@@ -38,9 +43,9 @@ class BackendService {
 		return (await this.get(`/api/downloads`))?.files || []
 	}
 
-	async gownloadFile(fileName: string, userId: number) : Promise<boolean> {
-		const responce = await fetch(`${API_URL}/api/file/${userId}/${fileName}`);
-		return responce.status === 200  ? true : false;
+	gownloadFile(fileName: string, userId: number) {
+		const url = `${API_URL}/api/file/${userId}/${fileName}`;
+		window.open(url, '_blank');
 	}
 
 	async editProfile(data: UserData): Promise<IRegistrationResponse> {

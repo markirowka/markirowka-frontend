@@ -39,9 +39,5 @@ export async function downloadFileById (fileId: number, userId: number) {
         alert("File not found")
         return;
     }
-    const downloadResult = await backendInstance.gownloadFile(fileToDownload.file_name, userId);
-    if (!downloadResult) {
-        alert("File downloading failed")
-        return;
-    }
+    backendInstance.gownloadFile(fileToDownload.file_name, userId);
 }

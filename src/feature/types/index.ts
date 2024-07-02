@@ -5,3 +5,12 @@ export interface OrderData {
   order_status: string;
   document_ids: number[];
 }
+
+
+export interface UserDisplayData {
+  id: number; 
+  email: string; 
+  full_name: string; 
+  inn: number; 
+  user_role: string;
+}
