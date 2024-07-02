@@ -36,6 +36,7 @@ import { useAtom } from "jotai";
 import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { UserDisplayData } from "@/feature/types";
+import { userListAtom } from "@/feature/common/admin";
 
 export const userColumns: ColumnDef<UserDisplayData>[] = [
   {
@@ -70,7 +71,9 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium text-lime-500">
-          {row.original.user_role === "ADMIN" ? "Администратор" : "Пользователь"}
+          {row.original.user_role === "ADMIN"
+            ? "Администратор"
+            : "Пользователь"}
         </div>
       );
     },
@@ -79,6 +82,25 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const [displayUsers, setDisplayUsers] = useAtom(userListAtom);
+
+      const UpdateUserRole = (newRole: string) => {
+        displayUsers;
+        return () => {
+          backendInstance
+            .editProfileParamsByAdmin({
+              userId: row.original.id,
+              user_role: newRole,
+            })
+            .then(async () => {
+              const newData = await backendInstance.getAllUsers();
+              setDisplayUsers(newData);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        };
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -89,16 +111,13 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Действия</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(String(row.original.id))
-              }
-            >
+            <DropdownMenuItem onClick={UpdateUserRole("ADMIN")}>
               Сделать администратором
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Убрать из администраторов</DropdownMenuItem>
-            {/* <DropdownMenuItem>Просмотреть накладную</DropdownMenuItem> */}
+            <DropdownMenuItem onClick={UpdateUserRole("USER")}>
+              Убрать из администраторов
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -115,7 +134,7 @@ export function UserList() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [user] = useAtom(userAtom);
-  const [displayUsers, setDisplayUsers] = React.useState<UserDisplayData[]>([]);
+  const [displayUsers, setDisplayUsers] = useAtom(userListAtom);
 
   const table = useReactTable({
     data: displayUsers,

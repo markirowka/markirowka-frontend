@@ -19,6 +19,10 @@ class BackendService {
 		return await this.post('/api/signup', data, "POST")
 	}
 
+	async editUser(data: RegistrationFormSchemaType): Promise<IRegistrationResponse> {
+		return await this.post('/api/signup', data, "POST")
+	}
+
 	async getUserOrders(page = 1) : Promise<any[]> {
 		return (await this.get(`/api/orderhistory/${page}`))?.orders || []
 	}
@@ -54,6 +58,14 @@ class BackendService {
 			paramsToEdit: ObjectToKVArray(data)
 		}
 		return await this.post('/api/edituser', sendingData, "POST")
+	}
+
+	async editProfileParamsByAdmin(data: any): Promise<IRegistrationResponse> {
+		//TODO: Add edit profile POST request
+		const sendingData = {
+			paramsToEdit: ObjectToKVArray(data)
+		}
+		return await this.post('/api/admin/edituser', sendingData, "POST")
 	}
 
 	async signIn(data: AuthFormSchemaType): Promise<IAuthResponse> {
