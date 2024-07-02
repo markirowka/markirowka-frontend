@@ -3,7 +3,7 @@ import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
-import { UserDisplayData } from "@/feature/types"
+import { MenuItem, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -21,6 +21,10 @@ class BackendService {
 
 	async editUser(data: RegistrationFormSchemaType): Promise<IRegistrationResponse> {
 		return await this.post('/api/signup', data, "POST")
+	}
+
+	async getMenu() : Promise<MenuItem[]> {
+		return (await this.get(`/api/menu`))?.menu || []
 	}
 
 	async getUserOrders(page = 1) : Promise<any[]> {

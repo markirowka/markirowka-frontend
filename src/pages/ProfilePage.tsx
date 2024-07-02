@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { TypographyH2 } from "@/components/ui/typography";
 import { userAtom } from "@/feature/common";
 import { ProfileOrders, UserList } from "@/feature/profile";
+import { MenuItemEditor } from "@/feature/profile/components/Menu";
 import { useAtom } from "jotai";
 import { Edit2 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -93,9 +94,10 @@ export const ProfilePage = () => {
             <TypographyH2>Пользователи</TypographyH2>
           </div>
           <UserList />
-		  <div className="">
+          <div className="">
             <TypographyH2>Меню</TypographyH2>
           </div>
+          <MenuItemEditor />
         </div>
       ) : null}
     </>
