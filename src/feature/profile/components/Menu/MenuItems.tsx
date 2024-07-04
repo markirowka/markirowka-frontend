@@ -35,51 +35,66 @@ import { useAtom } from "jotai";
 import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { MenuItem } from "@/feature/types";
-import { itemsToUpdateAtom, userListAtom } from "@/feature/common/admin";
+import { itemsToUpdateAtom } from "@/feature/common/admin";
 
 export const menuColumns: ColumnDef<MenuItem>[] = [
   {
     accessorKey: "Id",
     header: "Id",
-    cell: ({ row }) => <div className="capitalize">{row.original.id}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.original.isNew ? "" : String(row.original.id)}</div>,
   },
   {
     accessorKey: "name",
     header: "Название",
     cell: ({ row }) => {
-      return <div className="lowercase">{row.original.name}</div>;
+      const [editableMenu, setEditableMenu] = useAtom(itemsToUpdateAtom);
+      editableMenu;
+      const UpdateItem = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEditableMenu(prevMenu =>
+          prevMenu.map(item =>
+            Number(item.id) === Number(row.original.id) ? { ...item, name: event.target.value, toUpdate: true } : item
+          )
+        );
+      }
+      return <div className="lowercase"><input type="text" value={row.original.name} onChange={UpdateItem} /></div>;
     },
   },
   {
     accessorKey: "url",
     header: "Ссылка",
     cell: ({ row }) => {
-      return <div className="lowercase">{row.original.url}</div>;
+      const [editableMenu, setEditableMenu] = useAtom(itemsToUpdateAtom);
+      editableMenu;
+      const UpdateItem = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEditableMenu(prevMenu =>
+          prevMenu.map(item =>
+            Number(item.id) === Number(row.original.id) ? { ...item, url: event.target.value, toUpdate: true } : item
+          )
+        );
+      }
+      return <div className="lowercase"><input type="text" value={row.original.url} onChange={UpdateItem} /></div>;
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const [displayUsers, setDisplayUsers] = useAtom(userListAtom);
+      const [editableMenu, setEditableMenu] = useAtom(itemsToUpdateAtom);
+      const DeleteItem = () => {
+          editableMenu;
+          if (row.original.isNew) {
+            setEditableMenu(prevItems => prevItems.filter(item =>{ 
+              return  Number(item.id) !== Number(row.original.id);
+            }));
+          } else {
+            setEditableMenu(prevMenu =>
+              prevMenu.map(item =>
+                item.id === row.original.id ? { ...item, toDelete: true } : item
+              )
+            );
+          }
+      }
 
-      const UpdateUserRole = (newRole: string) => {
-        displayUsers;
-        return () => {
-          backendInstance
-            .editProfileParamsByAdmin({
-              id: row.original.id,
-              user_role: newRole,
-            })
-            .then(async () => {
-              const newData = await backendInstance.getAllUsers();
-              setDisplayUsers(newData);
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        };
-      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -90,7 +105,7 @@ export const menuColumns: ColumnDef<MenuItem>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Действия</DropdownMenuLabel>
-            <DropdownMenuItem onClick={UpdateUserRole("ADMIN")}>
+            <DropdownMenuItem onClick={DeleteItem}>
               Удалить
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -108,8 +123,10 @@ export function MenuItemEditor() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [isPending, Pending] = React.useState(false);
   const [user] = useAtom(userAtom);
   const [editableMenu, setEditableMenu] = useAtom(itemsToUpdateAtom);
+
 
   const table = useReactTable({
     data: editableMenu,
@@ -130,12 +147,54 @@ export function MenuItemEditor() {
     },
   });
 
-  React.useMemo(async () => {
-    if (user && user?.user_role === "ADMIN") {
+  const fetchMenu = async () => {
+    if (user && user.user_role === 'ADMIN') {
       const menu = await backendInstance.getMenu();
       setEditableMenu(menu);
     }
-  }, []);
+  };
+
+  React.useEffect(() => {
+    fetchMenu();
+  }, [user, setEditableMenu]);
+
+  const AddMenuItem  = () => {
+  
+    console.log("Adding...")
+    const newItem: MenuItem = {
+      id: 999990 + editableMenu.length,
+      name:"",
+      url: "",
+      isNew: true
+    }
+    // const newItemList: MenuItem[] = [...newMenuItems, newItem];
+    setEditableMenu(prevItems => [...prevItems, newItem]);
+    // console.log(newItemList);
+  }
+
+  const SaveAction = () => {
+
+    Pending(true);
+    const toDeleteItems = editableMenu.filter((item) => {
+      return item.toDelete;
+    })
+    const toUpdateItems = editableMenu.filter((item) => {
+      return item.toUpdate;
+    })
+    const toAddItems =  editableMenu.filter((item) => {
+      return item.isNew;
+    })
+
+    Promise.all([
+      backendInstance.addMenuItems(toAddItems),
+      backendInstance.editMenuItems(toUpdateItems),
+      backendInstance.deleteMenuItems(toDeleteItems)
+    ]).then(() => {
+      fetchMenu().then(() => {
+         Pending(false)
+      })
+    })
+  }
 
   return (
     <div className="w-full m-auto my-4 p-12 bg-white rounded-xl shadow-lg">
@@ -163,7 +222,7 @@ export function MenuItemEditor() {
             {table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.original.toDelete? "todelete" : (row.getIsSelected() && "selected")}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -186,7 +245,7 @@ export function MenuItemEditor() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => {}}
+            onClick={AddMenuItem}
             disabled={false}
           >
             Добавить элемент
@@ -194,8 +253,8 @@ export function MenuItemEditor() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => {}}
-            disabled={false}
+            onClick={SaveAction}
+            disabled={isPending ? true : false}
           >
             Сохранить
           </Button>

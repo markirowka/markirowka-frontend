@@ -18,4 +18,7 @@ export interface MenuItem {
   id: number; 
   name: string; 
   url: string;
+  isNew?: boolean;
+  toDelete?: boolean;
+  toUpdate?: boolean;
 }

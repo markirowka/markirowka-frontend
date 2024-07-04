@@ -24,7 +24,19 @@ class BackendService {
 	}
 
 	async getMenu() : Promise<MenuItem[]> {
-		return (await this.get(`/api/menu`))?.menu || []
+		return (await this.get("/api/menu"))?.menu || []
+	}
+
+	async editMenuItems (items: MenuItem[]) {
+		return await this.post("/api/admin/updatemenu", {items}, "POST");
+	}
+
+	async deleteMenuItems (items: MenuItem[]) {
+		return await this.post("/api/admin/deletemenu", {items}, "POST");
+	}
+
+	async addMenuItems (items: MenuItem[]) {
+		return await this.post("/api/admin/addmenu", {items}, "POST");
 	}
 
 	async getUserOrders(page = 1) : Promise<any[]> {

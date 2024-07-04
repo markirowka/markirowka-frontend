@@ -1,7 +1,11 @@
 import { Mail, Phone, Send } from "lucide-react"
 import { Button } from "./button"
+import { topMenu } from "@/feature/common/content";
+import { useAtom } from "jotai";
 
 export const Footer = () => {
+	const [menu] = useAtom(topMenu);
+
 	return (
 		<footer className="footer">
 			<div className="container">
@@ -22,11 +26,11 @@ export const Footer = () => {
 						</a>
 					</div>
 					<div className="marking">
-						<a className="footer__marking" href="#">Что такое маркировка?</a>
-						<a className="footer__marking" href="#">Список маркировок</a>
-						<a className="footer__marking" href="#">Проверка маркировки</a>
-						<a className="footer__marking" href="#">Контакты</a>
-						<a className="footer__marking" href="#">База знаний</a>
+						{menu.map((item, index) => {
+							return(
+								<a key={`sm${index * 8.91}`} className="footer__marking" href={item.url}>{item.name}</a>
+							)
+						})}
 					</div>
 					<div className="footer__button">
 						<Button className="mt-5">Подключиться к платформе</Button>
