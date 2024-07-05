@@ -15,6 +15,7 @@ import {
 } from "./pages";
 import { MainPage } from "./pages/MainPage";
 import { MainLayout } from "./components/layouts/MainLayout";
+import { TextPage } from "./pages/TextPage";
 
 function App() {
 	
@@ -35,7 +36,7 @@ function App() {
 
 			<Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
 			<Route path="/edit-profile" element={<Layout><EditProfilePage /></Layout>} />
-			<Route path="*" element={<></>} />
+			<Route path="*" element={<Layout><TextPage /></Layout>} />
 
 			<Route path="/" element={<MainLayout><MainPage /></MainLayout>} />
 		</Routes>
