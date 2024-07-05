@@ -28,7 +28,7 @@ export const Footer = () => {
 					<div className="marking">
 						{menu.map((item, index) => {
 							return(
-								<a key={`sm${index * 8.91}`} className="footer__marking" href={item.url}>{item.name}</a>
+								<a key={`sm${index * 8.91}`} className="footer__marking" href={`/${item.url}`}>{item.name}</a>
 							)
 						})}
 					</div>

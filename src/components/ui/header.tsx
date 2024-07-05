@@ -44,7 +44,7 @@ export const Header = () => {
               {menu.map((item, index) => {
                 return (
                   <li key={`mi${index * 9.012}`}>
-                    <a className="nav__link" href={item.url}>
+                    <a className="nav__link" href={`/${item.url}`}>
                       {item.name}
                     </a>
                   </li>

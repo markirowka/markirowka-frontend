@@ -41,3 +41,7 @@ export async function downloadFileById (fileId: number, userId: number) {
     }
     backendInstance.gownloadFile(fileToDownload.file_name, userId);
 }
+
+export function urlNamingFilter (url: string) : string {
+    return url.startsWith('/') ? url.substring(1) : url
+}

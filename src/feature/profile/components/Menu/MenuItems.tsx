@@ -36,6 +36,7 @@ import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { MenuItem } from "@/feature/types";
 import { itemsToUpdateAtom } from "@/feature/common/admin";
+import { urlNamingFilter } from "@/utils";
 
 export const menuColumns: ColumnDef<MenuItem>[] = [
   {
@@ -68,7 +69,7 @@ export const menuColumns: ColumnDef<MenuItem>[] = [
       const UpdateItem = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEditableMenu(prevMenu =>
           prevMenu.map(item =>
-            Number(item.id) === Number(row.original.id) ? { ...item, url: event.target.value, toUpdate: true } : item
+            Number(item.id) === Number(row.original.id) ? { ...item, url: urlNamingFilter(event.target.value), toUpdate: true } : item
           )
         );
       }
