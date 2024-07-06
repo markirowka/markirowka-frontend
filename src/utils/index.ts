@@ -39,7 +39,7 @@ export async function downloadFileById (fileId: number, userId: number) {
         alert("File not found")
         return;
     }
-    backendInstance.gownloadFile(fileToDownload.file_name, userId);
+    backendInstance.downloadFile(fileToDownload.file_name, userId);
 }
 
 export function urlNamingFilter (url: string) : string {

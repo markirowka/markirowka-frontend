@@ -23,15 +23,21 @@ import {
 	TableRow,
 } from "@/components/ui/table"
 import { TypographyH3 } from "@/components/ui/typography"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
 import { orderProductsStoreAtom } from "../../store"
+import { userAtom } from "@/feature/common"
+import { useNavigate } from "react-router-dom"
+import { backendInstance } from "@/services/backendService"
 
 
 export function OrderTable() {
+	const [user] = useAtom(userAtom)
+	const navigate = useNavigate();
 	const [orderProducts] = useAtom(orderProductsStoreAtom)
+	const [pending, Pending] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -55,6 +61,22 @@ export function OrderTable() {
 			rowSelection,
 		},
 	})
+
+	const createOrderAction = async () => {
+		Pending(true);
+		const { files } = await backendInstance.createOrder(orderProducts);
+		files.forEach((file: any) => {
+			if (user && user.id) backendInstance.downloadFile(file.name, user.id)
+		})
+		Pending(false);
+	}
+
+	useMemo(() => {
+		if (!user) {
+			navigate("/auth");
+			return;
+		}
+	}, [])
 
 	return (
 		<div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg">
@@ -132,18 +154,10 @@ export function OrderTable() {
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
+						onClick={createOrderAction}
+						disabled={orderProducts.length === 0 || pending}
 					>
-						Прошлая страница
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						Следующая страница
+						Сформировать заказ
 					</Button>
 				</div>
 			</div>

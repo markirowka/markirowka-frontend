@@ -5,7 +5,7 @@ import { ClothesFormSchemaType } from "@/feature/clothes"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
-import { MenuItem, PageContentData, UserDisplayData } from "@/feature/types"
+import { MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -77,7 +77,7 @@ class BackendService {
 		return (await this.get(`/api/downloads`))?.files || []
 	}
 
-	gownloadFile(fileName: string, userId: number) {
+	downloadFile(fileName: string, userId: number) {
 		const url = `${API_URL}/api/file/${userId}/${fileName}`;
 		window.open(url, '_blank');
 	}
@@ -130,6 +130,10 @@ class BackendService {
 
 	async createSpecifyClothes( items: ClothesFormSchemaType[]) {
 		return await this.post('/api/createSpecify/clothes', {items}, 'POST')
+	}
+
+	async createOrder( items: OrderItemData[]) {
+		return await this.post('/api/createpayments', {items}, 'POST')
 	}
 
 	// Общие методы

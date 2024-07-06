@@ -29,3 +29,10 @@ export interface PageContentData {
   pageTitle?: string;
   content?: string;
 }
+
+export interface OrderItemData {
+  category: string;
+  name: string;
+  quantity: number;
+  price: number;
+}

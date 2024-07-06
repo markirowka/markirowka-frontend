@@ -72,7 +72,7 @@ export function ClothesTable() {
 		Pending(true)
 		console.log("Save")
 		const file = await backendInstance.createSpecifyClothes(clothes);
-		if (user.id && file.filename) backendInstance.gownloadFile(file.filename, user.id)
+		if (user.id && file.filename) backendInstance.downloadFile(file.filename, user.id)
 		Pending(false)
 	}
 
