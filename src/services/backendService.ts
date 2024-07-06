@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
+import { ClothesFormSchemaType } from "@/feature/clothes"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
@@ -125,6 +126,10 @@ class BackendService {
 
 	async createSpecifyShoes( items: ShoesFormSchemaType[]) {
 		return await this.post('/api/createSpecify/shoes', {items}, 'POST')
+	}
+
+	async createSpecifyClothes( items: ClothesFormSchemaType[]) {
+		return await this.post('/api/createSpecify/clothes', {items}, 'POST')
 	}
 
 	// Общие методы

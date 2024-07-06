@@ -31,11 +31,13 @@ import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
 import { userAtom } from "@/feature/common"
 import { useNavigate } from "react-router-dom"
+import { backendInstance } from "@/services/backendService"
 
 
 export function ClothesTable() {
 	const [user] = useAtom(userAtom)
 	const [clothes] = useAtom(clothesAtom)
+	const [pending, Pending] = useState(false)
 	const navigate = useNavigate();
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -66,8 +68,12 @@ export function ClothesTable() {
 		return;
 	}
 
-	const saveClothesAction = () => {
+	const saveClothesAction = async () => {
+		Pending(true)
 		console.log("Save")
+		const file = await backendInstance.createSpecifyClothes(clothes);
+		if (user.id && file.filename) backendInstance.gownloadFile(file.filename, user.id)
+		Pending(false)
 	}
 
 	return (
@@ -147,7 +153,7 @@ export function ClothesTable() {
 						variant="outline"
 						size="sm"
 						onClick={saveClothesAction}
-						disabled={clothes.length === 0}
+						disabled={clothes.length === 0 || pending}
 					>
 						Сформировать список
 					</Button>
