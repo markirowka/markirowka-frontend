@@ -41,6 +41,16 @@ export const Header = () => {
           </div>
           <div className="header__menu">
             <ul className="flex gap-4">
+                  <li>
+                    <a className="nav__link" href="/home">
+                      Категории товаров
+                    </a>
+                  </li>
+                  <li>
+                    <a className="nav__link" href="/new-order">
+                      Сделать заказ
+                    </a>
+                  </li>
               {menu.map((item, index) => {
                 return (
                   <li key={`mi${index * 9.012}`}>

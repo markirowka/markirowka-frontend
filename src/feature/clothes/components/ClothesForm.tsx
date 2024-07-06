@@ -23,12 +23,10 @@ export const ClothesForm = () => {
 			tradeMark: "",
 			articleType: "",
 			articleName: "",
-			shoesType: "",
+			clothesType: "",
 			color: "",
 			size: "",
-			upperMaterial: "",
-			liningMaterial: "",
-			bottomMaterial: "",
+			composition: "",
 			tnved: "",
 		},
 	})
@@ -37,7 +35,7 @@ export const ClothesForm = () => {
 		setClothes([...clothes, data])
 	}
 
-	const watcherShoesType = form.watch('shoesType')
+	const watcherShoesType = form.watch('clothesType')
 	const watcherTradeMark = form.watch('tradeMark')
 	const watcherArticleName = form.watch('articleName')
 	const watcherColor = form.watch('color')
@@ -114,8 +112,8 @@ export const ClothesForm = () => {
 							className="flex-1"
 							form={form}
 							name="shoesType"
-							label="Вид обуви"
-							placeholder="Выберите вид обуви"
+							label="Вид одежды"
+							placeholder="Выберите вид одежды"
 							options={SHOES_TYPES}
 						/>
 
@@ -124,7 +122,7 @@ export const ClothesForm = () => {
 							form={form}
 							name="color"
 							label="Цвет"
-							placeholder="Выберите цвет обуви"
+							placeholder="Выберите цвет одежды"
 							options={SHOES_COLORS}
 						/>
 
@@ -142,38 +140,12 @@ export const ClothesForm = () => {
 					<div className="flex gap-6">
 						<FormField
 							control={form.control}
-							name="upperMaterial"
+							name="composition"
 							render={({ field }) => (
 								<FormItem className="flex-1">
-									<FormLabel>Материал верха</FormLabel>
+									<FormLabel>Состав</FormLabel>
 									<FormControl>
-										<Input placeholder="Введите материал верха" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="liningMaterial"
-							render={({ field }) => (
-								<FormItem className="flex-1">
-									<FormLabel>Материал подкладки</FormLabel>
-									<FormControl>
-										<Input placeholder="Введите материал подкладки" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="bottomMaterial"
-							render={({ field }) => (
-								<FormItem className="flex-1">
-									<FormLabel>Материал низа/подошвы</FormLabel>
-									<FormControl>
-										<Input placeholder="Введите материал низа/подошвы" {...field} />
+										<Input placeholder="Состав" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

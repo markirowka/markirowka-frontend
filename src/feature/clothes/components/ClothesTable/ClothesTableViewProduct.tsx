@@ -43,7 +43,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({ id,
 
 					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
 						<span className="font-semibold text-base">Вид обуви</span>
-						<span className="text-base">{product.shoesType}</span>
+						<span className="text-base">{product.clothesType}</span>
 					</div>
 
 					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
@@ -56,16 +56,8 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({ id,
 						<span className="text-base">{product.size}</span>
 					</div>
 					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-						<span className="font-semibold text-base">Материал верха</span>
-						<span className="text-base">{product.upperMaterial}</span>
-					</div>
-					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-						<span className="font-semibold text-base">Материал подкладки</span>
-						<span className="text-base">{product.liningMaterial}</span>
-					</div>
-					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-						<span className="font-semibold text-base">Материал низа/подошвы</span>
-						<span className="text-base">{product.bottomMaterial}</span>
+						<span className="font-semibold text-base">Состав</span>
+						<span className="text-base">{product.composition}</span>
 					</div>
 					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
 						<span className="font-semibold text-base">Код ТНВЭД</span>

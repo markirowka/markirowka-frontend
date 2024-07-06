@@ -29,10 +29,17 @@ import { shoesAtom } from "../../store/shoesStore"
 import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
+import { backendInstance } from "@/services/backendService"
+import { API_URL } from "@/config/env"
+import { userAtom } from "@/feature/common"
+import { useNavigate } from "react-router-dom"
 
 
 export function ShoesTable() {
+	const [user] = useAtom(userAtom)
 	const [shoes] = useAtom(shoesAtom)
+	const navigate = useNavigate();
+	const [pending, Pending] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -56,6 +63,19 @@ export function ShoesTable() {
 			rowSelection,
 		},
 	})
+
+	if (!user) {
+		navigate("/auth");
+		return;
+	}
+
+	const generateTableAction = async () => {
+		Pending(true)
+		const file = await backendInstance.createSpecifyShoes(shoes);
+		const downloadUrl = `${API_URL}/api/file/${user.id}/${file.filename}`;
+		window.open(downloadUrl, "_blank")
+		Pending(false)
+	}
 
 	return (
 		<div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg">
@@ -126,25 +146,16 @@ export function ShoesTable() {
 			</div>
 			<div className="flex items-center justify-end space-x-2 py-4">
 				<div className="flex-1 text-sm text-muted-foreground">
-					{table.getFilteredSelectedRowModel().rows.length} из{" "}
-					{table.getFilteredRowModel().rows.length} строк выделено.
+					Всего {table.getFilteredRowModel().rows.length} строк.
 				</div>
 				<div className="space-x-2">
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
+						onClick={generateTableAction}
+						disabled={shoes.length === 0 || pending}
 					>
-						Прошлая страница
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						Следующая страница
+						Сформировать список
 					</Button>
 				</div>
 			</div>

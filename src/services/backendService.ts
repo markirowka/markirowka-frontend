@@ -3,7 +3,8 @@ import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
 import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
-import { MenuItem, UserDisplayData } from "@/feature/types"
+import { ShoesFormSchemaType } from "@/feature/shoes/config"
+import { MenuItem, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -21,6 +22,18 @@ class BackendService {
 
 	async editUser(data: RegistrationFormSchemaType): Promise<IRegistrationResponse> {
 		return await this.post('/api/signup', data, "POST")
+	}
+
+	async getPageContent(url: string): Promise<PageContentData> {
+		return (await this.get(`/api/content/${url}`))?.page[0] || {
+			pageUrl: url,
+			heading: "404",
+			content: "Страница не найдена или ещё не создана"
+		}
+	}
+
+	async savePageContent(page: PageContentData) {
+		return await this.post("/api/admin/setcontent", page, "POST");
 	}
 
 	async getMenu() : Promise<MenuItem[]> {
@@ -107,6 +120,14 @@ class BackendService {
 	async sendNewPassword(token: string, data: NewPasswordFormSchemaType) {
 		return await this.post('/api/resetpassword', {token: token, newPassword: data.password}, 'POST')
 	}
+
+	// Создание спецификации
+
+	async createSpecifyShoes( items: ShoesFormSchemaType[]) {
+		return await this.post('/api/createSpecify/shoes', {items}, 'POST')
+	}
+
+	// Общие методы
 
 	static getInstance(): BackendService {
 		if (!BackendService.instance) {

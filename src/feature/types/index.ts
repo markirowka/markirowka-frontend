@@ -22,3 +22,10 @@ export interface MenuItem {
   toDelete?: boolean;
   toUpdate?: boolean;
 }
+
+export interface PageContentData {
+  id?: number;
+  pageUrl: string;
+  pageTitle?: string;
+  content?: string;
+}

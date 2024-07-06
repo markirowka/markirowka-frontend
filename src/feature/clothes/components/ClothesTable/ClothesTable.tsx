@@ -29,10 +29,14 @@ import { clothesAtom } from "../../store/shoesStore"
 import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
+import { userAtom } from "@/feature/common"
+import { useNavigate } from "react-router-dom"
 
 
 export function ClothesTable() {
+	const [user] = useAtom(userAtom)
 	const [clothes] = useAtom(clothesAtom)
+	const navigate = useNavigate();
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -56,6 +60,15 @@ export function ClothesTable() {
 			rowSelection,
 		},
 	})
+
+	if (!user) {
+		navigate("/auth");
+		return;
+	}
+
+	const saveClothesAction = () => {
+		console.log("Save")
+	}
 
 	return (
 		<div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg">
@@ -133,18 +146,10 @@ export function ClothesTable() {
 					<Button
 						variant="outline"
 						size="sm"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
+						onClick={saveClothesAction}
+						disabled={clothes.length === 0}
 					>
-						Прошлая страница
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						Следующая страница
+						Сформировать список
 					</Button>
 				</div>
 			</div>
