@@ -16,7 +16,6 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,28 +45,6 @@ import { OrderData } from "@/feature/types";
 import { downloadFileById, formatTimestamp } from "@/utils";
 
 export const columns: ColumnDef<OrderData>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "orderId",
     header: "Номер заказа",
@@ -131,7 +108,10 @@ export const columns: ColumnDef<OrderData>[] = [
               onClick={() => {
                 row.original.document_ids.forEach((item, index) => {
                   if (index > 0)
-                    downloadFileById(item, user ? user?.id || 0 : 0);
+                    setTimeout(() => {
+                      console.log("File: ", item)
+                      downloadFileById(item, user ? user?.id || 0 : 0);
+                  }, index * 90)
                 });
               }}
             >
@@ -254,23 +234,22 @@ export function ProfileOrders() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} из {orderCount}{" "}
-          строк выделено.
+          {`Всего ${orderCount} строк.`}
         </div>
         <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
-            onClick={UpdatePage(true)}
-            disabled={!(ordersPage === 1)}
+            onClick={UpdatePage(false)}
+            disabled={(ordersPage === 1)}
           >
             Прошлая страница
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={UpdatePage(false)}
-            disabled={!isLastPage}
+            onClick={UpdatePage(true)}
+            disabled={isLastPage}
           >
             Следующая страница
           </Button>

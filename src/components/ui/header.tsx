@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { LogIn } from "lucide-react";
 import { useAtom } from "jotai";
 import { Link } from "react-router-dom";
@@ -11,11 +11,14 @@ import { topMenu } from "@/feature/common/content";
 export const Header = () => {
   const [user, setUser] = useAtom(userAtom);
   const [menu, setMenu] = useAtom(topMenu);
+  const [expanded, Expand] = useState(false);
 
   const fetchMenu = async () => {
       const menu = await backendInstance.getMenu();
       setMenu(menu);
   };
+
+
 
   useMemo(() => {
     backendInstance
@@ -36,7 +39,7 @@ export const Header = () => {
           <Link to="/" className="logo">
             <img className="header__logo" src="/logo.svg" alt="" />
           </Link>
-          <div className="header__burger">
+          <div className="header__burger" onClick={() => Expand(e => !e)}>
             <span></span>
           </div>
           <div className="header__menu">
@@ -55,6 +58,44 @@ export const Header = () => {
                 return (
                   <li key={`mi${index * 9.012}`}>
                     <a className="nav__link" href={`/${item.url}`}>
+                      {item.name}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className={`mobileMenu${expanded ? " selected" : ""}`}>
+          <div className="closeBtn" style={{
+            display: expanded ? "block" :"none",
+            position: "fixed",
+            top: 10,
+            right: 10,
+            width: 24,
+            height: 24,
+            zIndex: 150
+          }} onClick={() => Expand(e => !e)}>
+             <img src="/close.svg" />
+          </div>
+          <ul className="gap-4" style={{
+            fontSize: 24,
+            fontWeight: 600,
+            marginTop: 40
+          }}>
+                  <li>
+                    <a className="mb" href="/home">
+                      Категории товаров
+                    </a>
+                  </li>
+                  <li>
+                    <a className="mb" href="/new-order">
+                      Сделать заказ
+                    </a>
+                  </li>
+              {menu.map((item, index) => {
+                return (
+                  <li key={`mi${index * 9.012}`}>
+                    <a className="mb" href={`/${item.url}`}>
                       {item.name}
                     </a>
                   </li>

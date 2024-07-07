@@ -26,7 +26,7 @@ class BackendService {
 	}
 
 	async getPageContent(url: string): Promise<PageContentData> {
-		return (await this.get(`/api/content/${url}`))?.page[0] || {
+		return (await this.get(`/api/content/${url}`))?.page || {
 			pageUrl: url,
 			heading: "404",
 			content: "Страница не найдена или ещё не создана"
