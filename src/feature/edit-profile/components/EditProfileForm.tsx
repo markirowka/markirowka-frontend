@@ -89,6 +89,22 @@ export const EditProfileForm = () => {
 
           <FormField
             control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Номер телефона</FormLabel>
+                <FormControl>
+                  <Input placeholder="Телефон с кодом страны" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Separator className="mt-2" />
+
+          <FormField
+            control={form.control}
             name="full_name"
             render={({ field }) => (
               <FormItem>
@@ -181,7 +197,7 @@ export const EditProfileForm = () => {
             name="inn"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>ИНН</FormLabel>
+                <FormLabel>ИНН / УНП</FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="Введите ИНН" {...field} />
                 </FormControl>

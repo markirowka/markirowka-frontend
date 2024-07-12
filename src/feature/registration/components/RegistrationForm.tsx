@@ -113,7 +113,7 @@ export const RegistrationForm = () => {
 						name="full_name"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Введите полное наименование (ИП)</FormLabel>
+								<FormLabel>Введите полное наименование (ИП / ООО)</FormLabel>
 								<FormControl>
 									<Input placeholder="ИП Ромашкин Роман Романович" {...field} />
 								</FormControl>
@@ -195,7 +195,7 @@ export const RegistrationForm = () => {
 						name="inn"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>ИНН</FormLabel>
+								<FormLabel>ИНН / УНП</FormLabel>
 								<FormControl>
 									<Input type="number" placeholder="Введите ИНН" {...field} />
 								</FormControl>

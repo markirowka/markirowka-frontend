@@ -5,16 +5,51 @@ export const EditProfileFormSchema = z.object({
 	.string()
 	.min(1, { message: "Это поле должно быть заполнено" })
 	.email("Данный E-mail некорретный."),
-	full_name: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
-	ceo: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
-	ceo_full: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
+	phone: z.string().refine(
+		(value) => {
+		  const digits = value.replace(/\D/g, "");
+		  return digits.length >= 10;
+		},
+		{
+		  message: "Номер телефона должен содержать не менее 10 цифр",
+		}
+	  ),
+	full_name: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }).refine(
+		(value) => {
+		  return value.indexOf(" ") > 0 ? true : false;
+		},
+		{
+		  message: "Наименование должно состоять минимум из 2 слов",
+		}
+	  ),
+	ceo: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }).refine(
+		(value) => {
+		  return value.indexOf(" ") > 0 ? true : false;
+		},
+		{
+		  message: "Наименование должно состоять минимум из 2 слов",
+		}
+	  ),
+	ceo_full: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }).refine(
+		(value) => {
+		  return value.indexOf(" ") > 0 ? true : false;
+		},
+		{
+		  message: "Наименование должно состоять минимум из 2 слов",
+		}
+	  ),
 	ceo_genitive: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
 	law_address: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
-	inn: z.coerce.number()
-	.min(100000000000, { message: 'ИНН должен содержать 12 символов' })
-	.max(999999999999, { message: 'ИНН должен содержать 12 символов' }),
-  cargo_recevier: z.string().optional(),
-  cargo_city: z.string().optional(),
+	inn: z.coerce.number().optional(),
+  cargo_recevier: z.string().refine(
+	(value) => {
+	  return value.indexOf(" ") > 0 ? true : false;
+	},
+	{
+	  message: "Наименование должно состоять минимум из 2 слов",
+	}
+  ),
+  cargo_city: z.string().min(3, { message: 'Поле должно содержать не менее 3-х символов' }),
 })
 
 export type EditProfileFormSchemaType = z.infer<typeof EditProfileFormSchema>

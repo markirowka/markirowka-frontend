@@ -158,14 +158,15 @@ export function ProfileOrders() {
   });
 
   React.useMemo(async () => {
+    if (!user) return;
     const count =
-      user && user?.user_role === "ADMIN"
-        ? await backendInstance.getUserOrderCount()
-        : await backendInstance.getTotalCount();
+      user.user_role === "ADMIN"
+        ? await backendInstance.getTotalCount()
+        : await backendInstance.getUserOrderCount();
     const orders =
-      user && user?.user_role === "ADMIN"
-        ? await backendInstance.getUserOrders(ordersPage)
-        : await backendInstance.getOrders(ordersPage);
+      user.user_role === "ADMIN"
+        ? await backendInstance.getOrders(ordersPage)
+        : await backendInstance.getUserOrders(ordersPage);
     setDisplayOrders(orders);
     setOrderCount(count);
   }, [ordersPage]);

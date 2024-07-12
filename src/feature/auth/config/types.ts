@@ -27,4 +27,5 @@ export interface UserData {
   isconfirmed?: boolean;
   law_address?: string;
   user_role?: string;
+  phone: string;
 }

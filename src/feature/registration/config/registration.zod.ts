@@ -15,14 +15,42 @@ export const RegistrationFormSchema = z.object({
 		  message: "Номер телефона должен содержать не менее 10 цифр",
 		}
 	  ),
-	full_name: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
-	ceo: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
-	ceo_full: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
+	full_name: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }).refine(
+		(value) => {
+		  return value.indexOf(" ") > 0 ? true : false;
+		},
+		{
+		  message: "Наименование должно состоять минимум из 2 слов",
+		}
+	  ),
+	ceo: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }).refine(
+		(value) => {
+		  return value.indexOf(" ") > 0 ? true : false;
+		},
+		{
+		  message: "Наименование должно состоять минимум из 2 слов",
+		}
+	  ),
+	ceo_full: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }).refine(
+		(value) => {
+		  return value.indexOf(" ") > 0 ? true : false;
+		},
+		{
+		  message: "Наименование должно состоять минимум из 2 слов",
+		}
+	  ),
 	ceo_genitive: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
 	law_address: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
-	inn: z.coerce.number(),
-  cargo_recevier: z.string().optional(),
-  cargo_city: z.string().optional(),
+	inn: z.coerce.number().optional(),
+  cargo_recevier: z.string().refine(
+	(value) => {
+	  return value.indexOf(" ") > 0 ? true : false;
+	},
+	{
+	  message: "Наименование должно состоять минимум из 2 слов",
+	}
+  ),
+  cargo_city: z.string().min(3, { message: 'Поле должно содержать не менее 3-х символов' }),
 })
 
 export type RegistrationFormSchemaType = z.infer<typeof RegistrationFormSchema>
