@@ -2,7 +2,7 @@
 import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
 import { ClothesFormSchemaType } from "@/feature/clothes"
-import { NewPasswordFormSchemaType, PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
+import { PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
 import { MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
@@ -118,8 +118,8 @@ class BackendService {
 		return await this.post('/api/resetpassword', data, 'POST')
 	}
 
-	async sendNewPassword(token: string, data: NewPasswordFormSchemaType) {
-		return await this.post('/api/resetpassword', {token: token, newPassword: data.password}, 'POST')
+	async setNewPassword(token: string, newPassword: string) {
+		return await this.post('/api/setnewpassword', {token, newPassword }, 'POST')
 	}
 
 	// Создание спецификации

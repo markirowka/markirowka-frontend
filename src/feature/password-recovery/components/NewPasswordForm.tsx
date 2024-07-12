@@ -36,8 +36,9 @@ export const NewPasswordForm = () => {
 
 	const onSubmit: SubmitHandler<NewPasswordFormSchemaType> = async (data) => {
 		try {
+			if (data.password !== data.confirmPassword) return;
 			const token = search.slice(7)
-			await backendInstance.sendNewPassword(token, data)
+			await backendInstance.setNewPassword(token,  data.password)
 
 			toast(
 				'Пароль успешно изменен!',
@@ -46,6 +47,9 @@ export const NewPasswordForm = () => {
 					action: { label: 'Войти', onClick: () => { navigate('/auth') } }
 				}
 			)
+			setTimeout(() => {
+				navigate("/auth");
+			}, 1500)
 		} catch (e: any) {
 			console.log(e)
 			toast(

@@ -1,18 +1,31 @@
 import { Separator } from "@/components/ui/separator"
 import { TypographyH3 } from "@/components/ui/typography"
 import { backendInstance } from "@/services/backendService"
+// import { Button } from "@components/ui/button";
 import { Mail } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
+
+const registrationTexts = {
+	none: "",
+	start: "Мы отправили письмо на ваш E-mail, пожалуйста перейдите по ссылке в нем и подтвердите регистрацию",
+	received: "Проверка токена регистрации...",
+	success: "E-mail успешно подтвержден, перенаправляем на страницу профиля...",
+    fail: "Не удалось подтвердить E-mail, попробуйте ещё раз:"
+}
+
+type RegistrationState = keyof typeof registrationTexts
+
 export const SignUpConfirm = () => {
 	const { search } = useLocation()
-	const navigate = useNavigate()
+	const [registrationState, setRegState] = useState<RegistrationState>("none")
 
-	useEffect(() => {
-		const sendEmailConfirm = async () => {
-			const token = search.slice(7)
+	const sendEmailConfirm = async () => {
+		const token = search.slice(7);
+		if (token) {
+			setRegState("received")
 			const { message } = await backendInstance.sendEmailConfirm(token)
 			toast(
 				message,
@@ -21,12 +34,23 @@ export const SignUpConfirm = () => {
 					action: { label: 'Скрыть', onClick: () => { } }
 				}
 			)
+			setRegState("success")
 			setTimeout(() => {
 				navigate('/auth')
 			}, 1500);
+		} else {
+			setRegState("start")
 		}
+	}
+	const navigate = useNavigate()
 
-		if (search) sendEmailConfirm()
+	useEffect(() => {
+
+		if (search) {
+			sendEmailConfirm()
+		} else {
+			setRegState("start")
+		}
 	}, [navigate, search])
 
 	return (
@@ -36,7 +60,8 @@ export const SignUpConfirm = () => {
 				<TypographyH3>Подтвердите регистрацию</TypographyH3>
 			</div>
 			<Separator className="mt-2" />
-			<p className="mt-4 leading-6 font-normal text-base">Мы отправили письмо на ваш E-mail, пожалуйста перейдите по ссылке в нем и подтвердите регистрацию</p>
+			<p className="mt-4 leading-6 font-normal text-base">{registrationTexts[registrationState] || ""}</p>
+			{/* registrationState === "start" || registrationState === "fail" ? <Button>Отправить email повторно</Button> : null */}
 		</div >
 	)
 }

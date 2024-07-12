@@ -6,7 +6,7 @@ import { ClothesFormSchema, ClothesFormSchemaType } from "../config/clothes.zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "../../../components/ui/button"
 import { FormSelect } from "../../../components/ui/form-select"
-import { SHOES_COLORS, SHOES_SIZES, SHOES_TYPES } from "../config/clothes.data"
+import { CLOTHES_COLORS, CLOTHES_SIZES, CLOTHES_TYPES } from "../config/clothes.data"
 import { useAtom } from "jotai"
 import { clothesAtom } from "../store/shoesStore"
 import { Separator } from "@/components/ui/separator"
@@ -114,7 +114,7 @@ export const ClothesForm = () => {
 							name="shoesType"
 							label="Вид одежды"
 							placeholder="Выберите вид одежды"
-							options={SHOES_TYPES}
+							options={CLOTHES_TYPES}
 						/>
 
 						<FormSelect
@@ -123,7 +123,7 @@ export const ClothesForm = () => {
 							name="color"
 							label="Цвет"
 							placeholder="Выберите цвет одежды"
-							options={SHOES_COLORS}
+							options={CLOTHES_COLORS}
 						/>
 
 						<FormSelect
@@ -132,7 +132,7 @@ export const ClothesForm = () => {
 							name="size"
 							label="Размер в штихмассовой системе"
 							placeholder="Размер в штихмассовой системе"
-							options={SHOES_SIZES}
+							options={CLOTHES_SIZES}
 						/>
 					</div>
 					{/* Select */}

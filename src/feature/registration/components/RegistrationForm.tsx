@@ -42,7 +42,7 @@ export const RegistrationForm = () => {
 			)
 
 			// setTimeout(() => { navigate('/signupconfirm', { state: { token: response. } }) }, 500);
-			setTimeout(() => { navigate('/auth') });
+			setTimeout(() => { navigate('/signupconfirm') });
 		} catch (e: any) {
 			console.log(e)
 			toast(
@@ -79,7 +79,19 @@ export const RegistrationForm = () => {
 							</FormItem>
 						)}
 					/>
-
+                    <FormField
+						control={form.control}
+						name="phone"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Номер телефона</FormLabel>
+								<FormControl>
+									<Input placeholder="Введите номер с кодом страны" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 					<FormField
 						control={form.control}
 						name="password"
