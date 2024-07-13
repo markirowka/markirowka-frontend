@@ -1,9 +1,10 @@
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
+import parse from 'html-react-parser';
 import "react-quill/dist/quill.snow.css";
 import { ADMIN_ROLE } from "@/config/env";
 import { userAtom } from "@/feature/common";
 import { useAtom } from "jotai";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { backendInstance } from "@/services/backendService";
 import { useLocation } from "react-router-dom";
 import { urlNamingFilter } from "@/utils";
@@ -13,19 +14,70 @@ const defaultContent = {
   content: "<p>Текст</p>",
 };
 
+const editorOptions = {
+  modules: {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, false] }],
+      ['bold', 'italic', 'underline'],
+      ['image', "video"]
+    ]
+  },
+  placeholder: '',
+  theme: 'snow',
+  clipboard: {
+    matchVisual: false
+  }
+}
+
+class Clipboard extends Quill.import('modules/clipboard') {
+  async onPaste(e: any) {
+    e.preventDefault();
+    const clipboardData = (e.originalEvent || e).clipboardData;
+    const text = clipboardData.getData('text/plain');
+    const html = clipboardData.getData('text/html');
+
+    
+    if (html) {
+      const delta = this.convert(html);
+      this.quill.updateContents(delta, 'silent');
+    } else {
+      this.quill.insertText(this.quill.getSelection(), text);
+    }
+
+    this.quill.setSelection(this.quill.getLength(), 'silent');
+    this.quill.scrollIntoView();
+  }
+}
+Quill.register('modules/clipboard', Clipboard, true);
+
 export const ContentPage = () => {
   const [user] = useAtom(userAtom);
+  const quillRef = useRef<any>(null);
   const path = useLocation()
   const [pending, Pending] = useState(true);
   const [heading, setHeading] = useState(defaultContent.heading);
   const [content, setContent] = useState(defaultContent.content);
   const [editState, SwitchEditState] = useState(false);
 
+  useEffect(() => {
+    const quill = quillRef.current?.getEditor();
+    if (quill) {
+      quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node: any, delta: any) => {
+        node;
+        return delta;
+      });
+    }
+  }, []);
+
   const LoadContent = async () => {
     const page = await backendInstance.getPageContent(urlNamingFilter(path.pathname));
     setContent(page.content || "");
     setHeading(page.pageTitle || "")
     Pending(false);
+  }
+
+  const onQuillContentChange = (content: any)  => {
+    setContent(content)
   }
 
   useMemo(() => {
@@ -122,12 +174,10 @@ export const ContentPage = () => {
       </div>
       {!editState ? (
         <div
-          className="contentZone"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+          className="contentZone">{parse(content)}</div>
       ) : (
         <div className="contentEditor">
-          <ReactQuill value={content} onChange={setContent} />
+          <ReactQuill ref={quillRef} value={content} onChange={onQuillContentChange} modules={editorOptions.modules} />
         </div>
       )}
     </div>
