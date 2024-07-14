@@ -12,6 +12,7 @@ import { clothesAtom } from "../store/shoesStore"
 import { Separator } from "@/components/ui/separator"
 import { PackageSearch } from "lucide-react"
 import { useEffect } from "react"
+import { toast } from "sonner"
 
 export const ClothesForm = () => {
 	const [clothes, setClothes] = useAtom(clothesAtom)
@@ -32,7 +33,14 @@ export const ClothesForm = () => {
 	})
 
 	const onSubmit: SubmitHandler<ClothesFormSchemaType> = (data) => {
-		setClothes([...clothes, data])
+		setClothes([...clothes, data]);
+		toast(
+			"Заявка отпралена",
+			{
+				description: `Обратная связь по данным из Вашенго профиля`,
+				action: { label: 'Скрыть', onClick: () => { } }
+			}
+		)
 	}
 
 	const watcherShoesType = form.watch('clothesType')

@@ -20,13 +20,13 @@ const editorOptions = {
       [{ header: [1, 2, 3, 4, 5, false] }],
       ['bold', 'italic', 'underline'],
       ['image', "video"]
-    ]
+    ],
+    clipboard: {
+      matchVisual: false
+    }
   },
   placeholder: '',
   theme: 'snow',
-  clipboard: {
-    matchVisual: false
-  }
 }
 
 class Clipboard extends Quill.import('modules/clipboard') {
@@ -177,7 +177,8 @@ export const ContentPage = () => {
           className="contentZone">{parse(content)}</div>
       ) : (
         <div className="contentEditor">
-          <ReactQuill ref={quillRef} value={content} onChange={onQuillContentChange} modules={editorOptions.modules} />
+          <ReactQuill ref={quillRef} value={content} onChange={onQuillContentChange} 
+          modules={editorOptions.modules} />
         </div>
       )}
     </div>
