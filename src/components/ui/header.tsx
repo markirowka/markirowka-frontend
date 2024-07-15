@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { LogIn } from "lucide-react";
 import { useAtom } from "jotai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./button";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { userAtom } from "@/feature/common";
@@ -12,13 +12,18 @@ export const Header = () => {
   const [user, setUser] = useAtom(userAtom);
   const [menu, setMenu] = useAtom(topMenu);
   const [expanded, Expand] = useState(false);
+  const navigate = useNavigate();
 
   const fetchMenu = async () => {
       const menu = await backendInstance.getMenu();
       setMenu(menu);
   };
 
-
+  const logOut = async () => {
+    await backendInstance.logout();
+    localStorage.clear();
+    navigate("/")
+  }
 
   useMemo(() => {
     backendInstance
@@ -111,7 +116,7 @@ export const Header = () => {
               </Button>
             </Link>
           ) : (
-            <Link to={"/profile"} className="flex flex-row gap-2 items-center">
+            <><Link to={"/profile"} className="flex flex-row gap-2 items-center">
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>EH</AvatarFallback>
@@ -123,6 +128,10 @@ export const Header = () => {
                 <p className="text-sm">{user?.email || ""}</p>
               </div>
             </Link>
+            <div onClick={logOut}>
+               <img src="/exit.svg" />
+            </div>
+            </>
           )}
         </div>
       </div>
