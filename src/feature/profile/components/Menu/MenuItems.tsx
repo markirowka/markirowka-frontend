@@ -36,7 +36,7 @@ import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { MenuItem } from "@/feature/types";
 import { itemsToUpdateAtom } from "@/feature/common/admin";
-import { urlNamingFilter } from "@/utils";
+import { sortMenuByIndex, urlNamingFilter } from "@/utils";
 
 export const menuColumns: ColumnDef<MenuItem>[] = [
   {
@@ -74,6 +74,23 @@ export const menuColumns: ColumnDef<MenuItem>[] = [
         );
       }
       return <div className="lowercase"><input type="text" value={row.original.url} onChange={UpdateItem} /></div>;
+    },
+  },
+  {
+    accessorKey: "sort_index",
+    header: "Индекс сортировки",
+    cell: ({ row }) => {
+      const [editableMenu, setEditableMenu] = useAtom(itemsToUpdateAtom);
+      editableMenu;
+      const UpdateItem = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value && !isNaN(Number(event.target.value)))
+        setEditableMenu(prevMenu =>
+          prevMenu.map((item: MenuItem) =>
+            Number(item.id) === Number(row.original.id) ? { ...item, sort_index: Number(event.target.value), toUpdate: true } : item
+          )
+        );
+      }
+      return <div className="lowercase"><input type="number" value={row.original.sort_index || 0} onChange={UpdateItem} /></div>;
     },
   },
   {
@@ -150,7 +167,7 @@ export function MenuItemEditor() {
 
   const fetchMenu = async () => {
     if (user && user.user_role === 'ADMIN') {
-      const menu = await backendInstance.getMenu();
+      const menu = (await backendInstance.getMenu()).sort(sortMenuByIndex);
       setEditableMenu(menu);
     }
   };
@@ -191,9 +208,11 @@ export function MenuItemEditor() {
       backendInstance.editMenuItems(toUpdateItems),
       backendInstance.deleteMenuItems(toDeleteItems)
     ]).then(() => {
-      fetchMenu().then(() => {
-         Pending(false)
-      })
+      setTimeout(() => {
+        fetchMenu().then(() => {
+          Pending(false)
+       })
+      }, 199)
     })
   }
 
@@ -220,7 +239,7 @@ export function MenuItemEditor() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
+            {table.getRowModel().rows.sort(sortMenuByIndex).map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.original.toDelete? "todelete" : (row.getIsSelected() && "selected")}

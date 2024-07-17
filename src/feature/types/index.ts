@@ -21,6 +21,7 @@ export interface MenuItem {
   isNew?: boolean;
   toDelete?: boolean;
   toUpdate?: boolean;
+  sort_index?: number;
 }
 
 export interface PageContentData {

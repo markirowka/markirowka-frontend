@@ -45,3 +45,17 @@ export async function downloadFileById (fileId: number, userId: number) {
 export function urlNamingFilter (url: string) : string {
     return url.startsWith('/') ? url.substring(1) : url
 }
+
+export const sortMenuByIndex = (a: any, b: any): number => {
+    const indexA = a.original?.sort_index || a.sort_index;
+    const indexB = b.original?.sort_index || b.sort_index;
+    if (!indexA && !indexB) return 0;
+    if (!indexA && indexB) return 1;
+    if (indexA && !indexB) return -1;
+    if (indexA && indexB) {
+      if (indexB === indexA) return 0;
+      if (indexA < indexB) return -1;
+      if (indexA > indexB) return 1;
+    }
+    return 0;
+}

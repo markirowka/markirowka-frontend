@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { topMenu } from "@/feature/common/content";
+import { sortMenuByIndex } from "@/utils";
 
 export const Header = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -49,17 +50,7 @@ export const Header = () => {
           </div>
           <div className="header__menu">
             <ul className="flex gap-4">
-                  <li>
-                    <a className="nav__link" href="/home">
-                      Категории товаров
-                    </a>
-                  </li>
-                  <li>
-                    <a className="nav__link" href="/new-order">
-                      Сделать заказ
-                    </a>
-                  </li>
-              {menu.map((item, index) => {
+              {menu.sort(sortMenuByIndex).map((item, index) => {
                 return (
                   <li key={`mi${index * 9.012}`}>
                     <a className="nav__link" href={`/${item.url}`}>
@@ -87,16 +78,6 @@ export const Header = () => {
             fontWeight: 600,
             marginTop: 40
           }}>
-                  <li>
-                    <a className="mb" href="/home">
-                      Категории товаров
-                    </a>
-                  </li>
-                  <li>
-                    <a className="mb" href="/new-order">
-                      Сделать заказ
-                    </a>
-                  </li>
               {menu.map((item, index) => {
                 return (
                   <li key={`mi${index * 9.012}`}>

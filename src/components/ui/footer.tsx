@@ -2,6 +2,7 @@ import { Mail, Phone, Send } from "lucide-react"
 import { Button } from "./button"
 import { topMenu } from "@/feature/common/content";
 import { useAtom } from "jotai";
+import { sortMenuByIndex } from "@/utils";
 
 export const Footer = () => {
 	const [menu] = useAtom(topMenu);
@@ -14,19 +15,19 @@ export const Footer = () => {
 					<div className="label">
 						<a className="footer__label flex gap-2 items-center">
 							<Phone />
-							+9 999 999 99-99
+							+7 993 909 74-42
 						</a>
 						<a className="footer__label flex gap-2 items-center">
 							<Mail />
-							office@markirowka.ru
+							pinkikosmetics@mail.ru
 						</a>
-						<a href="#" className="footer__label flex gap-2 items-center">
+						<a href="https://t.me/snexdj" className="footer__label flex gap-2 items-center">
 							<Send />
-							@markirowka
+							@snexdj
 						</a>
 					</div>
 					<div className="marking">
-						{menu.map((item, index) => {
+						{menu.sort(sortMenuByIndex).map((item, index) => {
 							return(
 								<a key={`sm${index * 8.91}`} className="footer__marking" href={`/${item.url}`}>{item.name}</a>
 							)
