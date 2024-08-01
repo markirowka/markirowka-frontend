@@ -5,7 +5,7 @@ export const OrderFormSchema = z.object({
 	name: z.string().min(3, {message: 'Название должно содержать не менее 6-ти символов'}),
 	quantity: z.coerce.number(),
 	price: z.coerce.number(),
-	date:  z.coerce.date().refine((date) => {
+	/* date:  z.coerce.date().refine((date) => {
 		const today = new Date();
         const thirtyDaysAgo = new Date(today);
               thirtyDaysAgo.setDate(today.getDate() - 30);
@@ -14,7 +14,7 @@ export const OrderFormSchema = z.object({
 		return date >= thirtyDaysAgo && date <= tomorrow
 	}, {
         message: 'Дата должна быть не больше чем за 30 дней до и на 1 день после сегодняшнего'
-    })
+    }) */
 })
 
 export type OrderFormSchemaType = z.infer<typeof OrderFormSchema>
