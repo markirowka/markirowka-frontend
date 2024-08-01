@@ -30,15 +30,15 @@ import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
 import { backendInstance } from "@/services/backendService"
-import { API_URL } from "@/config/env"
 import { userAtom } from "@/feature/common"
-import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
+// import { useNavigate } from "react-router-dom"
 
 
 export function ShoesTable() {
 	const [user] = useAtom(userAtom)
 	const [shoes] = useAtom(shoesAtom)
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const [pending, Pending] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -65,15 +65,20 @@ export function ShoesTable() {
 	})
 
 	if (!user) {
-		navigate("/auth");
+		// navigate("/auth");
 		return;
 	}
 
 	const generateTableAction = async () => {
 		Pending(true)
-		const file = await backendInstance.createSpecifyShoes(shoes);
-		const downloadUrl = `${API_URL}/api/file/${user.id}/${file.filename}`;
-		window.open(downloadUrl, "_blank")
+		await backendInstance.createSpecifyShoes(shoes);
+		toast(
+			"Заявка отпралена",
+			{
+				description: `Свяжемся с Вами по данным из Вашего профиля`,
+				action: { label: 'Скрыть', onClick: () => { } }
+			}
+		)
 		Pending(false)
 	}
 
@@ -155,7 +160,7 @@ export function ShoesTable() {
 						onClick={generateTableAction}
 						disabled={shoes.length === 0 || pending}
 					>
-						Сформировать список
+						Сформировать заказ
 					</Button>
 				</div>
 			</div>

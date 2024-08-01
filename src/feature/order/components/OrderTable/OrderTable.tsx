@@ -157,7 +157,7 @@ export function OrderTable() {
 						onClick={createOrderAction}
 						disabled={orderProducts.length === 0 || pending}
 					>
-						Сформировать заказ
+						Скачать документы
 					</Button>
 				</div>
 			</div>

@@ -30,15 +30,16 @@ import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
 import { userAtom } from "@/feature/common"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService"
+import { toast } from "sonner"
 
 
 export function ClothesTable() {
 	const [user] = useAtom(userAtom)
 	const [clothes] = useAtom(clothesAtom)
 	const [pending, Pending] = useState(false)
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -62,17 +63,24 @@ export function ClothesTable() {
 			rowSelection,
 		},
 	})
-
+    
 	if (!user) {
-		navigate("/auth");
+		// navigate("/auth");
 		return;
 	}
 
 	const saveClothesAction = async () => {
 		Pending(true)
 		console.log("Save")
-		const file = await backendInstance.createSpecifyClothes(clothes);
-		if (user.id && file.filename) backendInstance.downloadFile(file.filename, user.id)
+		await backendInstance.createSpecifyClothes(clothes);
+		toast(
+			"Заявка отпралена",
+			{
+				description: `Свяжемся с Вами по данным из Вашего профиля`,
+				action: { label: 'Скрыть', onClick: () => { } }
+			}
+		)
+		// if (user.id && file.filename) backendInstance.downloadFile(file.filename, user.id)
 		Pending(false)
 	}
 
