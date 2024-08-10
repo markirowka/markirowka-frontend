@@ -31,6 +31,7 @@ import { orderProductsStoreAtom } from "../../store"
 import { userAtom } from "@/feature/common"
 import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService"
+import { toast } from "sonner"
 
 
 export function OrderTable() {
@@ -63,6 +64,18 @@ export function OrderTable() {
 	})
 
 	const createOrderAction = async () => {
+		if (!user) {
+			toast(
+				'Вы не зарегистрированы в системе',
+				{
+					description: 'Войдите, чтобы сделать заказ',
+					action: {
+						label: 'Скрыть', onClick: () => console.error("Пользователь не зарегистрирован")
+					}
+				}
+			)
+			return;
+		}
 		Pending(true);
 		const { files } = await backendInstance.createOrder(orderProducts);
 		files.forEach((file: any) => {

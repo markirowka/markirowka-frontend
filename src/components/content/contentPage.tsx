@@ -92,14 +92,14 @@ export const ContentPage = () => {
     SwitchEditState((prevState) => !prevState);
   };
 
-  const deleteAction = () => {
+  /* const deleteAction = () => {
     const userConfirmed = confirm(
       "Вы уверены, что хотите удалить ВЕСЬ контент?"
     );
     if (userConfirmed) {
       console.log("delete");
     }
-  };
+  }; */
 
   const saveAction = async () => {
     console.log("Save");
@@ -160,7 +160,7 @@ export const ContentPage = () => {
                 </div>
               </>
             )}
-            <div className="editBtn deleteBtn">
+            {/* <div className="editBtn deleteBtn">
               <img
                 src="/editor/delete.svg"
                 className="editIcon"
@@ -168,7 +168,7 @@ export const ContentPage = () => {
                 height="20"
                 onClick={deleteAction}
               />
-            </div>
+            </div>*/}
           </div>
         ) : null}
       </div>
