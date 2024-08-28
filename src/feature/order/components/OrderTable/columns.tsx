@@ -43,13 +43,13 @@ export const columns: ColumnDef<OrderFormSchemaType>[] = [
 			<div className="capitalize">{row.getValue("price")} ₽</div>
 		),
 	},
-	{
+	/* {
 		accessorKey: "date",
 		header: "Дата",
 		cell: ({ row }) => (
 			<div className="capitalize">{row.getValue("date")} ₽</div>
 		),
-	},
+	}, */
 	{
 		accessorKey: "action",
 		header: () => (

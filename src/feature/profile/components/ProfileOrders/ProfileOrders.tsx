@@ -43,12 +43,13 @@ import { backendInstance } from "@/services/backendService";
 import { ordersPerPage } from "@/config/env";
 import { OrderData } from "@/feature/types";
 import { downloadFileById, formatTimestamp } from "@/utils";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<OrderData>[] = [
   {
     accessorKey: "orderId",
     header: "Номер заказа",
-    cell: ({ row }) => <div className="capitalize">{row.original.id}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.original.document_ids[0] || "Неизв."}</div>,
   },
   {
     accessorKey: "date",
@@ -78,6 +79,11 @@ export const columns: ColumnDef<OrderData>[] = [
     cell: ({ row }) => {
       const payment = row.original;
       const [user] = useAtom(userAtom);
+      const [ordersPage] = useAtom(ordersPageAtom);
+      const [displayOrders, setDisplayOrders] =
+        useAtom<OrderData[]>(orderHistoryAtom);
+      displayOrders;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -102,20 +108,30 @@ export const columns: ColumnDef<OrderData>[] = [
                 )
               }
             >
-              Скачать заказ
+              Скачать документы
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => {
-                row.original.document_ids.forEach((item, index) => {
-                  if (index > 0)
-                    setTimeout(() => {
-                      console.log("File: ", item)
-                      downloadFileById(item, user ? user?.id || 0 : 0);
-                  }, index * 90)
-                });
+              onClick={async () => {
+
+                if (!user) return;
+                const file = row.original.document_ids[0];
+                if (file) {
+                  const deletion = await backendInstance.deleteFile({ fileId: file });
+                  const orders =
+                    user.user_role === "ADMIN"
+                      ? await backendInstance.getOrders(ordersPage)
+                      : await backendInstance.getUserOrders(ordersPage);
+                      toast(
+                        deletion.message? 'Ошибка удаления' : 'Файлы успешно удалены',
+                        {
+                          action: { label: 'Скрыть', onClick: () => { } }
+                        }
+                      );
+                  setDisplayOrders(orders);
+                }
               }}
             >
-              Скачать платежные документы
+              Удалить
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -242,7 +258,7 @@ export function ProfileOrders() {
             variant="outline"
             size="sm"
             onClick={UpdatePage(false)}
-            disabled={(ordersPage === 1)}
+            disabled={ordersPage === 1}
           >
             Прошлая страница
           </Button>

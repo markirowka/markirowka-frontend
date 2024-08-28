@@ -60,6 +60,10 @@ export function OrderTable() {
 			columnFilters,
 			columnVisibility,
 			rowSelection,
+			pagination: {
+				pageIndex: 0,
+				pageSize: 99,
+			  },
 		},
 	})
 
@@ -159,10 +163,10 @@ export function OrderTable() {
 				</Table>
 			</div>
 			<div className="flex items-center justify-end space-x-2 py-4">
-				<div className="flex-1 text-sm text-muted-foreground">
+				{/* <div className="flex-1 text-sm text-muted-foreground">
 					{table.getFilteredSelectedRowModel().rows.length} из{" "}
 					{table.getFilteredRowModel().rows.length} строк выделено.
-				</div>
+				</div> */}
 				<div className="space-x-2">
 					<Button
 						variant="outline"
@@ -170,7 +174,7 @@ export function OrderTable() {
 						onClick={createOrderAction}
 						disabled={orderProducts.length === 0 || pending}
 					>
-						Скачать документы
+						Скачать и отправить документы
 					</Button>
 				</div>
 			</div>

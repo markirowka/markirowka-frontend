@@ -77,6 +77,10 @@ class BackendService {
 		return (await this.get(`/api/downloads`))?.files || []
 	}
 
+	async deleteFile(data: {fileId: number}): Promise<IRegistrationResponse> {
+		return await this.post('/api/deletefile', data, "POST")
+	}
+
 	downloadFile(fileName: string, userId: number) {
 		const url = `${API_URL}/api/file/${userId}/${fileName}`;
 		window.open(url, '_blank');
