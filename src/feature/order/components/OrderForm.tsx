@@ -17,6 +17,9 @@ export const OrderForm = () => {
 
 	const form = useForm<OrderFormSchemaType>({
 		resolver: zodResolver(OrderFormSchema),
+		defaultValues: {
+			date: new Date().toISOString().split('T')[0], // Задаем значение по умолчанию для даты
+		},
 	})
 
 	const onSubmit: SubmitHandler<OrderFormSchemaType> = (product) => {
