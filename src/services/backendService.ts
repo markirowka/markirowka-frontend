@@ -136,8 +136,8 @@ class BackendService {
 		return await this.post('/api/createSpecify/clothes', {items}, 'POST')
 	}
 
-	async createOrder( items: OrderItemData[]) {
-		return await this.post('/api/createpayments', {items}, 'POST')
+	async createOrder( items: OrderItemData[], date?: string) {
+		return await this.post('/api/createpayments', {items, date}, 'POST')
 	}
 
 	// Общие методы

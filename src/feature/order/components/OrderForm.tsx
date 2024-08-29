@@ -55,6 +55,20 @@ export const OrderForm = () => {
 								</FormItem>
 							)}
 						/>
+						<FormField
+							control={form.control}
+							name="date"
+							render={({ field }) => (
+								<FormItem className="flex-1">
+									<FormLabel>Дата составления</FormLabel>
+									<FormControl>
+										<Input placeholder="Дата составления документов" 
+										type="date" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 					</div>
 					<div className="flex gap-6 items-end">
 						<FormField
