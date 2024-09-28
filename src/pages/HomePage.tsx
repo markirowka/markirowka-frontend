@@ -2,6 +2,7 @@ import { CategoryCard } from "@/components"
 import { TypographyH1 } from "@/components/ui/typography"
 
 export const HomePage = () => {
+
 	return (
 		<>
 			<TypographyH1>Выберите категорию маркировки</TypographyH1>
