@@ -102,10 +102,11 @@ export const columns: ColumnDef<OrderData>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() =>
-                downloadFileById(
+                { 
+                  downloadFileById(
                   row.original.document_ids[0],
-                  user ? user?.id || 0 : 0
-                )
+                  row.original.user_id
+                )}
               }
             >
               Скачать документы

@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { EditProfileFormSchema } from "..";
 import { Separator } from "@/components/ui/separator";
 import { backendInstance } from "@/services/backendService";
@@ -24,13 +24,9 @@ import { useAtom } from "jotai";
 import { UserData } from "@/feature/auth";
 
 export const EditProfileForm = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [user, setUser] = useAtom(userAtom);
 
-  if (!user) {
-	navigate("/auth");
-	return;
-  }
   const form = useForm<UserData>({
     resolver: zodResolver(EditProfileFormSchema),
     defaultValues: {
@@ -48,7 +44,7 @@ export const EditProfileForm = () => {
       setTimeout(async () => {
         const newUser = await backendInstance.getUser();
         if (newUser) setUser(newUser.data);
-        navigate("/auth");
+        /* navigate("/auth"); */
       });
     } catch (e: any) {
       console.log(e);

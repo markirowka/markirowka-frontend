@@ -30,13 +30,13 @@ import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
 import { backendInstance } from "@/services/backendService"
-import { userAtom } from "@/feature/common"
+// import { userAtom } from "@/feature/common"
 import { toast } from "sonner"
 // import { useNavigate } from "react-router-dom"
 
 
 export function ShoesTable() {
-	const [user] = useAtom(userAtom)
+	// const [user] = useAtom(userAtom)
 	const [shoes] = useAtom(shoesAtom)
 	// const navigate = useNavigate();
 	const [pending, Pending] = useState(false)
@@ -63,11 +63,6 @@ export function ShoesTable() {
 			rowSelection,
 		},
 	})
-
-	if (!user) {
-		// navigate("/auth");
-		return;
-	}
 
 	const generateTableAction = async () => {
 		Pending(true)

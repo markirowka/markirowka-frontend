@@ -13,10 +13,12 @@ import { toast } from "sonner"
 import { useAtom } from "jotai"
 import { authAtom } from "../store"
 import { userAtom } from "@/feature/common"
+import { topMenu } from "@/feature/common/content";
 
 export const AuthForm = () => {
 	const [authStore, setAuthStore] = useAtom(authAtom);
 	const [user, setUser] = useAtom(userAtom);
+	const [menu, setMenu] = useAtom(topMenu);
 	const navigate = useNavigate()
 
     useEffect(() => {
@@ -33,15 +35,20 @@ export const AuthForm = () => {
 		},
 	})
 
+	const fetchMenu = async () => {
+		const menu = await backendInstance.getMenu();
+		setMenu(menu);
+	  };
+
 	const onSubmit: SubmitHandler<AuthFormSchemaType> = async (data) => {
+		menu
 		try {
 			const response = await backendInstance.signIn(data)
 			localStorage.setItem('bearerToken', response.token)
 			setAuthStore({ ...authStore, id: response.userId, bearerToken: response.token })
 
 			const res: UserData = await (await backendInstance.getUser()).data
-			console.log(res)
-
+			fetchMenu();
 			toast(
 				'Вы вошли в аккаунт!',
 				{
@@ -99,7 +106,7 @@ export const AuthForm = () => {
 								</FormItem>
 							)}
 						/>
-						<div className="flex justify-between">
+						<div className="flex justify-between mobileBlock">
 							<Button type="submit">Войти в аккаунт</Button>
 							<Link to={'/password-recovery'}><Button variant="ghost">Забыл пароль? Восстановить</Button></Link>
 						</div>

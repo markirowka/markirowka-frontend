@@ -24,7 +24,7 @@ export const ProfilePage = () => {
           <ProfileOrders />
         </div>
 
-        <div className="w-full max-w-[25%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg">
+        <div className="w-full max-w-[25%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg profile-info">
           <Link to={"/profile"} className="flex flex-row gap-2 items-center">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
@@ -81,7 +81,7 @@ export const ProfilePage = () => {
           </div>
 
           <Link to={"/edit-profile"}>
-            <Button className="flex flex-row items-center gap-2">
+            <Button className="flex flex-row items-center gap-2 profile-edit-button">
               <Edit2 className="max-w-[20px]" />
               Редактировать профиль
             </Button>

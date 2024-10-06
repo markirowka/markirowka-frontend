@@ -3,6 +3,7 @@ import { z } from "zod"
 export const PasswordRecoveryFormSchema = z.object({
 	email: z
 	.string()
+	.toLowerCase()
 	.min(1, { message: "Это поле должно быть заполнено" })
 	.email("Данный E-mail некорретный."),
 })

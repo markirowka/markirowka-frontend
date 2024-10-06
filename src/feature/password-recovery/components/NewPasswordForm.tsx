@@ -47,9 +47,7 @@ export const NewPasswordForm = () => {
 					action: { label: 'Войти', onClick: () => { navigate('/auth') } }
 				}
 			)
-			setTimeout(() => {
-				navigate("/auth");
-			}, 1500)
+
 		} catch (e: any) {
 			console.log(e)
 			toast(

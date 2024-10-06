@@ -3,6 +3,7 @@ import { z } from "zod"
 export const RegistrationFormSchema = z.object({
 	email: z
 	.string()
+	.toLowerCase()
 	.min(1, { message: "Это поле должно быть заполнено" })
 	.email("Данный E-mail некорретный."),
 	password: z.string().min(6, { message: 'Пароль должен содержать не менее 6-ти символов' }),

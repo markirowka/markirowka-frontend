@@ -27,7 +27,7 @@ export function formatTimestamp(timestamp: number): string {
   }
 
 export async function downloadFileById (fileId: number, userId: number) {
-    const files = await backendInstance.getDownloads();
+    const files = await backendInstance.getDownloadsByFileId(fileId);
     if (!files) {
         alert("File not found")
         return;

@@ -77,6 +77,10 @@ class BackendService {
 		return (await this.get(`/api/downloads`))?.files || []
 	}
 
+	async getDownloadsByFileId(fileId: number) : Promise<any[]> {
+		return (await this.get(`/api/downloadinfo/${fileId}`))?.files || []
+	}
+
 	async deleteFile(data: {fileId: number}): Promise<IRegistrationResponse> {
 		return await this.post('/api/deletefile', data, "POST")
 	}
@@ -166,9 +170,7 @@ class BackendService {
 				credentials: 'include',
 				mode: 'cors',
 			})
-
 			const json = await res.json()
-
 			return json
 		} catch (e: any) {
 			console.log(Error(e));

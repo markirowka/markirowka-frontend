@@ -23,20 +23,20 @@ import {
 	TableRow,
 } from "@/components/ui/table"
 import { TypographyH3 } from "@/components/ui/typography"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useAtom } from "jotai"
 import { columns } from "./columns"
 import { PackageSearch } from "lucide-react"
 import { orderProductsStoreAtom } from "../../store"
 import { userAtom } from "@/feature/common"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService"
 import { toast } from "sonner"
 
 
 export function OrderTable() {
 	const [user] = useAtom(userAtom)
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const [orderProducts] = useAtom(orderProductsStoreAtom)
 	const [pending, Pending] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])
@@ -88,12 +88,6 @@ export function OrderTable() {
 		Pending(false);
 	}
 
-	useMemo(() => {
-		if (!user) {
-			navigate("/auth");
-			return;
-		}
-	}, [])
 
 	return (
 		<div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg">
