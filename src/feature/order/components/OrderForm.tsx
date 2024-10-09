@@ -29,13 +29,13 @@ export const OrderForm = () => {
 	return (
 		<div className="m-auto my-12 p-12 bg-white rounded-xl shadow-lg">
 			<Form {...form}>
-				<div className="flex gap-2 items-center">
+				<div className="flex gap-2 items-center f-wrap">
 					<PackageSearch />
 					<TypographyH3>Добавить новый товар</TypographyH3>
 				</div>
 				<Separator className="mt-2" />
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-3">
-					<div className="flex gap-6">
+					<div className="flex gap-6 f-wrap">
 						<FormSelect
 							className="flex-1"
 							form={form}
@@ -73,7 +73,7 @@ export const OrderForm = () => {
 							)}
 						/>
 					</div>
-					<div className="flex gap-6 items-end">
+					<div className="flex gap-6 items-end f-wrap">
 						<FormField
 							control={form.control}
 							name="quantity"

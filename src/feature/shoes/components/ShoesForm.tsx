@@ -71,7 +71,7 @@ export const ShoesForm = () => {
 							</FormItem>
 						)}
 					/>
-					<div className="flex gap-6">
+					<div className="flex gap-6 f-wrap">
 						<FormField
 							control={form.control}
 							name="tradeMark"
@@ -109,7 +109,7 @@ export const ShoesForm = () => {
 					</div>
 
 					{/* Select */}
-					<div className="flex gap-6">
+					<div className="flex gap-6 f-wrap">
 						<FormSelect
 							className="flex-1"
 							form={form}
@@ -139,7 +139,7 @@ export const ShoesForm = () => {
 					</div>
 					{/* Select */}
 
-					<div className="flex gap-6">
+					<div className="flex gap-6 f-wrap">
 						<FormField
 							control={form.control}
 							name="upperMaterial"

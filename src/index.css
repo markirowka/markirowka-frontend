@@ -115,6 +115,10 @@ body,
   }
 }
 
+.f-wrap {
+  flex-wrap: wrap;
+}
+
 @media (max-width: 1024px) {
   .profile-info {
     position: absolute;
