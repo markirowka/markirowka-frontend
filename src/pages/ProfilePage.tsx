@@ -16,15 +16,15 @@ export const ProfilePage = () => {
 
   return (
     <>
-      <div className="flex flex-row max-w-full w-full justify-between gap-8">
-        <div className="w-full max-w-[75%]">
+      <div className="flex flex-row max-w-full w-full justify-between gap-8 max-[1200px]:flex-col">
+        <div className="w-full max-w-[75%] max-[1200px]:max-w-full">
           <div className="">
             <TypographyH2>Список активных заказов</TypographyH2>
           </div>
           <ProfileOrders />
         </div>
 
-        <div className="w-full max-w-[25%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg profile-info">
+        <div className="w-full max-w-[25%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg profile-info max-[1200px]:max-w-full">
           <Link to={"/profile"} className="flex flex-row gap-2 items-center">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />

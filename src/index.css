@@ -72,7 +72,7 @@ body,
   justify-content: space-between;
 }
 
-.editBtnBlock  {
+.editBtnBlock {
   display: flex;
 }
 
@@ -88,8 +88,8 @@ body,
   z-index: 150;
   top: 0;
   right: -300px;
-  transition: all .3s ease-in-out;
-  background: #FFF;
+  transition: all 0.3s ease-in-out;
+  background: #fff;
   color: #000;
   width: 200px;
 }
@@ -120,7 +120,7 @@ body,
 }
 
 @media (max-width: 1024px) {
-  .profile-info {
+  /* .profile-info {
     position: absolute;
     right: 20px;
     width: 254px;
@@ -129,7 +129,7 @@ body,
 
   .profile-edit-button {
     padding: 0.9rem;
-  }
+  } */
 }
 
 @media (max-width: 490px) {
@@ -138,3 +138,11 @@ body,
   }
 }
 
+@media (max-width: 400px) {
+  .button {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+}
