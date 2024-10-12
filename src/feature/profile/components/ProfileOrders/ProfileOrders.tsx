@@ -14,7 +14,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -49,7 +48,11 @@ export const columns: ColumnDef<OrderData>[] = [
   {
     accessorKey: "orderId",
     header: "Номер заказа",
-    cell: ({ row }) => <div className="capitalize">{row.original.document_ids[0] || "Неизв."}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {row.original.document_ids[0] || "Неизв."}
+      </div>
+    ),
   },
   {
     accessorKey: "date",
@@ -101,33 +104,35 @@ export const columns: ColumnDef<OrderData>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() =>
-                { 
-                  downloadFileById(
+              onClick={() => {
+                downloadFileById(
                   row.original.document_ids[0],
                   row.original.user_id
-                )}
-              }
+                );
+              }}
             >
               Скачать документы
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
-
                 if (!user) return;
                 const file = row.original.document_ids[0];
                 if (file) {
-                  const deletion = await backendInstance.deleteFile({ fileId: file });
+                  const deletion = await backendInstance.deleteFile({
+                    fileId: file,
+                  });
                   const orders =
                     user.user_role === "ADMIN"
                       ? await backendInstance.getOrders(ordersPage)
                       : await backendInstance.getUserOrders(ordersPage);
-                      toast(
-                        deletion.message? 'Ошибка удаления' : 'Файлы успешно удалены',
-                        {
-                          action: { label: 'Скрыть', onClick: () => { } }
-                        }
-                      );
+                  toast(
+                    deletion.message
+                      ? "Ошибка удаления"
+                      : "Файлы успешно удалены",
+                    {
+                      action: { label: "Скрыть", onClick: () => {} },
+                    }
+                  );
                   setDisplayOrders(orders);
                 }
               }}
@@ -199,7 +204,7 @@ export function ProfileOrders() {
     ordersPage * ordersPerPage >= orderCount || orderCount <= ordersPerPage;
 
   return (
-    <div className="w-full m-auto my-4 p-12 bg-white rounded-xl shadow-lg">
+    <div className="w-full m-auto my-4 p-12 bg-white rounded-xl shadow-lg max-[1200px]: p-6">
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -250,14 +255,15 @@ export function ProfileOrders() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2 py-4 max-[1200px]:flex-col max-[1200px]:gap-2">
         <div className="flex-1 text-sm text-muted-foreground">
           {`Всего ${orderCount} строк.`}
         </div>
-        <div className="space-x-2">
+        <div className="space-x-2 max-[400px]:space-x-0">
           <Button
             variant="outline"
             size="sm"
+            className={"button"}
             onClick={UpdatePage(false)}
             disabled={ordersPage === 1}
           >
@@ -266,6 +272,7 @@ export function ProfileOrders() {
           <Button
             variant="outline"
             size="sm"
+            className={"button"}
             onClick={UpdatePage(true)}
             disabled={isLastPage}
           >
