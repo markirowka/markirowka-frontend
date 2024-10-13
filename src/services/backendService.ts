@@ -154,11 +154,12 @@ class BackendService {
 	// Статистика прочтений
 
 	async getReadArticles(): Promise<{url: string; is_read: boolean}[]> {
-        return await this.get("/api/stats/getreadstats");
+        return (await this.get("/api/stats/getreadstats"))?.stats || [];
 	}
 
 	async markPageRead(url: string) {
-		return await this.post(`/api/stats/markread/${url}`, {});
+		console.log("posting", `/api/stats/markread/${url}`)
+		return await this.get(`/api/stats/markread/${url}`);
 	}
 
 	// Общие методы

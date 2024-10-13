@@ -16,3 +16,7 @@ export const functional_urls = [
   "/profile",
   "/edit-profile",
 ];
+
+export const watching_urls = [
+    "news",
+  ];

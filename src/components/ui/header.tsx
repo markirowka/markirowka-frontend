@@ -8,7 +8,7 @@ import { statsAtom, userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { topMenu } from "@/feature/common/content";
 import { sortMenuByIndex } from "@/utils";
-import { functional_urls } from "@/config/env";
+import { watching_urls } from "@/config/env";
 
 export const Header = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -48,16 +48,21 @@ export const Header = () => {
         saveStatsRequest(true);
       })
     }
-  }, [])
+  }, [isStatsRequested, readStats])
 
   const isNeedMarked = (url: string) => {
-       if (!isStatsRequested || functional_urls.indexOf(url) > -1) {
+       if (!isStatsRequested || watching_urls.indexOf(url) === -1) {
          return false;
        }
-       const itemInStatsList = readStats.find((item) => {
+       try {
+        const itemInStatsList = readStats.find((item) => {
           return item.url === url;
-       })
-       return itemInStatsList ? !itemInStatsList.is_read : true;
+        })
+        return itemInStatsList ? !itemInStatsList.is_read : true;
+       } catch (e) {
+        console.log(e)
+        return false;
+       }
   }
 
   return (

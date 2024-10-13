@@ -61,13 +61,19 @@ export const ContentPage = () => {
   const [editState, SwitchEditState] = useState(false);
 
   useEffect(() => {
+     console.log("Mark now:", urlNamingFilter(path.pathname))
      backendInstance.markPageRead(urlNamingFilter(path.pathname)).then(() => {
       readStats;
+      console.log("Saved:", readStats)
       backendInstance.getReadArticles().then((stats) => {
         setReadStats(stats)
+      }).catch((e) => {
+        console.log("Stats load error:", e)        
       })
+     }).catch((e) => {
+        console.log("Stats save error:", e)
      })
-  }, [])
+  }, [path.pathname])
 
   useEffect(() => {
     const quill = quillRef.current?.getEditor();

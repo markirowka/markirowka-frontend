@@ -928,6 +928,20 @@ h4 {
   margin: 120px 0px;
 }
 
+.menuNav {
+  position: relative;
+}
+
+.unreadMark {
+  background: #F00;
+  width: 10px;
+  height: 10px;
+  border-radius: 12px;
+  position: absolute;
+  top: 0px;
+  right: -10px;
+}
+
 @media (max-width: 1200px) {
   body.lock {
     overflow: hidden;
@@ -1012,20 +1026,6 @@ h4 {
   }
   .nav__link {
     display: none;
-  }
-
-  .menuNav {
-    position: relative;
-  }
-
-  .unreadMark {
-    background: #F00;
-    width: 10px;
-    height: 10px;
-    border-radius: 12px;
-    position: absolute;
-    top: 0px;
-    right: -10px;
   }
 
   .header__menu.active .nav__link {
