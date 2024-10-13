@@ -18,14 +18,14 @@ import { z } from "zod";
 
 export const ClothesFormSchema = z.object({
 	tnved: z.string(),
-	fullName: z.string(),
-	tradeMark: z.string(),
-	articleType: z.string(),
-	articleName: z.string(),
-	clothesType: z.string(),
-	color: z.string(),
-	size: z.string(),
-	composition: z.string()
+	fullName: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	tradeMark: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	articleType: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	articleName: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	clothesType: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	color: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	size: z.string().min(1, {message: 'Поле обязательно для заполнения'}),
+	composition: z.string().min(1, {message: 'Поле обязательно для заполнения'})
 })
 
 export type ClothesFormSchemaType = z.infer<typeof ClothesFormSchema>

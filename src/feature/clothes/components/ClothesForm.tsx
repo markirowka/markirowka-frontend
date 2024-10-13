@@ -139,7 +139,7 @@ export const ClothesForm = () => {
             <FormSelect
               className="flex-1"
               form={form}
-              name="shoesType"
+              name="clothesType"
               label="Вид одежды"
               placeholder="Выберите вид одежды"
               options={CLOTHES_TYPES}

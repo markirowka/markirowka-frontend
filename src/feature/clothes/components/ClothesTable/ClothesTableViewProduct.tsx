@@ -42,7 +42,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({ id,
 					</div>
 
 					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-						<span className="font-semibold text-base">Вид обуви</span>
+						<span className="font-semibold text-base">Вид одежды</span>
 						<span className="text-base">{product.clothesType}</span>
 					</div>
 

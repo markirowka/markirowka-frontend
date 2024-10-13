@@ -58,7 +58,14 @@ class BackendService {
 	}
 
 	async getAllUsers() : Promise<UserDisplayData[]> {
-		return (await this.get(`/api/admin/allusers`))?.users || []
+		return (await this.get(`/api/admin/allusers`))?.users.sort(
+			(a: UserDisplayData, b: UserDisplayData) => {
+			const p1 = a.id;
+			const p2 = b.id;
+			if (p1 < p2) return 1;
+			if (p1 === p2) return 0;
+			if (p1 > p2) return -1
+		}) || []
 	}
 
 	async getUserOrderCount() : Promise<number> {

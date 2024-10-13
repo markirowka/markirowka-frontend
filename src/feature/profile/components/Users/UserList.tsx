@@ -152,13 +152,18 @@ export function UserList() {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 49,
+      }
     },
   });
 
-  React.useMemo(async () => {
+  React.useEffect(() => {
     if (user && user?.user_role === "ADMIN") {
-      const users = await backendInstance.getAllUsers();
-      setDisplayUsers(users);
+      backendInstance.getAllUsers().then((users) => {
+        setDisplayUsers(users);
+      });
     }
   }, []);
 

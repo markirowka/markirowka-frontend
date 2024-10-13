@@ -60,6 +60,10 @@ export function ClothesTable() {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 99,
+      }
     },
   });
 
