@@ -1,17 +1,20 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LogIn } from "lucide-react";
 import { useAtom } from "jotai";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./button";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
-import { userAtom } from "@/feature/common";
+import { statsAtom, userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { topMenu } from "@/feature/common/content";
 import { sortMenuByIndex } from "@/utils";
+import { functional_urls } from "@/config/env";
 
 export const Header = () => {
   const [user, setUser] = useAtom(userAtom);
   const [menu, setMenu] = useAtom(topMenu);
+  const [readStats, setReadStats] = useAtom(statsAtom);
+  const [isStatsRequested, saveStatsRequest] = useState(false);
   const [expanded, Expand] = useState(false);
   const navigate = useNavigate();
 
@@ -38,6 +41,25 @@ export const Header = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (!isStatsRequested) {
+      backendInstance.getReadArticles().then((stats) => {
+        setReadStats(stats);
+        saveStatsRequest(true);
+      })
+    }
+  }, [])
+
+  const isNeedMarked = (url: string) => {
+       if (!isStatsRequested || functional_urls.indexOf(url) > -1) {
+         return false;
+       }
+       const itemInStatsList = readStats.find((item) => {
+          return item.url === url;
+       })
+       return itemInStatsList ? !itemInStatsList.is_read : true;
+  }
+
   return (
     <header className="header">
       <div className="container">
@@ -54,7 +76,8 @@ export const Header = () => {
             <ul className="flex gap-4">
               {menu.sort(sortMenuByIndex).map((item, index) => {
                 return (
-                  <li key={`mi${index * 9.012}`}>
+                  <li key={`mi${index * 9.012}`} className="menuNav">
+                    {isNeedMarked(item.url) ? <div className="unreadMark" /> : null}
                     <a className="nav__link" href={`/${item.url}`}>
                       {item.name}
                     </a>

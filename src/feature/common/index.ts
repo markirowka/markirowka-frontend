@@ -3,6 +3,7 @@ import { UserData } from '../auth';
 import { OrderData } from '../types';
 
 export const userAtom = atom<UserData | false | null>(null);
+export const statsAtom = atom<{url: string; is_read: boolean}[]>([]);
 export const loadingAtom = atom(false);
 export const orderHistoryAtom = atom<OrderData[]>([]);
 export const orderTotalCountAtom = atom<number>(0);

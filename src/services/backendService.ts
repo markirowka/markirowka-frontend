@@ -151,6 +151,16 @@ class BackendService {
 		return await this.post('/api/createpayments', {items, date}, 'POST')
 	}
 
+	// Статистика прочтений
+
+	async getReadArticles(): Promise<{url: string; is_read: boolean}[]> {
+        return await this.get("/api/stats/getreadstats");
+	}
+
+	async markPageRead(url: string) {
+		return await this.post(`/api/stats/markread/${url}`, {});
+	}
+
 	// Общие методы
 
 	static getInstance(): BackendService {

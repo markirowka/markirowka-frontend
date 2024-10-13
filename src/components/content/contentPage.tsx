@@ -2,7 +2,7 @@ import ReactQuill, { Quill } from "react-quill";
 import parse from 'html-react-parser';
 import "react-quill/dist/quill.snow.css";
 import { ADMIN_ROLE } from "@/config/env";
-import { userAtom } from "@/feature/common";
+import { statsAtom, userAtom } from "@/feature/common";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { backendInstance } from "@/services/backendService";
@@ -55,9 +55,19 @@ export const ContentPage = () => {
   const quillRef = useRef<any>(null);
   const path = useLocation()
   const [pending, Pending] = useState(true);
+  const [readStats, setReadStats] = useAtom(statsAtom);
   const [heading, setHeading] = useState(defaultContent.heading);
   const [content, setContent] = useState(defaultContent.content);
   const [editState, SwitchEditState] = useState(false);
+
+  useEffect(() => {
+     backendInstance.markPageRead(urlNamingFilter(path.pathname)).then(() => {
+      readStats;
+      backendInstance.getReadArticles().then((stats) => {
+        setReadStats(stats)
+      })
+     })
+  }, [])
 
   useEffect(() => {
     const quill = quillRef.current?.getEditor();

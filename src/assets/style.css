@@ -1014,6 +1014,20 @@ h4 {
     display: none;
   }
 
+  .menuNav {
+    position: relative;
+  }
+
+  .unreadMark {
+    background: #F00;
+    width: 10px;
+    height: 10px;
+    border-radius: 12px;
+    position: absolute;
+    top: 0px;
+    right: -10px;
+  }
+
   .header__menu.active .nav__link {
     display: flex;
     font-size: 30px;
