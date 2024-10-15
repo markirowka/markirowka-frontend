@@ -32,6 +32,12 @@ import { userAtom } from "@/feature/common";
 // import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
+import { ClothesPage, ShoesPage } from "@/pages";
+
+const watchingCategories = [
+  "Одежда",
+  "Обувь"
+]
 
 export function OrderTable() {
   const [user] = useAtom(userAtom);
@@ -42,6 +48,17 @@ export function OrderTable() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [markFormEnabled, setMarkFormEnabled] = useState(false)
+
+  const showMarkClothes = !!orderProducts.find((p) => {
+    return p.category === watchingCategories[0]
+  })
+
+  const showMarkShoes = !!orderProducts.find((p) => {
+    return p.category === watchingCategories[1]
+  })
+    
+  const isMarkCheckboxAvailable = showMarkClothes || showMarkShoes;
 
   const table = useReactTable({
     data: orderProducts,
@@ -85,8 +102,13 @@ export function OrderTable() {
     Pending(false);
   };
 
+  const updateMarkFormEnabled = (event: any) => {
+    setMarkFormEnabled(!!event.target?.checked)
+  }
+
   return (
-    <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
+    <>
+         <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
       <div className="flex gap-2 items-center">
         <PackageSearch />
         <TypographyH3>Список товаров для поставки</TypographyH3>
@@ -152,11 +174,19 @@ export function OrderTable() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        {/* <div className="flex-1 text-sm text-muted-foreground">
-					{table.getFilteredSelectedRowModel().rows.length} из{" "}
-					{table.getFilteredRowModel().rows.length} строк выделено.
-				</div> */}
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className={`flex-1 text-sm form-approve-checkbox${!isMarkCheckboxAvailable? " disabled": ""}`}>
+					<label htmlFor="make">
+              <input 
+              className={`order-additional-checkbox${!isMarkCheckboxAvailable? " disabled": ""}`} 
+              type="checkbox" 
+              checked={markFormEnabled}
+              onChange={updateMarkFormEnabled}
+              disabled={!isMarkCheckboxAvailable}
+              name="make" />
+              <p>Заполнить накладную для создания маркировки</p>
+          </label>
+				</div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -169,5 +199,12 @@ export function OrderTable() {
         </div>
       </div>
     </div>
+    {markFormEnabled && showMarkClothes ? 
+        <ClothesPage />
+    : null}
+    {markFormEnabled && showMarkShoes ? 
+        <ShoesPage />
+    : null}
+    </>
   );
 }
