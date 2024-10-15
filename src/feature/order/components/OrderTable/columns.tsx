@@ -1,9 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { OrderFormSchemaType } from "../../config"
 import { Button } from "@/components/ui/button"
-import { Copy, Pencil } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { OrderTableViewProduct } from "./OrderTableViewProduct";
 import { OrderTableDeleteProduct } from "./OrderTableRemoveProduct";
+import { OrderTableDuplicateProduct } from "./OrderTableDuplicateProduct";
 
 export const columns: ColumnDef<OrderFormSchemaType>[] = [
 	{
@@ -61,7 +62,7 @@ export const columns: ColumnDef<OrderFormSchemaType>[] = [
 					<OrderTableViewProduct product={row.original} id={row.index} />
 					<Button variant={"outline"} size={'icon'}><Pencil className="w-4" /></Button>
 					<OrderTableDeleteProduct id={row.index} />
-					<Button variant={"outline"} size={'icon'}><Copy className="w-4" /></Button>
+					<OrderTableDuplicateProduct id={row.index} />
 				</div>
 			)
 		}

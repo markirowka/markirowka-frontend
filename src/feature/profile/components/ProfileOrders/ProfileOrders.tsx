@@ -43,6 +43,7 @@ import { ordersPerPage } from "@/config/env";
 import { OrderData } from "@/feature/types";
 import { downloadFileById, formatTimestamp } from "@/utils";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export const columns: ColumnDef<OrderData>[] = [
   {
@@ -159,6 +160,8 @@ export function ProfileOrders() {
   const [displayOrders, setDisplayOrders] =
     useAtom<OrderData[]>(orderHistoryAtom);
   const [ordersPage, setOrdersPage] = useAtom(ordersPageAtom);
+  const [displayPaginator, setDisplayPaginator] = useState(true);
+  const [defaultPageSize, setDefaultPageSize] = useState(5);
 
   const table = useReactTable({
     data: displayOrders,
@@ -176,6 +179,10 @@ export function ProfileOrders() {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageIndex: 0,
+        pageSize: defaultPageSize,
+      },
     },
   });
 
@@ -189,7 +196,13 @@ export function ProfileOrders() {
       user.user_role === "ADMIN"
         ? await backendInstance.getOrders(ordersPage)
         : await backendInstance.getUserOrders(ordersPage);
-    setDisplayOrders(orders);
+    setDisplayOrders((nowOrders) => {
+      if (displayPaginator) return orders;
+      const newOrders = [...nowOrders];
+      newOrders.push(...orders);
+      console.log("Upd orders:", newOrders);
+      return newOrders;
+    });
     setOrderCount(count);
   }, [ordersPage]);
 
@@ -198,6 +211,13 @@ export function ProfileOrders() {
       const newPage = forward ? ordersPage + 1 : ordersPage - 1;
       setOrdersPage(newPage);
     };
+  };
+
+  const showMore = () => {
+    const newPage = ordersPage + 1;
+    setOrdersPage(newPage);
+    setDefaultPageSize((value) => value + 5);
+    setDisplayPaginator(false);
   };
 
   const isLastPage =
@@ -259,25 +279,39 @@ export function ProfileOrders() {
         <div className="flex-1 text-sm text-muted-foreground">
           {`Всего ${orderCount} строк.`}
         </div>
-        <div className="space-x-2 max-[400px]:space-x-0">
+        {!isLastPage ? (
           <Button
-            variant="outline"
             size="sm"
-            className={"button"}
-            onClick={UpdatePage(false)}
-            disabled={ordersPage === 1}
-          >
-            Прошлая страница
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className={"button"}
-            onClick={UpdatePage(true)}
+            className="flex flex-row items-center gap-2 profile-edit-button"
+            onClick={showMore}
             disabled={isLastPage}
           >
-            Следующая страница
+            Загрузить ещё
           </Button>
+        ) : null}
+        <div className="space-x-2 max-[400px]:space-x-0">
+          {displayPaginator ? (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                className={"button"}
+                onClick={UpdatePage(false)}
+                disabled={ordersPage === 1}
+              >
+                Прошлая страница
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className={"button"}
+                onClick={UpdatePage(true)}
+                disabled={isLastPage}
+              >
+                Следующая страница
+              </Button>
+            </>
+          ) : null}
         </div>
       </div>
     </div>

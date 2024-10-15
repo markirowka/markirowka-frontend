@@ -92,6 +92,10 @@
   transform: rotate(45deg);
 }
 
+.greenBtn {
+
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -155,6 +159,10 @@ body,
     margin: 20px;
     font-size: 20px;
     font-weight: 600;
+  }
+
+  .profile-info {
+    max-height: 580px;
   }
 }
 

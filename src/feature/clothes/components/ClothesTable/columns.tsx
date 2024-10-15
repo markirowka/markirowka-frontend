@@ -1,9 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ClothesFormSchemaType } from "../../config"
 import { Button } from "@/components/ui/button"
-import { Copy, Pencil } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { ClothesTableViewProduct } from "./ClothesTableViewProduct";
 import { ClothesTableRemoveProduct } from "./ClothesTableRemoveProduct";
+import { ClothesTableDuplicateProduct } from "./ClothesTableDuplicateProduct";
 
 export const columns: ColumnDef<ClothesFormSchemaType>[] = [
 	{
@@ -41,7 +42,7 @@ export const columns: ColumnDef<ClothesFormSchemaType>[] = [
 					<ClothesTableViewProduct product={row.original} id={row.index} />
 					<Button variant={"outline"} size={'icon'}><Pencil className="w-4" /></Button>
 					<ClothesTableRemoveProduct id={row.index} />
-					<Button variant={"outline"} size={'icon'}><Copy className="w-4" /></Button>
+					<ClothesTableDuplicateProduct id={row.index} />
 				</div>
 			)
 		}
