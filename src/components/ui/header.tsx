@@ -34,7 +34,12 @@ export const Header = () => {
       .getUser()
       .then((usr) => {
         setUser(usr.error ? false : usr.data);
-        if (!usr.error) fetchMenu();
+        if (!usr.error) {
+          backendInstance.getReadArticles().then((stats) => {
+            setReadStats(stats);
+            fetchMenu();
+          })
+        }
       })
       .catch(() => {
         setUser(false);

@@ -12,11 +12,12 @@ import { backendInstance } from "@/services/backendService"
 import { toast } from "sonner"
 import { useAtom } from "jotai"
 import { authAtom } from "../store"
-import { userAtom } from "@/feature/common"
+import { statsAtom, userAtom } from "@/feature/common"
 import { topMenu } from "@/feature/common/content";
 
 export const AuthForm = () => {
 	const [authStore, setAuthStore] = useAtom(authAtom);
+	const [readStats, setReadStats] = useAtom(statsAtom);
 	const [user, setUser] = useAtom(userAtom);
 	const [menu, setMenu] = useAtom(topMenu);
 	const navigate = useNavigate()
@@ -48,7 +49,11 @@ export const AuthForm = () => {
 			setAuthStore({ ...authStore, id: response.userId, bearerToken: response.token })
 
 			const res: UserData = await (await backendInstance.getUser()).data
-			fetchMenu();
+			readStats;
+			backendInstance.getReadArticles().then((stats) => {
+				setReadStats(stats);
+				fetchMenu();
+			  })
 			toast(
 				'Вы вошли в аккаунт!',
 				{
