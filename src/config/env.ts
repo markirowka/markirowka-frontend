@@ -20,3 +20,5 @@ export const functional_urls = [
 export const watching_urls = [
     "news",
   ];
+
+export const contentSeparator = "<!-- block -->"

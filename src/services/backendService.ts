@@ -8,6 +8,12 @@ import { ShoesFormSchemaType } from "@/feature/shoes/config"
 import { MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
+interface ContentBlock {
+	id: number;
+	article_id?: number;
+	content: string;
+ }
+
 class BackendService {
 	private headers: Record<string, string> = {}
 
@@ -158,8 +164,34 @@ class BackendService {
 	}
 
 	async markPageRead(url: string) {
-		console.log("posting", `/api/stats/markread/${url}`)
 		return await this.get(`/api/stats/markread/${url}`);
+	}
+
+	// Загрузка блоков контента для новостей
+
+	async getPageContentBlocks(url: string): Promise<{blocks: ContentBlock[] }> {
+        const requestUrl = `/api/getcontentblocks/${url}`;
+		return await this.get(requestUrl);
+	}
+
+	async createContentBlock(url: string): Promise<{  success: boolean; id: number  }> {
+        const body = {
+			id: 0,
+			content: "",
+			url
+		}
+		return await this.post("/api/contentblock/create", body);
+	}
+
+	async updateContentBlock(data: ContentBlock): Promise<{ success: boolean }> {
+		return await this.post("/api/contentblock/update", data);
+	}
+	
+	async deleteContentBlock(id: string): Promise<{ success: boolean }> {
+        const body = {
+			id
+		}
+		return await this.post("/api/contentblock/delete", body);
 	}
 
 	// Общие методы
