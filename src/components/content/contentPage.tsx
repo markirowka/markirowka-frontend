@@ -84,9 +84,7 @@ export const ContentPage = () => {
   }, []);
 
   const LoadContent = async () => {
-    const page = await backendInstance.getPageContent(
-      pageUrl
-    );
+    const page = await backendInstance.getPageContent(pageUrl);
     setContent(page.content || "");
     setHeading(page.pageTitle || "");
     Pending(false);
@@ -110,9 +108,7 @@ export const ContentPage = () => {
 
   const refreshContentBlocks = async () => {
     try {
-      const newBlocks = await backendInstance.getPageContentBlocks(
-        pageUrl
-      );
+      const newBlocks = await backendInstance.getPageContentBlocks(pageUrl);
       setContentBlocks(newBlocks.blocks);
     } catch (e) {
       console.log(e);
@@ -168,50 +164,56 @@ export const ContentPage = () => {
   }
 
   return (
-    <div className="contentPage">
-      <div className="contentHeading">
-        {!editState ? (
-          <h2>{heading}</h2>
-        ) : (
-          <div className="editHeading">
-            <input type="text" value={heading} onChange={editHeadingAction} />
-          </div>
-        )}
-        {user && user.user_role === ADMIN_ROLE ? (
-          <div className="editBtnBlock">
+    <>
+      <div className="w-full max-w-[100%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg">
+        <div className="contentPage">
+          <div className="contentHeading">
             {!editState ? (
-              <div className="editBtn">
-                <img
-                  src="/editor/edit.svg"
-                  className="editIcon"
-                  width="20"
-                  height="20"
-                  onClick={editStateHandler}
+              <h2>{heading}</h2>
+            ) : (
+              <div className="editHeading">
+                <input
+                  type="text"
+                  value={heading}
+                  onChange={editHeadingAction}
                 />
               </div>
-            ) : (
-              <>
-                <div className="editBtn goBackBtn">
-                  <img
-                    src="/editor/goback.svg"
-                    className="editIcon"
-                    width="20"
-                    height="20"
-                    onClick={editStateHandler}
-                  />
-                </div>
-                <div className="editBtn saveBtn">
-                  <img
-                    src="/editor/save.svg"
-                    className="editIcon"
-                    width="20"
-                    height="20"
-                    onClick={saveAction}
-                  />
-                </div>
-              </>
             )}
-            {/* <div className="editBtn deleteBtn">
+            {user && user.user_role === ADMIN_ROLE ? (
+              <div className="editBtnBlock">
+                {!editState ? (
+                  <div className="editBtn">
+                    <img
+                      src="/editor/edit.svg"
+                      className="editIcon"
+                      width="20"
+                      height="20"
+                      onClick={editStateHandler}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="editBtn goBackBtn">
+                      <img
+                        src="/editor/goback.svg"
+                        className="editIcon"
+                        width="20"
+                        height="20"
+                        onClick={editStateHandler}
+                      />
+                    </div>
+                    <div className="editBtn saveBtn">
+                      <img
+                        src="/editor/save.svg"
+                        className="editIcon"
+                        width="20"
+                        height="20"
+                        onClick={saveAction}
+                      />
+                    </div>
+                  </>
+                )}
+                {/* <div className="editBtn deleteBtn">
               <img
                 src="/editor/delete.svg"
                 className="editIcon"
@@ -220,28 +222,32 @@ export const ContentPage = () => {
                 onClick={deleteAction}
               />
             </div>*/}
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-      {!editState ? (
-        <div className="contentZone">{parse(content)}</div>
-      ) : (
-        <div className="contentEditor">
-          <ReactQuill
-            ref={quillRef}
-            value={content}
-            onChange={onQuillContentChange}
-            modules={editorOptions.modules}
-          />
+          {!editState ? (
+            <div className="contentZone">{parse(content)}</div>
+          ) : (
+            <div className="contentEditor">
+              <ReactQuill
+                ref={quillRef}
+                value={content}
+                onChange={onQuillContentChange}
+                modules={editorOptions.modules}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
       {additionalContentBlocks.map((block, index) => {
         return !editState ? (
-          <div
-            key={`${path.pathname}k_${index * 1.71}`}
-            className="contentZone additionalContentBlock"
-          >
-            {parse(block.content)}
+          <div className="w-full max-w-[100%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg">
+            <div
+              key={`${path.pathname}k_${index * 1.71}`}
+              className="contentZone additionalContentBlock"
+            >
+              {parse(block.content)}
+            </div>
           </div>
         ) : (
           <ContentBlockEditor
@@ -256,6 +262,6 @@ export const ContentPage = () => {
           <Button onClick={createBlock}>+ Добавить новость</Button>
         </div>
       ) : null}
-    </div>
+    </>
   );
 };
