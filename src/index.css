@@ -170,6 +170,23 @@ body,
   flex-wrap: wrap;
 }
 
+.buttonPageCtnr {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.blockEditorMenu {
+  display: flex;
+  align-items: flex-end;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.additionalContentBlock {
+  margin-top: 24px;
+}
+
 @media (max-width: 1024px) {
   /* .profile-info {
     position: absolute;

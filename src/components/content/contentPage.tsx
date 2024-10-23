@@ -18,7 +18,6 @@ const defaultContent = {
   content: "<p>Текст</p>",
 };
 
-
 class Clipboard extends Quill.import("modules/clipboard") {
   async onPaste(e: any) {
     e.preventDefault();
@@ -52,9 +51,11 @@ export const ContentPage = () => {
   );
   const [editState, SwitchEditState] = useState(false);
 
+  const pageUrl = urlNamingFilter(path.pathname);
+
   useEffect(() => {
     backendInstance
-      .markPageRead(urlNamingFilter(path.pathname))
+      .markPageRead(pageUrl)
       .then(() => {
         readStats;
         backendInstance
@@ -84,7 +85,7 @@ export const ContentPage = () => {
 
   const LoadContent = async () => {
     const page = await backendInstance.getPageContent(
-      urlNamingFilter(path.pathname)
+      pageUrl
     );
     setContent(page.content || "");
     setHeading(page.pageTitle || "");
@@ -110,7 +111,7 @@ export const ContentPage = () => {
   const refreshContentBlocks = async () => {
     try {
       const newBlocks = await backendInstance.getPageContentBlocks(
-        path.pathname
+        pageUrl
       );
       setContentBlocks(newBlocks.blocks);
     } catch (e) {
@@ -120,7 +121,7 @@ export const ContentPage = () => {
 
   const createBlock = async () => {
     backendInstance
-      .createContentBlock(path.pathname)
+      .createContentBlock(pageUrl)
       .then(() => {
         refreshContentBlocks();
       })
@@ -238,7 +239,7 @@ export const ContentPage = () => {
         return !editState ? (
           <div
             key={`${path.pathname}k_${index * 1.71}`}
-            className="contentZone"
+            className="contentZone additionalContentBlock"
           >
             {parse(block.content)}
           </div>
@@ -250,9 +251,11 @@ export const ContentPage = () => {
           />
         );
       })}
-      <div className="buttonPageCtnr">
-        <Button onClick={createBlock}>+ Добавить новость</Button>
-      </div>
+      {editState ? (
+        <div className="buttonPageCtnr">
+          <Button onClick={createBlock}>+ Добавить новость</Button>
+        </div>
+      ) : null}
     </div>
   );
 };

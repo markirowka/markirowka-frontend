@@ -174,18 +174,18 @@ class BackendService {
 			content: "",
 			url
 		}
-		return await this.post("/api/contentblock/create", body);
+		return await this.post("/api/contentblock/create", body, "POST");
 	}
 
 	async updateContentBlock(data: ContentBlock): Promise<{ success: boolean }> {
-		return await this.post("/api/contentblock/update", data);
+		return await this.post("/api/contentblock/update", data, "POST");
 	}
 	
 	async deleteContentBlock(id: number): Promise<{ success: boolean }> {
         const body = {
 			id
 		}
-		return await this.post("/api/contentblock/delete", body);
+		return await this.post("/api/contentblock/delete", body, "POST");
 	}
 
 	// Общие методы

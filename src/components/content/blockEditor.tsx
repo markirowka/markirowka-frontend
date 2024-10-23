@@ -16,7 +16,7 @@ const ContentBlockEditor = (props: {
   };
 
   return (
-    <div className="blockEditContainer">
+    <div className="blockEditContainer additionalContentBlock">
       <div className="blockEditorMenu">
         <div className="editBtn saveBtn">
           <img
