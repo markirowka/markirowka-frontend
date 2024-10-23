@@ -5,14 +5,8 @@ import { ClothesFormSchemaType } from "@/feature/clothes"
 import { PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
-import { MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
+import { ContentBlock, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
-
-interface ContentBlock {
-	id: number;
-	article_id?: number;
-	content: string;
- }
 
 class BackendService {
 	private headers: Record<string, string> = {}
@@ -187,7 +181,7 @@ class BackendService {
 		return await this.post("/api/contentblock/update", data);
 	}
 	
-	async deleteContentBlock(id: string): Promise<{ success: boolean }> {
+	async deleteContentBlock(id: number): Promise<{ success: boolean }> {
         const body = {
 			id
 		}

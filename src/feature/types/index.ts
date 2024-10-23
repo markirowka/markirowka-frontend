@@ -37,3 +37,9 @@ export interface OrderItemData {
   quantity: number;
   price: number;
 }
+
+export interface ContentBlock {
+	id: number;
+	article_id?: number;
+	content: string;
+ }

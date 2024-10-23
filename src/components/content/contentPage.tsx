@@ -1,5 +1,5 @@
 import ReactQuill, { Quill } from "react-quill";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 import "react-quill/dist/quill.snow.css";
 import { ADMIN_ROLE } from "@/config/env";
 import { statsAtom, userAtom } from "@/feature/common";
@@ -8,70 +8,69 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { backendInstance } from "@/services/backendService";
 import { useLocation } from "react-router-dom";
 import { urlNamingFilter } from "@/utils";
+import { ContentBlock } from "@/feature/types";
+import { Button } from "../ui/button";
+import ContentBlockEditor from "./blockEditor";
+import { editorOptions } from "./options";
 
 const defaultContent = {
   heading: "Заголовок",
   content: "<p>Текст</p>",
 };
 
-const editorOptions = {
-  modules: {
-    toolbar: [
-      [{ header: [1, 2, 3, 4, 5, false] }],
-      ['bold', 'italic', 'underline'],
-      ['image', "video"]
-    ],
-    clipboard: {
-      matchVisual: false
-    }
-  },
-  placeholder: '',
-  theme: 'snow',
-}
 
-class Clipboard extends Quill.import('modules/clipboard') {
+class Clipboard extends Quill.import("modules/clipboard") {
   async onPaste(e: any) {
     e.preventDefault();
     const clipboardData = (e.originalEvent || e).clipboardData;
-    const text = clipboardData.getData('text/plain');
-    const html = clipboardData.getData('text/html');
+    const text = clipboardData.getData("text/plain");
+    const html = clipboardData.getData("text/html");
 
-    
     if (html) {
       const delta = this.convert(html);
-      this.quill.updateContents(delta, 'silent');
+      this.quill.updateContents(delta, "silent");
     } else {
       this.quill.insertText(this.quill.getSelection(), text);
     }
 
-    this.quill.setSelection(this.quill.getLength(), 'silent');
+    this.quill.setSelection(this.quill.getLength(), "silent");
     this.quill.scrollIntoView();
   }
 }
-Quill.register('modules/clipboard', Clipboard, true);
+Quill.register("modules/clipboard", Clipboard, true);
 
 export const ContentPage = () => {
   const [user] = useAtom(userAtom);
   const quillRef = useRef<any>(null);
-  const path = useLocation()
+  const path = useLocation();
   const [pending, Pending] = useState(true);
   const [readStats, setReadStats] = useAtom(statsAtom);
   const [heading, setHeading] = useState(defaultContent.heading);
   const [content, setContent] = useState(defaultContent.content);
+  const [additionalContentBlocks, setContentBlocks] = useState<ContentBlock[]>(
+    []
+  );
   const [editState, SwitchEditState] = useState(false);
 
   useEffect(() => {
-     backendInstance.markPageRead(urlNamingFilter(path.pathname)).then(() => {
-      readStats;
-      backendInstance.getReadArticles().then((stats) => {
-        setReadStats(stats)
-      }).catch((e) => {
-        console.log("Stats load error:", e)        
+    backendInstance
+      .markPageRead(urlNamingFilter(path.pathname))
+      .then(() => {
+        readStats;
+        backendInstance
+          .getReadArticles()
+          .then((stats) => {
+            setReadStats(stats);
+          })
+          .catch((e) => {
+            console.log("Stats load error:", e);
+          });
+        refreshContentBlocks();
       })
-     }).catch((e) => {
-        console.log("Stats save error:", e)
-     })
-  }, [path.pathname])
+      .catch((e) => {
+        console.log("Stats save error:", e);
+      });
+  }, [path.pathname]);
 
   useEffect(() => {
     const quill = quillRef.current?.getEditor();
@@ -84,19 +83,21 @@ export const ContentPage = () => {
   }, []);
 
   const LoadContent = async () => {
-    const page = await backendInstance.getPageContent(urlNamingFilter(path.pathname));
+    const page = await backendInstance.getPageContent(
+      urlNamingFilter(path.pathname)
+    );
     setContent(page.content || "");
-    setHeading(page.pageTitle || "")
+    setHeading(page.pageTitle || "");
     Pending(false);
-  }
+  };
 
-  const onQuillContentChange = (content: any)  => {
-    setContent(content)
-  }
+  const onQuillContentChange = (content: any) => {
+    setContent(content);
+  };
 
   useMemo(() => {
-    LoadContent()
-  }, [])
+    LoadContent();
+  }, []);
 
   const editHeadingAction = (event: any) =>
     setHeading(String(event.target.value));
@@ -106,14 +107,49 @@ export const ContentPage = () => {
     SwitchEditState((prevState) => !prevState);
   };
 
-  /* const deleteAction = () => {
-    const userConfirmed = confirm(
-      "Вы уверены, что хотите удалить ВЕСЬ контент?"
-    );
-    if (userConfirmed) {
-      console.log("delete");
+  const refreshContentBlocks = async () => {
+    try {
+      const newBlocks = await backendInstance.getPageContentBlocks(
+        path.pathname
+      );
+      setContentBlocks(newBlocks.blocks);
+    } catch (e) {
+      console.log(e);
     }
-  }; */
+  };
+
+  const createBlock = async () => {
+    backendInstance
+      .createContentBlock(path.pathname)
+      .then(() => {
+        refreshContentBlocks();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const updateBlock = async (block: ContentBlock) => {
+    backendInstance
+      .updateContentBlock(block)
+      .then(() => {
+        refreshContentBlocks();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const deleteBlock = async (id: number) => {
+    backendInstance
+      .deleteContentBlock(id)
+      .then(() => {
+        refreshContentBlocks();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const saveAction = async () => {
     console.log("Save");
@@ -121,13 +157,13 @@ export const ContentPage = () => {
     await backendInstance.savePageContent({
       pageUrl: urlNamingFilter(path.pathname),
       pageTitle: heading,
-      content
-    })
+      content,
+    });
     LoadContent();
   };
 
   if (pending) {
-    return(<div className="contentPage">Loading...</div>)
+    return <div className="contentPage">Loading...</div>;
   }
 
   return (
@@ -187,14 +223,36 @@ export const ContentPage = () => {
         ) : null}
       </div>
       {!editState ? (
-        <div
-          className="contentZone">{parse(content)}</div>
+        <div className="contentZone">{parse(content)}</div>
       ) : (
         <div className="contentEditor">
-          <ReactQuill ref={quillRef} value={content} onChange={onQuillContentChange} 
-          modules={editorOptions.modules} />
+          <ReactQuill
+            ref={quillRef}
+            value={content}
+            onChange={onQuillContentChange}
+            modules={editorOptions.modules}
+          />
         </div>
       )}
+      {additionalContentBlocks.map((block, index) => {
+        return !editState ? (
+          <div
+            key={`${path.pathname}k_${index * 1.71}`}
+            className="contentZone"
+          >
+            {parse(block.content)}
+          </div>
+        ) : (
+          <ContentBlockEditor
+            block={block}
+            onUpdate={updateBlock}
+            onDelete={deleteBlock}
+          />
+        );
+      })}
+      <div className="buttonPageCtnr">
+        <Button onClick={createBlock}>+ Добавить новость</Button>
+      </div>
     </div>
   );
 };
