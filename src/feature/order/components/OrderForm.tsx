@@ -21,6 +21,7 @@ import {
 import { useAtom } from "jotai";
 import { orderProductsStoreAtom } from "../store";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
@@ -33,6 +34,16 @@ export const OrderForm = () => {
   });
 
   const onSubmit: SubmitHandler<OrderFormSchemaType> = (product) => {
+    if (orderProducts.length >= 100) {
+      toast("Разрешено до 100 позиций", {
+        description: "Для большего числа создайте новый документ",
+        action: {
+          label: "Скрыть",
+          onClick: () => console.log("Прочитано"),
+        },
+      }); 
+      return;
+    }
     setOrderProducts([...orderProducts, product]);
   };
 
@@ -125,7 +136,7 @@ export const OrderForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Добавить товар</Button>
+            <Button type="submit" disabled={orderProducts.length >= 100}>Добавить товар</Button>
           </div>
         </form>
       </Form>

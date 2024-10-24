@@ -19,6 +19,7 @@ import { shoesAtom } from "../store/shoesStore";
 import { Separator } from "@/components/ui/separator";
 import { PackageSearch } from "lucide-react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export const ShoesForm = () => {
   const [shoes, setShoes] = useAtom(shoesAtom);
@@ -41,6 +42,16 @@ export const ShoesForm = () => {
   });
 
   const onSubmit: SubmitHandler<ShoesFormSchemaType> = (data) => {
+    if (shoes.length >= 100) {
+      toast("Разрешено до 100 позиций", {
+        description: "Для большего числа создайте новый документ",
+        action: {
+          label: "Скрыть",
+          onClick: () => console.log("Прочитано"),
+        },
+      }); 
+      return;
+    }
     setShoes([...shoes, data]);
   };
 
@@ -223,7 +234,7 @@ export const ShoesForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Добавить товар</Button>
+            <Button type="submit" disabled={shoes.length >= 100}>Добавить товар</Button>
           </div>
         </form>
       </Form>
