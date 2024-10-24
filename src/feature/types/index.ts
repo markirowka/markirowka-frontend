@@ -7,16 +7,16 @@ export interface OrderData {
 }
 
 export interface UserDisplayData {
-  id: number; 
-  email: string; 
-  full_name: string; 
-  inn: number; 
+  id: number;
+  email: string;
+  full_name: string;
+  inn: number;
   user_role: string;
 }
 
 export interface MenuItem {
-  id: number; 
-  name: string; 
+  id: number;
+  name: string;
   url: string;
   isNew?: boolean;
   toDelete?: boolean;
@@ -39,7 +39,33 @@ export interface OrderItemData {
 }
 
 export interface ContentBlock {
-	id: number;
-	article_id?: number;
-	content: string;
- }
+  id: number;
+  article_id?: number;
+  content: string;
+}
+
+export interface ItemDataShoes {
+  fullName?: string;
+  tradeMark?: string;
+  articleType?: string;
+  articleName?: string;
+  shoesType?: string;
+  color?: string;
+  size?: string;
+  upperMaterial?: string;
+  liningMaterial?: string;
+  bottomMaterial?: string;
+  tnved?: string;
+}
+
+export interface ItemDataClothes {
+  fullName?: string;
+  tradeMark?: string;
+  articleType?: string;
+  articleName?: string;
+  clothesType?: string;
+  color?: string;
+  size?: string;
+  composition?: string;
+  tnved?: string;
+}

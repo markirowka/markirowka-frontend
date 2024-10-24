@@ -25,8 +25,8 @@ function App() {
 			<Route path="/auth" element={<Layout><AuthPage /></Layout>} />
 			<Route path="/registration" element={<Layout > <RegistrationPage /></ Layout>} />
 
-			<Route path="/category/shoes" element={<Layout><ShoesPage /></Layout>} />
-			<Route path="/category/clothes" element={<Layout><ClothesPage /></Layout>} />
+			<Route path="/category/shoes" element={<Layout><ShoesPage withBtn={true} /></Layout>} />
+			<Route path="/category/clothes" element={<Layout><ClothesPage withBtn={true} /></Layout>} />
 			<Route path="/signupconfirm" element={<Layout><SignUpConfirmPage /></Layout>} />
 
 			<Route path="/password-recovery" element={<Layout><SendRecoveryMailPage /></Layout>} />

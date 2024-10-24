@@ -5,7 +5,7 @@ import { ClothesFormSchemaType } from "@/feature/clothes"
 import { PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
-import { ContentBlock, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
+import { ContentBlock, ItemDataClothes, ItemDataShoes, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -147,8 +147,8 @@ class BackendService {
 		return await this.post('/api/createSpecify/clothes', {items}, 'POST')
 	}
 
-	async createOrder( items: OrderItemData[], date?: string) {
-		return await this.post('/api/createpayments', {items, date}, 'POST')
+	async createOrder( items: OrderItemData[], shoes?: ItemDataShoes[], clothes?: ItemDataClothes[]) {
+		return await this.post('/api/createpayments', {items, shoes, clothes}, 'POST')
 	}
 
 	// Статистика прочтений

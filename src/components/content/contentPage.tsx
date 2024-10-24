@@ -12,6 +12,7 @@ import { ContentBlock } from "@/feature/types";
 import { Button } from "../ui/button";
 import ContentBlockEditor from "./blockEditor";
 import { editorOptions } from "./options";
+import { toast } from "sonner";
 
 const defaultContent = {
   heading: "Заголовок",
@@ -130,6 +131,13 @@ export const ContentPage = () => {
     backendInstance
       .updateContentBlock(block)
       .then(() => {
+        toast("Новость сохранена", {
+          description: "Для просмотра изменений выйдите из редактора",
+          action: {
+            label: "Скрыть",
+            onClick: () => console.log("Прочитано"),
+          },
+        }); 
         refreshContentBlocks();
       })
       .catch((e) => {

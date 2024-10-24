@@ -33,31 +33,32 @@ import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
 import { ClothesPage, ShoesPage } from "@/pages";
+import { clothesAtom } from "@/feature/clothes";
+import { shoesAtom } from "@/feature/shoes";
 
-const watchingCategories = [
-  "Одежда",
-  "Обувь"
-]
+const watchingCategories = ["Одежда", "Обувь"];
 
 export function OrderTable() {
   const [user] = useAtom(userAtom);
   // const navigate = useNavigate();
   const [orderProducts] = useAtom(orderProductsStoreAtom);
+  const [clothes] = useAtom(clothesAtom);
+  const [shoes] = useAtom(shoesAtom);
   const [pending, Pending] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [markFormEnabled, setMarkFormEnabled] = useState(false)
+  const [markFormEnabled, setMarkFormEnabled] = useState(false);
 
   const showMarkClothes = !!orderProducts.find((p) => {
-    return p.category === watchingCategories[0]
-  })
+    return p.category === watchingCategories[0];
+  });
 
   const showMarkShoes = !!orderProducts.find((p) => {
-    return p.category === watchingCategories[1]
-  })
-    
+    return p.category === watchingCategories[1];
+  });
+
   const isMarkCheckboxAvailable = showMarkClothes || showMarkShoes;
 
   const table = useReactTable({
@@ -95,7 +96,18 @@ export function OrderTable() {
       return;
     }
     Pending(true);
-    const { files } = await backendInstance.createOrder(orderProducts);
+    toast("Создание документа началось", {
+      description: "Накладные создаются...",
+      action: {
+        label: "Скрыть",
+        onClick: () => console.log("Прочитано"),
+      },
+    }); 
+    const { files } = await backendInstance.createOrder(
+      orderProducts,
+      shoes.length > 0 ? shoes : undefined,
+      clothes.length > 0 ? clothes : undefined
+    );
     files.forEach((file: any) => {
       if (user && user.id) backendInstance.downloadFile(file.name, user.id);
     });
@@ -103,90 +115,104 @@ export function OrderTable() {
   };
 
   const updateMarkFormEnabled = (event: any) => {
-    setMarkFormEnabled(!!event.target?.checked)
-  }
+    setMarkFormEnabled(!!event.target?.checked);
+  };
 
   return (
     <>
-         <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
-      <div className="flex gap-2 items-center">
-        <PackageSearch />
-        <TypographyH3>Список товаров для поставки</TypographyH3>
-      </div>
-      <div className="flex items-center py-4 justify-between max-[1024px]:flex-col max-[1024px]:items-start max-[1024px]:gap-2">
-        <Input
-          placeholder="Поиск по названию"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <div>Добавлено {orderProducts.length} шт</div>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+      <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
+        <div className="flex gap-2 items-center">
+          <PackageSearch />
+          <TypographyH3>Список товаров для поставки</TypographyH3>
+        </div>
+        <div className="flex items-center py-4 justify-between max-[1024px]:flex-col max-[1024px]:items-start max-[1024px]:gap-2">
+          <Input
+            placeholder="Поиск по названию"
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <div>Добавлено {orderProducts.length} шт</div>
+        </div>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Товаров не найдено.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className={`flex-1 text-sm form-approve-checkbox${!isMarkCheckboxAvailable? " disabled": ""}`}>
-					<label htmlFor="make">
-              <input 
-              className={`order-additional-checkbox${!isMarkCheckboxAvailable? " disabled": ""}`} 
-              type="checkbox" 
-              checked={markFormEnabled}
-              onChange={updateMarkFormEnabled}
-              disabled={!isMarkCheckboxAvailable}
-              name="make" />
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    Товаров не найдено.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-between space-x-2 py-4">
+          <div
+            className={`flex-1 text-sm form-approve-checkbox${
+              !isMarkCheckboxAvailable ? " disabled" : ""
+            }`}
+          >
+            <label htmlFor="make">
+              <input
+                className={`order-additional-checkbox${
+                  !isMarkCheckboxAvailable ? " disabled" : ""
+                }`}
+                type="checkbox"
+                checked={markFormEnabled}
+                onChange={updateMarkFormEnabled}
+                disabled={!isMarkCheckboxAvailable}
+                name="make"
+              />
               <p>Заполнить накладную для создания маркировки</p>
-          </label>
-				</div>
+            </label>
+          </div>
+        </div>
+      </div>
+      {markFormEnabled && showMarkClothes ? (
+        <ClothesPage withBtn={false} />
+      ) : null}
+      {markFormEnabled && showMarkShoes ? <ShoesPage withBtn={false} /> : null}
+      <div className="buttonPageCtnr">
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -198,13 +224,6 @@ export function OrderTable() {
           </Button>
         </div>
       </div>
-    </div>
-    {markFormEnabled && showMarkClothes ? 
-        <ClothesPage />
-    : null}
-    {markFormEnabled && showMarkShoes ? 
-        <ShoesPage />
-    : null}
     </>
   );
 }

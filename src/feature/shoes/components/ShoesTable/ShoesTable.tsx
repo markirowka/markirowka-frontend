@@ -34,7 +34,7 @@ import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
 // import { useNavigate } from "react-router-dom"
 
-export function ShoesTable() {
+export function ShoesTable(props: {withBtn: boolean}) {
   // const [user] = useAtom(userAtom)
   const [shoes] = useAtom(shoesAtom);
   // const navigate = useNavigate();
@@ -150,7 +150,7 @@ export function ShoesTable() {
         <div className="flex-1 text-sm text-muted-foreground">
           Всего {table.getFilteredRowModel().rows.length} строк.
         </div>
-        <div className="space-x-2">
+        {props.withBtn  ? <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
@@ -159,7 +159,7 @@ export function ShoesTable() {
           >
             Сформировать заказ
           </Button>
-        </div>
+        </div> : null}
       </div>
     </div>
   );

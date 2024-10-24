@@ -34,7 +34,7 @@ import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
 
-export function ClothesTable() {
+export function ClothesTable(props: {withBtn: boolean}) {
   const [user] = useAtom(userAtom);
   const [clothes] = useAtom(clothesAtom);
   const [pending, Pending] = useState(false);
@@ -158,7 +158,7 @@ export function ClothesTable() {
           {table.getFilteredSelectedRowModel().rows.length} из{" "}
           {table.getFilteredRowModel().rows.length} строк выделено.
         </div>
-        <div className="space-x-2">
+        {props.withBtn ? <div className="space-x-2">
           <Button
             variant="outline"
             size="sm"
@@ -167,7 +167,7 @@ export function ClothesTable() {
           >
             Сформировать список
           </Button>
-        </div>
+        </div> : null}
       </div>
     </div>
   );
