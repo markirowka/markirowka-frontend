@@ -27,7 +27,7 @@ export const ShoesTableViewProduct: FC<IShoesTableViewProductProps> = ({ id, pro
 				<AlertDialogTitle className="p-1">Продукт №{id + 1}</AlertDialogTitle>
 				<AlertDialogDescription>
 					<div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-						<span className="font-semibold text-base">Товарный знак</span>
+						<span className="font-semibold text-base">Товарный Бренд</span>
 						<span className="text-base">{product.tradeMark}</span>
 					</div>
 

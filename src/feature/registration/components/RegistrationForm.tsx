@@ -26,6 +26,7 @@ export const RegistrationForm = () => {
 			law_address: "",
 			cargo_recevier: "",
 			cargo_city: "",
+			gln: ""
 		},
 	})
 
@@ -206,7 +207,22 @@ export const RegistrationForm = () => {
 							</FormItem>
 						)}
 					/>
-
+<FormField
+            control={form.control}
+            name="gln"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Номер GLN</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Введите номер GLN" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Эти данные будут использоваться для заполнения документов
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 					<FormField
 						control={form.control}
 						name="cargo_recevier"

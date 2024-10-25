@@ -22,3 +22,5 @@ export const watching_urls = [
   ];
 
 export const contentSeparator = "<!-- block -->"
+export const orderRowLimit = 100;
+export const markRowLimit = 700;

@@ -24,6 +24,7 @@ export interface UserData {
   full_name?: string;
   id?: number;
   inn: string;
+  gln: string;
   isconfirmed?: boolean;
   law_address?: string;
   user_role?: string;

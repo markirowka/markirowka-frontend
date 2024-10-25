@@ -67,6 +67,13 @@ export const ProfilePage = () => {
             <Separator />
           </div>
           <div className="my-2">
+            <Label>GLN</Label>
+            <CardDescription className="mb-2">
+              {user ? user.gln || "" : ""}
+            </CardDescription>
+            <Separator />
+          </div>
+          <div className="my-2">
             <Label>Грузополучатель</Label>
             <CardDescription className="mb-2">
               {user ? user.cargo_recevier || "" : ""}

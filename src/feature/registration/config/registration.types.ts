@@ -7,6 +7,7 @@ export interface User {
   ceo_genitive?: string;
   law_address?: string;
   inn: number;
+  gln: string;
   cargo_recevier?: string;
   cargo_city?: string;
 }

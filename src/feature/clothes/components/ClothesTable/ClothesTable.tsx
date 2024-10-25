@@ -33,6 +33,7 @@ import { userAtom } from "@/feature/common";
 // import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
+import { markRowLimit } from "@/config/env";
 
 export function ClothesTable(props: {withBtn: boolean}) {
   const [user] = useAtom(userAtom);
@@ -62,7 +63,7 @@ export function ClothesTable(props: {withBtn: boolean}) {
       rowSelection,
       pagination: {
         pageIndex: 0,
-        pageSize: 99,
+        pageSize: markRowLimit,
       }
     },
   });
@@ -155,8 +156,8 @@ export function ClothesTable(props: {withBtn: boolean}) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} из{" "}
-          {table.getFilteredRowModel().rows.length} строк выделено.
+          Всего {" "}
+          {table.getFilteredRowModel().rows.length} строк.
         </div>
         {props.withBtn ? <div className="space-x-2">
           <Button

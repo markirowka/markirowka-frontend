@@ -22,6 +22,7 @@ import { useAtom } from "jotai";
 import { orderProductsStoreAtom } from "../store";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { orderRowLimit } from "@/config/env";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
@@ -34,7 +35,7 @@ export const OrderForm = () => {
   });
 
   const onSubmit: SubmitHandler<OrderFormSchemaType> = (product) => {
-    if (orderProducts.length >= 100) {
+    if (orderProducts.length >= orderRowLimit) {
       toast("Разрешено до 100 позиций", {
         description: "Для большего числа создайте новый документ",
         action: {
@@ -136,7 +137,7 @@ export const OrderForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={orderProducts.length >= 100}>Добавить товар</Button>
+            <Button type="submit" disabled={orderProducts.length >= orderRowLimit}>Добавить товар</Button>
           </div>
         </form>
       </Form>

@@ -41,6 +41,7 @@ export const EditProfileFormSchema = z.object({
 	ceo_genitive: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
 	law_address: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
 	inn: z.coerce.number().optional(),
+	gln: z.string().max(64, { message: 'Не более 64 символов' }),
   cargo_recevier: z.string().refine(
 	(value) => {
 	  return value.indexOf(" ") > 0 ? true : false;

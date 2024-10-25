@@ -32,6 +32,7 @@ import { PackageSearch } from "lucide-react";
 import { backendInstance } from "@/services/backendService";
 // import { userAtom } from "@/feature/common"
 import { toast } from "sonner";
+import { markRowLimit } from "@/config/env";
 // import { useNavigate } from "react-router-dom"
 
 export function ShoesTable(props: {withBtn: boolean}) {
@@ -62,7 +63,7 @@ export function ShoesTable(props: {withBtn: boolean}) {
       rowSelection,
       pagination: {
         pageIndex: 0,
-        pageSize: 99,
+        pageSize: markRowLimit,
       }
     },
   });

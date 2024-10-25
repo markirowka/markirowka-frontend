@@ -44,7 +44,7 @@ export const columns: ColumnDef<ClothesFormSchemaType>[] = [
   },
   {
     accessorKey: "tradeMark",
-    header: "Товарный знак",
+    header: "Товарный Бренд",
     cell: ({ row }) => {
       const [clothes, setClothes] = useAtom(clothesAtom);
       const updateParam = (event: React.ChangeEvent<HTMLInputElement>) => {

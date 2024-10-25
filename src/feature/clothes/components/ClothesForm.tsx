@@ -27,6 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { PackageSearch } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { markRowLimit } from "@/config/env";
 // import { toast } from "sonner"
 
 export const ClothesForm = () => {
@@ -48,8 +49,8 @@ export const ClothesForm = () => {
   });
 
   const onSubmit: SubmitHandler<ClothesFormSchemaType> = (data) => {
-    if (clothes.length >= 100) {
-      toast("Разрешено до 100 позиций", {
+    if (clothes.length >= markRowLimit) {
+      toast("Разрешено до 700 позиций", {
         description: "Для большего числа создайте новый документ",
         action: {
           label: "Скрыть",
@@ -114,9 +115,9 @@ export const ClothesForm = () => {
               name="tradeMark"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Товарный знак</FormLabel>
+                  <FormLabel>Товарный Бренд</FormLabel>
                   <FormControl>
-                    <Input placeholder="Введите товарный знак" {...field} />
+                    <Input placeholder="Введите товарный бренд" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -208,7 +209,7 @@ export const ClothesForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={clothes.length >= 100}>Добавить товар</Button>
+            <Button type="submit" disabled={clothes.length >= markRowLimit}>Добавить товар</Button>
           </div>
         </form>
       </Form>

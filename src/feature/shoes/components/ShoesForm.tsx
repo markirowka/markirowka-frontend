@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { PackageSearch } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { markRowLimit } from "@/config/env";
 
 export const ShoesForm = () => {
   const [shoes, setShoes] = useAtom(shoesAtom);
@@ -42,8 +43,8 @@ export const ShoesForm = () => {
   });
 
   const onSubmit: SubmitHandler<ShoesFormSchemaType> = (data) => {
-    if (shoes.length >= 100) {
-      toast("Разрешено до 100 позиций", {
+    if (shoes.length >= markRowLimit) {
+      toast("Разрешено до 700 позиций", {
         description: "Для большего числа создайте новый документ",
         action: {
           label: "Скрыть",
@@ -108,9 +109,9 @@ export const ShoesForm = () => {
               name="tradeMark"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Товарный знак</FormLabel>
+                  <FormLabel>Товарный Бренд</FormLabel>
                   <FormControl>
-                    <Input placeholder="Введите товарный знак" {...field} />
+                    <Input placeholder="Введите товарный бренд" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -234,7 +235,7 @@ export const ShoesForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={shoes.length >= 100}>Добавить товар</Button>
+            <Button type="submit" disabled={shoes.length >= markRowLimit}>Добавить товар</Button>
           </div>
         </form>
       </Form>
