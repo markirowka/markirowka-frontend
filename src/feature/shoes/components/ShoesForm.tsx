@@ -149,6 +149,7 @@ export const ShoesForm = () => {
               label="Вид обуви"
               placeholder="Выберите вид обуви"
               options={SHOES_TYPES}
+              hasFilter={true}
             />
 
             <FormSelect
@@ -158,6 +159,7 @@ export const ShoesForm = () => {
               label="Цвет"
               placeholder="Выберите цвет обуви"
               options={SHOES_COLORS}
+              hasFilter={true}
             />
 
             <FormSelect
@@ -167,6 +169,7 @@ export const ShoesForm = () => {
               label="Размер в штихмассовой системе"
               placeholder="Размер в штихмассовой системе"
               options={SHOES_SIZES}
+              hasFilter={true}
             />
           </div>
           {/* Select */}

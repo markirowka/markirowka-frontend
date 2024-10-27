@@ -130,6 +130,7 @@ export const ClothesForm = () => {
               label="Артикул/Модель"
               placeholder="Артикул/Модель"
               options={["Артикул", "Модель"]}
+              hasFilter={true}
             />
             <FormField
               control={form.control}
@@ -155,6 +156,7 @@ export const ClothesForm = () => {
               label="Вид одежды"
               placeholder="Выберите вид одежды"
               options={CLOTHES_TYPES}
+              hasFilter={true}
             />
 
             <FormSelect
@@ -164,6 +166,7 @@ export const ClothesForm = () => {
               label="Цвет"
               placeholder="Выберите цвет одежды"
               options={CLOTHES_COLORS}
+              hasFilter={true}
             />
 
             <FormSelect
@@ -173,6 +176,7 @@ export const ClothesForm = () => {
               label="Размер в штихмассовой системе"
               placeholder="Размер в штихмассовой системе"
               options={CLOTHES_SIZES}
+              hasFilter={true}
             />
           </div>
           {/* Select */}
