@@ -50,7 +50,7 @@ export const ContentPage = () => {
   const [additionalContentBlocks, setContentBlocks] = useState<ContentBlock[]>(
     []
   );
-  const [editState, SwitchEditState] = useState(false);
+  const [editState, switchEditState] = useState(false);
 
   const pageUrl = urlNamingFilter(path.pathname);
 
@@ -103,14 +103,13 @@ export const ContentPage = () => {
     setHeading(String(event.target.value));
 
   const editStateHandler = () => {
-    console.log("edit");
-    SwitchEditState((prevState) => !prevState);
+    switchEditState((prevState) => !prevState);
   };
 
   const refreshContentBlocks = async () => {
     try {
       const newBlocks = await backendInstance.getPageContentBlocks(pageUrl);
-      setContentBlocks(newBlocks.blocks);
+      setContentBlocks(newBlocks.blocks.sort((a, b) => b.id - a.id));
     } catch (e) {
       console.log(e);
     }
@@ -119,8 +118,9 @@ export const ContentPage = () => {
   const createBlock = async () => {
     backendInstance
       .createContentBlock(pageUrl)
-      .then(() => {
-        refreshContentBlocks();
+      .then(async () => {
+        await refreshContentBlocks();
+        switchEditState(true);
       })
       .catch((e) => {
         console.log(e);
@@ -130,7 +130,7 @@ export const ContentPage = () => {
   const updateBlock = async (block: ContentBlock) => {
     backendInstance
       .updateContentBlock(block)
-      .then(() => {
+      .then(async () => {
         toast("Новость сохранена", {
           description: "Для просмотра изменений выйдите из редактора",
           action: {
@@ -138,7 +138,8 @@ export const ContentPage = () => {
             onClick: () => console.log("Прочитано"),
           },
         }); 
-        refreshContentBlocks();
+        await refreshContentBlocks();
+        switchEditState(false);
       })
       .catch((e) => {
         console.log(e);
@@ -146,10 +147,12 @@ export const ContentPage = () => {
   };
 
   const deleteBlock = async (id: number) => {
+    console.log("Deleted, id:", id)
     backendInstance
       .deleteContentBlock(id)
-      .then(() => {
-        refreshContentBlocks();
+      .then(async () => {
+        await refreshContentBlocks();
+        switchEditState(false);
       })
       .catch((e) => {
         console.log(e);
@@ -221,15 +224,6 @@ export const ContentPage = () => {
                     </div>
                   </>
                 )}
-                {/* <div className="editBtn deleteBtn">
-              <img
-                src="/editor/delete.svg"
-                className="editIcon"
-                width="20"
-                height="20"
-                onClick={deleteAction}
-              />
-            </div>*/}
               </div>
             ) : null}
           </div>
@@ -247,12 +241,12 @@ export const ContentPage = () => {
           )}
         </div>
       </div>
-      {editState ? (
+      {!editState && user && user.user_role === ADMIN_ROLE ? (
         <div className="buttonPageCtnr">
           <Button onClick={createBlock}>+ Добавить новость</Button>
         </div>
       ) : null}
-      {additionalContentBlocks.reverse().map((block, index) => {
+      {additionalContentBlocks.map((block, index) => {
         return !editState ? (
           <div className="w-full max-w-[100%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg">
             <div
