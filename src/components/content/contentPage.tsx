@@ -247,7 +247,12 @@ export const ContentPage = () => {
           )}
         </div>
       </div>
-      {additionalContentBlocks.map((block, index) => {
+      {editState ? (
+        <div className="buttonPageCtnr">
+          <Button onClick={createBlock}>+ Добавить новость</Button>
+        </div>
+      ) : null}
+      {additionalContentBlocks.reverse().map((block, index) => {
         return !editState ? (
           <div className="w-full max-w-[100%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg">
             <div
@@ -265,11 +270,6 @@ export const ContentPage = () => {
           />
         );
       })}
-      {editState ? (
-        <div className="buttonPageCtnr">
-          <Button onClick={createBlock}>+ Добавить новость</Button>
-        </div>
-      ) : null}
     </>
   );
 };

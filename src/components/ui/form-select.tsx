@@ -6,7 +6,7 @@ import {
   FormControl,
   FormMessage,
 } from "./form";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -40,6 +40,20 @@ export const FormSelect: FC<IFormSelectProps> = ({
   const filteredOptions = options.filter(
     (option) => option.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
   );
+
+  useEffect(() => {
+    function handleClickOutside(event: Event) {
+	 const target = event.target as Element
+      if (target && !target?.classList.contains("dropDownSelectOption")) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   return (
     <FormField
@@ -88,7 +102,7 @@ export const FormSelect: FC<IFormSelectProps> = ({
                           setSearchQuery(option);
                           setIsDropdownOpen(false);
                         }}
-                        className="p-2 cursor-pointer hover:bg-gray-100"
+                        className="p-2 cursor-pointer hover:bg-gray-100 dropDownSelectOption"
                       >
                         {option}
                       </div>
