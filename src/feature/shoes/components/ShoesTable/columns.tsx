@@ -6,6 +6,46 @@ import { ShoesTableDuplicateProduct } from "./ShoesTableDuplicateProduct";
 import { useAtom } from "jotai";
 import { shoesAtom } from "../../store";
 
+export const generateFullNameShoes = (row: any) => {
+  const watcherShoesType = row.shoesType;
+  const watcherTradeMark = row.tradeMark;
+  const watcherArticleName = row.articleName;
+  const watcherColor = row.color;
+  const watcherSize = row.size;
+
+  const fullNameValue = `${watcherShoesType} ${watcherTradeMark} арт. ${watcherArticleName} Цвет: ${watcherColor} Размер: ${watcherSize}`;
+
+  return fullNameValue;
+};
+
+export const updateParamShoes = (
+  setShoes: any,
+  rowIndex: number,
+  key: keyof ShoesFormSchemaType
+) => {
+  return (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setShoes((prevShoes: any[]) =>
+      prevShoes.map((item: any[], idx: number) =>
+        idx === rowIndex
+          ? {
+              ...item,
+              [key]: event.target.value,
+              fullName: generateFullNameShoes({
+                ...item,
+                [key]: event.target.value,
+              }),
+              toUpdate: true,
+            }
+          : item
+      )
+    );
+  };
+};
+
 export const columns: ColumnDef<ShoesFormSchemaType>[] = [
   {
     id: "id",
@@ -19,25 +59,16 @@ export const columns: ColumnDef<ShoesFormSchemaType>[] = [
   },
   {
     accessorKey: "articleName",
-    header: "Артикул/Модель",
+    header: "Номер Артикула/Модели",
     cell: ({ row }) => {
       const [shoes, setShoes] = useAtom(shoesAtom);
-      const updateParam = (event: React.ChangeEvent<HTMLInputElement>) => {
-        shoes;
-        setShoes((prevShoes) =>
-          prevShoes.map((item, idx) =>
-            idx === row.index
-              ? { ...item, articleName: event.target.value, toUpdate: true }
-              : item
-          )
-        );
-      };
+      shoes;
       return (
         <div className="capitalize font-medium">
           <input
             type="text"
             value={row.getValue("articleName")}
-            onChange={updateParam}
+            onChange={updateParamShoes(setShoes, row.index, "articleName")}
           />
         </div>
       );
@@ -48,22 +79,13 @@ export const columns: ColumnDef<ShoesFormSchemaType>[] = [
     header: "Товарный Бренд",
     cell: ({ row }) => {
       const [shoes, setShoes] = useAtom(shoesAtom);
-      const updateParam = (event: React.ChangeEvent<HTMLInputElement>) => {
-        shoes;
-        setShoes((prevShoes) =>
-          prevShoes.map((item, idx) =>
-            idx === row.index
-              ? { ...item, tradeMark: event.target.value, toUpdate: true }
-              : item
-          )
-        );
-      };
+      shoes;
       return (
         <div className="capitalize font-medium">
           <input
             type="text"
             value={row.getValue("tradeMark")}
-            onChange={updateParam}
+            onChange={updateParamShoes(setShoes, row.index, "tradeMark")}
           />
         </div>
       );

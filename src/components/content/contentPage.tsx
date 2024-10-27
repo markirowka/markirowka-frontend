@@ -173,10 +173,10 @@ export const ContentPage = () => {
   if (pending) {
     return <div className="contentPage">Loading...</div>;
   }
-
+  // bg-white rounded-xl shadow-lg
   return (
     <>
-      <div className="w-full max-w-[100%] m-auto my-4 p-6 bg-white rounded-xl shadow-lg">
+      <div className="w-full max-w-[100%] m-auto my-4 p-6">
         <div className="contentPage">
           <div className="contentHeading">
             {!editState ? (
