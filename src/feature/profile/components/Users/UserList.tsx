@@ -101,6 +101,16 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
             });
         };
       };
+
+      const deleteUser = () => {
+        backendInstance.deleteUser(row.original.id).then(async () => {
+          const newData = await backendInstance.getAllUsers();
+              setDisplayUsers(newData);
+        }).catch((e) => {
+          console.log(e);
+        })
+      }
+      
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -117,6 +127,9 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={UpdateUserRole("USER")}>
               Убрать из администраторов
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={deleteUser}>
+              Удалить
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -261,6 +261,7 @@ export function ProfileOrders() {
     backendInstance.updateOrders(toUpdateList, newStatus).then(() => {
       setUpdationCount(count => count + 1);
       toast("Изменения сохранены", {
+        // style: popUpStyle,
         description: "Данные по заказам сохранены",
         action: {
           label: "Скрыть",

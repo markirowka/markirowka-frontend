@@ -30,3 +30,12 @@ export const watching_urls = [
 export const contentSeparator = "<!-- block -->"
 export const orderRowLimit = 100;
 export const markRowLimit = 700;
+
+export const popUpStyle = {
+  fontSize: "16px",
+  padding: "15px",
+  width: 300,
+  top: 100,
+  left: "calc(50% - 150px)",
+  transform: "translateX(-50%) scale(1.5)"
+};
