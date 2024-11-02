@@ -121,6 +121,10 @@ class BackendService {
 		return await this.get('/api/userdata')
 	}
 
+	async deleteUser(id: number): Promise<boolean> {
+		return !!(await this.post(`/api/admin/deleteuser/${id}`, {}, "DELETE"))
+	}
+
 	async sendEmailConfirm(token: string): Promise<{message: string}> {
 		return await this.post('/api/signupconfirm', { token: token }, 'POST')
 	}
@@ -159,6 +163,13 @@ class BackendService {
 
 	async markPageRead(url: string) {
 		return await this.get(`/api/stats/markread/${url}`);
+	}
+
+	async updateOrders(ids: number[], status: "new" | "pay_messaged" | "paid") {
+		return await this.post(`/api/updateorders`, {
+			orderIds: ids,
+			status
+		}, "POST")
 	}
 
 	// Загрузка блоков контента для новостей
@@ -222,7 +233,7 @@ class BackendService {
 		}
 	}
 
-	private async post<T>(path: string, body: T, method?: 'POST' | 'PUT' | 'PATCH') {
+	private async post<T>(path: string, body: T, method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE') {
 		try {
 			const endpoint = `${API_URL}${path}`
 
@@ -230,7 +241,7 @@ class BackendService {
 				method,
 				mode: "cors",
 				credentials: 'include',
-				body: JSON.stringify(body),
+				body: method !== 'DELETE' ? JSON.stringify(body) : undefined,
 				headers: new Headers({
 					"Accept":"application/json", 
 					"Content-Type" : "application/json"

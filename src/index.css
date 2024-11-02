@@ -200,7 +200,7 @@ select .input-text-right {
 
 input.input-text-right,
 input .input-text-right  {
-  border: 2px solid #7e7873;
+  border: 2px solid hsl(var(--primary));
     border-radius: 4px;
     padding: 4px;
 }

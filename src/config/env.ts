@@ -17,6 +17,12 @@ export const functional_urls = [
   "/edit-profile",
 ];
 
+export const orderStatusNames = {
+  new: "Новый",
+  pay_messaged: "Сообщили об оплате",
+  paid: "Оплачен"
+}
+
 export const watching_urls = [
     "news",
   ];
