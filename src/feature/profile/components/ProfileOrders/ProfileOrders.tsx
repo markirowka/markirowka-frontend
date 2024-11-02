@@ -352,7 +352,6 @@ export function ProfileOrders() {
             size="sm"
             className="flex flex-row items-center gap-2 profile-edit-button"
             onClick={updateOrderStatusList}
-            disabled={isLastPage}
           >
             {user && user.user_role === ADMIN_ROLE
               ? "Подтвердить оплату"
