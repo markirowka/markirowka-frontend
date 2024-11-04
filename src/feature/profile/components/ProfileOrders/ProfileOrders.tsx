@@ -76,7 +76,7 @@ export const columns: ColumnDef<OrderData>[] = [
     header: "Оплатить до",
     cell: ({ row }) => {
       return (
-        <div className="lowercase">
+        <div className="lowercase text-red">
           {row.original.order_status !== "paid"
             ? formatTimestampWithOffset(row.original.order_date, 30)
             : ""}

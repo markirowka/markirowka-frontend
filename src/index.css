@@ -214,6 +214,11 @@ h1 {
   font-size: 36px;
 }
 
+.text-red {
+  color: #ec3b3b;
+  font-weight: 600;
+}
+
 @media (max-width: 1024px) {
   /* .profile-info {
     position: absolute;
