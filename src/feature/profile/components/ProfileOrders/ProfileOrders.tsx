@@ -42,7 +42,11 @@ import {
 import { backendInstance } from "@/services/backendService";
 import { ADMIN_ROLE, ordersPerPage, orderStatusNames } from "@/config/env";
 import { OrderData } from "@/feature/types";
-import { downloadFileById, formatTimestamp } from "@/utils";
+import {
+  downloadFileById,
+  formatTimestamp,
+  formatTimestampWithOffset,
+} from "@/utils";
 import { toast } from "sonner";
 import { useState } from "react";
 
@@ -63,6 +67,19 @@ export const columns: ColumnDef<OrderData>[] = [
       return (
         <div className="lowercase">
           {formatTimestamp(row.original.order_date * 1000)}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: "Оплатить до",
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase">
+          {row.original.order_status !== "paid"
+            ? formatTimestampWithOffset(row.original.order_date, 30)
+            : ""}
         </div>
       );
     },
@@ -91,7 +108,11 @@ export const columns: ColumnDef<OrderData>[] = [
       return (
         <div className="lowercase">
           {row.original.order_status !== "paid" ? (
-            <input className="order-additional-checkbox" type="checkbox" onChange={checkboxHandler} />
+            <input
+              className="order-additional-checkbox"
+              type="checkbox"
+              onChange={checkboxHandler}
+            />
           ) : null}
         </div>
       );
@@ -257,27 +278,30 @@ export function ProfileOrders() {
 
   const updateOrderStatusList = () => {
     if (!user) return;
-    const newStatus = user.user_role === ADMIN_ROLE ? "paid" : "pay_messaged"
-    backendInstance.updateOrders(toUpdateList, newStatus).then(() => {
-      setUpdationCount(count => count + 1);
-      toast("Изменения сохранены", {
-        // style: popUpStyle,
-        description: "Данные по заказам сохранены",
-        action: {
-          label: "Скрыть",
-          onClick: () => console.log("Прочитано"),
-        },
-      }); 
-    }).catch((e) => {
-      toast("Ошибка сохранения данных", {
-        description: e.message || e,
-        action: {
-          label: "Скрыть",
-          onClick: () => console.log("Прочитано"),
-        },
-      }); 
-    })
-  }
+    const newStatus = user.user_role === ADMIN_ROLE ? "paid" : "pay_messaged";
+    backendInstance
+      .updateOrders(toUpdateList, newStatus)
+      .then(() => {
+        setUpdationCount((count) => count + 1);
+        toast("Изменения сохранены", {
+          // style: popUpStyle,
+          description: "Данные по заказам сохранены",
+          action: {
+            label: "Скрыть",
+            onClick: () => console.log("Прочитано"),
+          },
+        });
+      })
+      .catch((e) => {
+        toast("Ошибка сохранения данных", {
+          description: e.message || e,
+          action: {
+            label: "Скрыть",
+            onClick: () => console.log("Прочитано"),
+          },
+        });
+      });
+  };
 
   const isLastPage =
     ordersPage * ordersPerPage >= orderCount || orderCount <= ordersPerPage;
