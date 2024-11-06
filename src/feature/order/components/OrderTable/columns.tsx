@@ -100,7 +100,7 @@ export const columns: ColumnDef<OrderFormSchemaType>[] = [
   },
   {
     accessorKey: "price",
-    header: "Цена, ₽",
+    header: "Цена, ₽ за шт",
     cell: ({ row }) => {
 		const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
 		const updateParam = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,7 +5,7 @@ export const ShoesPage = (props: { withBtn: boolean}) => {
 
 	return (
 		<>
-			<TypographyH2>Новая накладная «Обувь»</TypographyH2>
+			<TypographyH2>Маркировка «Обувь»</TypographyH2>
 			<ShoesForm />
 			<ShoesTable withBtn={props.withBtn} />
 		</>

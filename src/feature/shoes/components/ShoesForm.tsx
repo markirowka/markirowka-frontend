@@ -63,7 +63,7 @@ export const ShoesForm = () => {
   const watcherSize = form.watch("size");
 
   useEffect(() => {
-    const fullNameValue = `${watcherShoesType} ${watcherTradeMark} арт. ${watcherArticleName} Цвет: ${watcherColor} Размер: ${watcherSize}`;
+    const fullNameValue = `${watcherShoesType || ""} ${watcherTradeMark || ""} арт. ${watcherArticleName || ""} Цвет: ${watcherColor || ""} Размер: ${watcherSize || ""}`;
 
     form.setValue("fullName", fullNameValue);
   }, [
