@@ -1,3 +1,4 @@
+import { OrderFormSchemaType } from "@/feature/order";
 import { ItemDataClothes, ItemDataShoes, OrderItemData } from "@/feature/types";
 
 class LocalStorageService {
@@ -35,7 +36,7 @@ class LocalStorageService {
     }
 
     // Retrieve saved order data from localStorage
-    public getSavedOrder(): OrderItemData[] {
+    public getSavedOrder(): OrderFormSchemaType[] {
         const savedOrder = localStorage.getItem(this.orderDataKey);
         if (savedOrder) {
             try {

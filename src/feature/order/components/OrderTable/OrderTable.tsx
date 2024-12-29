@@ -23,7 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TypographyH3 } from "@/components/ui/typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { columns } from "./columns";
 import { PackageSearch } from "lucide-react";
@@ -35,13 +35,14 @@ import { toast } from "sonner";
 import { ClothesPage, ShoesPage } from "@/pages";
 import { clothesAtom } from "@/feature/clothes";
 import { shoesAtom } from "@/feature/shoes";
+import { localStorageService } from "@/services/localStorage";
 
 const watchingCategories = ["Одежда", "Обувь"];
 
 export function OrderTable() {
   const [user] = useAtom(userAtom);
   // const navigate = useNavigate();
-  const [orderProducts] = useAtom(orderProductsStoreAtom);
+  const [orderProducts, setOrder] = useAtom(orderProductsStoreAtom);
   const [clothes] = useAtom(clothesAtom);
   const [shoes] = useAtom(shoesAtom);
   const [pending, Pending] = useState(false);
@@ -50,6 +51,23 @@ export function OrderTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [markFormEnabled, setMarkFormEnabled] = useState(false);
+
+  useEffect(() => {
+    const savedOrders = localStorageService.getSavedOrder().map(item => ({
+      category: item.category || "", // Если нет значения, ставим пустую строку
+      name: item.name || "", // Если нет значения, ставим пустую строку
+      quantity: item.quantity || 0, // Если нет значения, ставим 0
+      price: item.price || 0, // Если нет значения, ставим 0
+      date: item.date || "", // Если нет значения, ставим пустую строку
+    }));
+    
+    setOrder(savedOrders); // Устанавливаем состояние заказов
+  }, []);
+
+  // Второй useEffect для сохранения данных о заказах в localStorage
+  useEffect(() => {
+    localStorageService.saveOrder(orderProducts); // Сохраняем заказы в localStorage при изменении состояния orders
+  }, [orderProducts]);
 
   const showMarkClothes = !!orderProducts.find((p) => {
     return p.category === watchingCategories[0];

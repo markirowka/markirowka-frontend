@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 import { TypographyH3 } from "@/components/ui/typography";
 // import { ShoesFormSchemaType } from "../../config"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clothesAtom } from "../../store/shoesStore";
 import { useAtom } from "jotai";
 import { columns } from "./columns";
@@ -34,16 +34,37 @@ import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
 import { markRowLimit } from "@/config/env";
+import { localStorageService } from "@/services/localStorage";
 
 export function ClothesTable(props: {withBtn: boolean}) {
   const [user] = useAtom(userAtom);
-  const [clothes] = useAtom(clothesAtom);
+  const [clothes, setClothes] = useAtom(clothesAtom);
   const [pending, Pending] = useState(false);
   // const navigate = useNavigate();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  useEffect(() => {
+    const savedClothes = localStorageService.getSavedClothes().map(item => ({
+      fullName: item.fullName || "", 
+      tradeMark: item.tradeMark || "", 
+      articleType: item.articleType || "", 
+      articleName: item.articleName || "", 
+      clothesType: item.clothesType || "", 
+      color: item.color || "",
+      size: item.size || "", 
+      composition: item.composition || "", 
+      tnved: item.tnved || ""
+    }));
+  
+    setClothes(savedClothes);
+  }, []);
+
+  useEffect(() => {
+    localStorageService.saveClothes(clothes);
+ }, [clothes])
 
   const table = useReactTable({
     data: clothes,

@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 import { TypographyH3 } from "@/components/ui/typography";
 // import { ShoesFormSchemaType } from "../../config"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { shoesAtom } from "../../store/shoesStore";
 import { useAtom } from "jotai";
 import { columns } from "./columns";
@@ -33,17 +33,42 @@ import { backendInstance } from "@/services/backendService";
 // import { userAtom } from "@/feature/common"
 import { toast } from "sonner";
 import { markRowLimit } from "@/config/env";
+import { localStorageService } from "@/services/localStorage";
 // import { useNavigate } from "react-router-dom"
 
-export function ShoesTable(props: {withBtn: boolean}) {
+export function ShoesTable(props: { withBtn: boolean }) {
   // const [user] = useAtom(userAtom)
-  const [shoes] = useAtom(shoesAtom);
+  const [shoes, setShoes] = useAtom(shoesAtom);
   // const navigate = useNavigate();
   const [pending, Pending] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  // First useEffect to load shoes data from localStorage
+  useEffect(() => {
+    const savedShoes = localStorageService.getSavedShoes().map((item) => ({
+      fullName: item.fullName || "", // Default to empty string if undefined
+      tradeMark: item.tradeMark || "", // Default to empty string
+      articleType: item.articleType || "", // Default to empty string
+      articleName: item.articleName || "", // Default to empty string
+      shoesType: item.shoesType || "", // Default to empty string
+      color: item.color || "", // Default to empty string
+      size: item.size || "", // Default to empty string
+      upperMaterial: item.upperMaterial || "", // Default to empty string
+      liningMaterial: item.liningMaterial || "", // Default to empty string
+      bottomMaterial: item.bottomMaterial || "", // Default to empty string
+      tnved: item.tnved || "", // Default to empty string
+    }));
+
+    setShoes(savedShoes); // Set the shoes state
+  }, []);
+
+  // Second useEffect to save shoes data to localStorage
+  useEffect(() => {
+    localStorageService.saveShoes(shoes); // Save shoes to localStorage when shoes data changes
+  }, [shoes]);
 
   const table = useReactTable({
     data: shoes,
@@ -64,7 +89,7 @@ export function ShoesTable(props: {withBtn: boolean}) {
       pagination: {
         pageIndex: 0,
         pageSize: markRowLimit,
-      }
+      },
     },
   });
 
@@ -151,16 +176,18 @@ export function ShoesTable(props: {withBtn: boolean}) {
         <div className="flex-1 text-sm text-muted-foreground">
           Всего {table.getFilteredRowModel().rows.length} строк.
         </div>
-        {props.withBtn  ? <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={generateTableAction}
-            disabled={shoes.length === 0 || pending}
-          >
-            Сформировать заказ
-          </Button>
-        </div> : null}
+        {props.withBtn ? (
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={generateTableAction}
+              disabled={shoes.length === 0 || pending}
+            >
+              Сформировать заказ
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

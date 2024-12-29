@@ -55,7 +55,7 @@ export interface ItemDataShoes {
   upperMaterial?: string;
   liningMaterial?: string;
   bottomMaterial?: string;
-  tnved?: string;
+  tnved: string;
 }
 
 export interface ItemDataClothes {
@@ -67,5 +67,5 @@ export interface ItemDataClothes {
   color?: string;
   size?: string;
   composition?: string;
-  tnved?: string;
+  tnved: string;
 }
