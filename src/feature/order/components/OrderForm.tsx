@@ -23,6 +23,7 @@ import { orderProductsStoreAtom } from "../store";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { orderRowLimit } from "@/config/env";
+import { getOrderFromExcelFile, saveOrderToExcel } from "../sheet";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
@@ -42,10 +43,37 @@ export const OrderForm = () => {
           label: "Скрыть",
           onClick: () => console.log("Прочитано"),
         },
-      }); 
+      });
       return;
     }
     setOrderProducts([...orderProducts, product]);
+  };
+
+  const handleExcelFileUpload = async (event: any) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const data = await getOrderFromExcelFile(file);
+        setOrderProducts(data);
+        toast("Заказ загружен из файла");
+      } catch (error) {
+        toast("Ошибка чтения файла");
+      }
+    }
+  };
+
+  const handleExcelFileExport = () => {
+    saveOrderToExcel(orderProducts)
+      .then(() => {
+        toast("Скачивание заказа");
+      })
+      .catch(() => {
+        toast("Не удалось сохранить заказ");
+      });
+  };
+
+  const handleButtonClick = () => {
+    document.getElementById("excelFile")?.click();
   };
 
   return (
@@ -137,10 +165,40 @@ export const OrderForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={orderProducts.length >= orderRowLimit}>Добавить товар</Button>
+            <Button
+              type="submit"
+              disabled={orderProducts.length >= orderRowLimit}
+            >
+              Добавить товар
+            </Button>
           </div>
         </form>
       </Form>
+      <div
+        className="fileUploadForm flex"
+        style={{
+          width: "100%",
+          justifyContent: "space-between",
+          marginTop: 20
+        }}
+      >
+        <h4>Загрузка из файла:</h4>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <Button type="button" onClick={handleButtonClick}>
+            Загрузить заказ из файла Excel
+          </Button>
+          <input
+            id="excelFile"
+            type="file"
+            accept=".xlsx"
+            onChange={handleExcelFileUpload}
+            style={{ display: "none" }} // Скрываем поле ввода
+          />
+        </label>
+        <Button type="submit" onClick={handleExcelFileExport}>
+          Скачать заказ в виде файла excel
+        </Button>
+      </div>
     </div>
   );
 };

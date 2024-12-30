@@ -23,7 +23,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TypographyH3 } from "@/components/ui/typography";
-import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { columns } from "./columns";
 import { PackageSearch } from "lucide-react";
@@ -36,6 +35,7 @@ import { ClothesPage, ShoesPage } from "@/pages";
 import { clothesAtom } from "@/feature/clothes";
 import { shoesAtom } from "@/feature/shoes";
 import { localStorageService } from "@/services/localStorage";
+import { useState, useEffect } from "react";
 
 const watchingCategories = ["Одежда", "Обувь"];
 
@@ -147,7 +147,7 @@ export function OrderTable() {
           <Input
             placeholder="Поиск по названию"
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
+            onChange={(event: any) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
