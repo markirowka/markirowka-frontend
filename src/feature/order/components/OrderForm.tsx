@@ -54,6 +54,7 @@ export const OrderForm = () => {
     if (file) {
       try {
         const data = await getOrderFromExcelFile(file);
+        console.log("Parsed:", data);
         setOrderProducts(data);
         toast("Заказ загружен из файла");
       } catch (error) {
@@ -75,6 +76,28 @@ export const OrderForm = () => {
   const handleButtonClick = () => {
     document.getElementById("excelFile")?.click();
   };
+
+  /* const openExcelHint = () => {
+    toast(<div className="toastHint">
+       <h3>Инструкция</h3>
+       <span>1. Заполните файл аналогично образцу на картинке (можно скачать заказ и заполнить точно такой же файл)<br /></span>
+       <p>2. Категория должна быть одним из значений из списка</p>
+       <p>3. Дата документа должна быть не более, чем 30 дней до сегодняшнего или 1 днеь после</p>
+       <p>4. В качестве итоговой даты документа выбирается ближайшая к сегодняшнему дню</p>
+       <p>Пример файла:</p>
+       <p><img src="/images/excel_sample.png" /></p>
+    </div>,
+  {
+    duration: Infinity, 
+    position: 'top-center',
+    dismissible: true,
+    description: "Прочитано",
+    action: {
+      label: "Прочитано",
+      onClick: () => console.log("Прочитано"),
+    }
+  })
+  } */
 
   return (
     <div className="m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
@@ -175,15 +198,15 @@ export const OrderForm = () => {
         </form>
       </Form>
       <div
-        className="fileUploadForm flex"
+        className="flex gap-6 items-end f-wrap max-[1024px]:flex-col max-[1024px]:items-stretch "
         style={{
-          width: "100%",
           justifyContent: "space-between",
+          width: "100%",
           marginTop: 20
         }}
       >
-        <h4>Загрузка из файла:</h4>
-        <label className="flex items-center gap-2 cursor-pointer">
+        <h4>Загрузка из файла, <a href="/news">инстукция</a></h4>
+        <label className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-[#A3C55A] h-12 px-5 py-5">
           <Button type="button" onClick={handleButtonClick}>
             Загрузить заказ из файла Excel
           </Button>
