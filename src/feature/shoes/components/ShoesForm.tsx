@@ -21,6 +21,7 @@ import { PackageSearch } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { markRowLimit } from "@/config/env";
+import { loadShoesFromExcel, saveShoesToExcel } from "@/feature/order/sheet";
 
 export const ShoesForm = () => {
   const [shoes, setShoes] = useAtom(shoesAtom);
@@ -74,6 +75,34 @@ export const ShoesForm = () => {
     watcherColor,
     watcherSize,
   ]);
+
+    const handleExcelFileUpload = async (event: any) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        try {
+          const data = await loadShoesFromExcel(file);
+          console.log("Parsed:", data);
+          setShoes(data);
+          toast("Заказ загружен из файла");
+        } catch (error) {
+          toast("Ошибка чтения файла");
+        }
+      }
+    };
+  
+    const handleExcelFileExport = () => {
+      saveShoesToExcel(shoes)
+        .then(() => {
+          toast("Скачивание заказа");
+        })
+        .catch(() => {
+          toast("Не удалось сохранить заказ");
+        });
+    };
+  
+    const handleButtonClick = () => {
+      document.getElementById("excelFileShoes")?.click();
+    };
 
   return (
     <div className="m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
@@ -242,6 +271,33 @@ export const ShoesForm = () => {
           </div>
         </form>
       </Form>
+      <div
+        className="flex gap-6 items-end f-wrap max-[1024px]:flex-col max-[1024px]:items-stretch "
+        style={{
+          justifyContent: "space-between",
+          width: "100%",
+          marginTop: 20
+        }}
+      >
+        <h4>Загрузка из файла, <a style={{
+          color: "hsl(var(--primary))"
+        }} href="/news">инстукция</a></h4>
+        <label className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-[#A3C55A] h-12 px-5 py-5">
+          <Button type="button" onClick={handleButtonClick}>
+            Загрузить таблицу из файла Excel
+          </Button>
+          <input
+            id="excelFileShoes"
+            type="file"
+            accept=".xlsx"
+            onChange={handleExcelFileUpload}
+            style={{ display: "none" }} // Скрываем поле ввода
+          />
+        </label>
+        <Button type="submit" onClick={handleExcelFileExport}>
+          Скачать таблицу в виде файла excel
+        </Button>
+      </div>
     </div>
   );
 };
