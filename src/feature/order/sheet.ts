@@ -34,12 +34,17 @@ export function transformDataOrder(input: Record<string, any>[]): OrderFormSchem
 
 export function transformDataClothes(input: Record<string, any>[]): ClothesFormSchemaType[] {
   return input.map((obj) => {
-    const values = Object.values(obj);
-    
-    // Сопоставляем значения по индексу: [0] -> date, [1] -> category и т.д.
-    console.log("Values:", values );
+    // Проверяем наличие ключа "ТНВЭД", если его нет — добавляем его в начало объекта
+    if (!("ТНВЭД" in obj)) {
+      obj = { "ТНВЭД": "", ...obj };
+    }
+
+    let values = Object.values(obj);
+
+
+    // Сопоставляем индексы с полями
     const mappedData: ClothesFormSchemaType = {
-      tnved: String(values[0]),
+      tnved: String(values[0]), // Теперь "ТНВЭД" гарантированно на месте
       fullName: String(values[1]),
       tradeMark: String(values[2]),
       articleType: String(values[3]),
@@ -51,9 +56,7 @@ export function transformDataClothes(input: Record<string, any>[]): ClothesFormS
     };
 
     try {
-
-      const validatedData = ClothesFormSchema.parse(mappedData);
-      return validatedData;
+      return ClothesFormSchema.parse(mappedData);
     } catch (error) {
       console.error("Validation Error:", error);
       throw error;
@@ -63,6 +66,10 @@ export function transformDataClothes(input: Record<string, any>[]): ClothesFormS
 
 export function transformDataShoes(input: Record<string, any>[]): ShoesFormSchemaType[] {
   return input.map((obj) => {
+    if (!("ТНВЭД" in obj)) {
+      obj = { "ТНВЭД": "", ...obj };
+    }
+    
     const values = Object.values(obj);
     
     // Сопоставляем значения по индексу: [0] -> date, [1] -> category и т.д.
@@ -248,6 +255,7 @@ export function loadClothesFromExcel(file: File): Promise<ClothesFormSchemaType[
 }
 
 export async function saveShoesToExcel(data: ShoesFormSchemaType[]) {
+  console.log("Data:", data)
   const rows = data.map((item) => [
     item.fullName,
     item.tradeMark,
