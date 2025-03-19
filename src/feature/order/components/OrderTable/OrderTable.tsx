@@ -26,7 +26,7 @@ import { TypographyH3 } from "@/components/ui/typography";
 import { useAtom } from "jotai";
 import { columns } from "./columns";
 import { PackageSearch } from "lucide-react";
-import { orderProductsStoreAtom } from "../../store";
+import { cmrDeliveryAtom, orderProductsStoreAtom } from "../../store";
 import { userAtom } from "@/feature/common";
 // import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService";
@@ -41,6 +41,7 @@ const watchingCategories = ["Одежда", "Обувь"];
 
 export function OrderTable() {
   const [user] = useAtom(userAtom);
+  const [delivery] = useAtom(cmrDeliveryAtom);
   // const navigate = useNavigate();
   const [orderProducts, setOrder] = useAtom(orderProductsStoreAtom);
   const [clothes] = useAtom(clothesAtom);
@@ -123,6 +124,7 @@ export function OrderTable() {
     }); 
     const { files } = await backendInstance.createOrder(
       orderProducts,
+      delivery,
       shoes.length > 0 ? shoes : undefined,
       clothes.length > 0 ? clothes : undefined
     );

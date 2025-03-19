@@ -1,1 +1,1 @@
-export const packTypes = ["Коробка", "Мешки", "Паллеты"];
+export const packTypes = ["коробка", "мешок", "паллеты"];

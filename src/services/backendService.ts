@@ -2,6 +2,7 @@
 import { API_URL } from "@/config/env"
 import { AuthFormSchemaType, IAuthResponse, IUserDataResponse, UserData } from "@/feature/auth"
 import { ClothesFormSchemaType } from "@/feature/clothes"
+import { CMRDeliveryData } from "@/feature/order"
 import { PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
@@ -151,8 +152,8 @@ class BackendService {
 		return await this.post('/api/createSpecify/clothes', {items}, 'POST')
 	}
 
-	async createOrder( items: OrderItemData[], shoes?: ItemDataShoes[], clothes?: ItemDataClothes[]) {
-		return await this.post('/api/createpayments', {items, shoes, clothes}, 'POST')
+	async createOrder( items: OrderItemData[], cmr_data: CMRDeliveryData, shoes?: ItemDataShoes[], clothes?: ItemDataClothes[]) {
+		return await this.post('/api/createpayments', {items, cmr_data, shoes, clothes}, 'POST')
 	}
 
 	// Статистика прочтений

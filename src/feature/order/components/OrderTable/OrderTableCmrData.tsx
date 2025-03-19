@@ -12,21 +12,18 @@ import {
   import { FC } from "react";
   import { cmrDeliveryAtom } from "../../store";
   import { useAtom } from "jotai";
-import { CMRDeliveryData } from "../../config";
+import { CMRDeliveryData, packTypes } from "../../config";
   
-  interface ICMRDeliveryDialogProps {
-	id: number;
-	delivery: CMRDeliveryData;
-  }
+  interface ICMRDeliveryDialogProps {}
   
-  export const CMRDeliveryDialog: FC<ICMRDeliveryDialogProps> = ({ id, delivery }) => {
-	const [, setDelivery] = useAtom(cmrDeliveryAtom);
+  export const CMRDeliveryDialog: FC<ICMRDeliveryDialogProps> = ({ }) => {
+	const [delivery, setDelivery] = useAtom(cmrDeliveryAtom);
 	
 
 	const updateParamCMRDelivery = (
 		setDelivery: (update: (prev: CMRDeliveryData) => CMRDeliveryData) => void,
 		field: keyof CMRDeliveryData
-	  ) => (event: React.ChangeEvent<HTMLInputElement>) => {
+	  ) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const value = event.target.type === "number" ? Number(event.target.value) || 0 : event.target.value;
 	  
 		setDelivery(prev => ({
@@ -39,11 +36,11 @@ import { CMRDeliveryData } from "../../config";
 	return (
 	  <AlertDialog>
 		<AlertDialogTrigger asChild>
-		  <Button variant={"ghost"}>Править</Button>
+		  <Button variant={"default"}>Заполнить данные для накладной CMR</Button>
 		</AlertDialogTrigger>
 		<AlertDialogContent>
 		  <AlertDialogHeader>
-			<AlertDialogTitle className="p-1">Доставка №{id + 1}</AlertDialogTitle>
+			<AlertDialogTitle className="p-1">Дополнительные данные для накладной CMR</AlertDialogTitle>
 			<p className="dialogHint">Нажмите на поле для редактирования</p>
 			<AlertDialogDescription>
 			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
@@ -75,15 +72,18 @@ import { CMRDeliveryData } from "../../config";
 				  className="text-base input-text-right"
 				/>
 			  </div>
-  
-			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
+  			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
 				<span className="font-semibold text-base">Тип упаковки</span>
-				<input
-				  type="text"
+				<select
 				  value={delivery.packType}
 				  onChange={updateParamCMRDelivery(setDelivery, "packType")}
-				  className="text-base input-text-right"
-				/>
+				  className="text-base"
+				>
+					<option value="">Но умолчанию</option>
+					{packTypes.map((item, index) => {
+						return <option key={`pckt${index}`} value={item}>{item}</option>
+					})}
+				</select>
 			  </div>
   
 			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
@@ -95,17 +95,7 @@ import { CMRDeliveryData } from "../../config";
 				  className="text-base input-text-right"
 				/>
 			  </div>
-  
-			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-				<span className="font-semibold text-base">Документы</span>
-				<input
-				  type="text"
-				  value={delivery.documents}
-				  onChange={updateParamCMRDelivery(setDelivery, "documents")}
-				  className="text-base input-text-right"
-				/>
-			  </div>
-  
+
 			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
 				<span className="font-semibold text-base">Марка авто</span>
 				<input
@@ -127,7 +117,7 @@ import { CMRDeliveryData } from "../../config";
 			  </div>
   
 			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
-				<span className="font-semibold text-base">Доп. номер авто</span>
+				<span className="font-semibold text-base">Номер прицепа</span>
 				<input
 				  type="text"
 				  value={delivery.subAutoNumber || ""}
@@ -138,7 +128,7 @@ import { CMRDeliveryData } from "../../config";
 			</AlertDialogDescription>
 		  </AlertDialogHeader>
 		  <AlertDialogFooter>
-			<AlertDialogCancel>Закрыть</AlertDialogCancel>
+			<AlertDialogCancel>Сохранить и закрыть</AlertDialogCancel>
 		  </AlertDialogFooter>
 		</AlertDialogContent>
 	  </AlertDialog>

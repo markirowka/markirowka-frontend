@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { orderRowLimit } from "@/config/env";
 import { getOrderFromExcelFile, saveOrderToExcel } from "../sheet";
+import { CMRDeliveryDialog } from "./OrderTable/OrderTableCmrData";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
@@ -197,6 +198,16 @@ export const OrderForm = () => {
           </div>
         </form>
       </Form>
+      <div
+        className="flex gap-6 items-end f-wrap max-[1024px]:flex-col max-[1024px]:items-stretch "
+        style={{
+          justifyContent: "space-between",
+          width: "100%",
+          marginTop: 20
+        }}
+      >
+        <CMRDeliveryDialog />
+      </div>
       <div
         className="flex gap-6 items-end f-wrap max-[1024px]:flex-col max-[1024px]:items-stretch "
         style={{
