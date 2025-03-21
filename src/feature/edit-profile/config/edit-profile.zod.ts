@@ -50,6 +50,10 @@ export const EditProfileFormSchema = z.object({
 	  message: "Наименование должно состоять минимум из 2 слов",
 	}
   ),
+  bank_account: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
+  bank_code: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
+  bank_name: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
+  corr_account: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
   cargo_city: z.string().min(3, { message: 'Поле должно содержать не менее 3-х символов' }),
 })
 

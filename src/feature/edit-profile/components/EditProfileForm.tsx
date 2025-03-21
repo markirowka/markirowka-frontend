@@ -22,6 +22,7 @@ import { TypographyH3 } from "@/components/ui/typography";
 import { userAtom } from "@/feature/common";
 import { useAtom } from "jotai";
 import { UserData } from "@/feature/auth";
+import { useEffect } from "react";
 
 export const EditProfileForm = () => {
   // const navigate = useNavigate();
@@ -30,9 +31,24 @@ export const EditProfileForm = () => {
   const form = useForm<UserData>({
     resolver: zodResolver(EditProfileFormSchema),
     defaultValues: {
-      ...user
+      ...user,
     },
   });
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const element = document.querySelector(window.location.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      form.reset(user); // Обновляем значения формы
+    }
+  }, [user]);
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
     try {
@@ -204,6 +220,90 @@ export const EditProfileForm = () => {
               </FormItem>
             )}
           />
+          <div id="bank-account">
+            <FormField
+              control={form.control}
+              name="bank_account"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Расчетный счет</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Введите номер банковского счета"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Этот номер будет использоваться для заполнения документов
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="bank_code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Банковский код</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Введите банковский код"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Этот код будет использоваться для заполнения документов
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="bank_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Название банка</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Введите название банка"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Это название будет использоваться для заполнения документов
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="corr_account"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Корреспондентский счет</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Введите корреспондентский счет"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Этот счет будет использоваться для заполнения документов
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="gln"
@@ -211,7 +311,11 @@ export const EditProfileForm = () => {
               <FormItem>
                 <FormLabel>Номер GLN</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Введите номер GLN" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Введите номер GLN"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Эти данные будут использоваться для заполнения документов

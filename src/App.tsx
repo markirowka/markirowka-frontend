@@ -13,8 +13,14 @@ import {
 import { MainPage } from "./pages/MainPage";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { TextPage } from "./pages/TextPage";
+import { useEffect } from "react";
 
 function App() {
+
+
+	useEffect(() => {
+
+	}, [])
 
 	function RedirectToOrder () {
 		return <Navigate to="/new-order" replace />;

@@ -36,11 +36,11 @@ import { CMRDeliveryData, packTypes } from "../../config";
 	return (
 	  <AlertDialog>
 		<AlertDialogTrigger asChild>
-		  <Button variant={"default"}>Заполнить данные для накладной CMR</Button>
+		  <Button variant={"default"}>Заполнить данные для CMR</Button>
 		</AlertDialogTrigger>
 		<AlertDialogContent>
 		  <AlertDialogHeader>
-			<AlertDialogTitle className="p-1">Дополнительные данные для накладной CMR</AlertDialogTitle>
+			<AlertDialogTitle className="p-1">Дополнительные данные для CMR</AlertDialogTitle>
 			<p className="dialogHint">Нажмите на поле для редактирования</p>
 			<AlertDialogDescription>
 			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">

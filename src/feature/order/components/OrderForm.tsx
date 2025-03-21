@@ -25,9 +25,19 @@ import { toast } from "sonner";
 import { orderRowLimit } from "@/config/env";
 import { getOrderFromExcelFile, saveOrderToExcel } from "../sheet";
 import { CMRDeliveryDialog } from "./OrderTable/OrderTableCmrData";
+import { userAtom } from "@/feature/common";
+import { useEffect } from "react";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
+  const [user] = useAtom(userAtom);
+
+  useEffect(() => {
+     console.log("User data:", user);
+     if (user && !user.bank_account) {
+       alert("Заполните реквизиты расчетного счета в настройках профиля!")
+     }
+  }, [user])
 
   const form = useForm<OrderFormSchemaType>({
     resolver: zodResolver(OrderFormSchema),
@@ -218,7 +228,7 @@ export const OrderForm = () => {
       >
         <h4>Загрузка из файла, <a style={{
           color: "hsl(var(--primary))"
-        }} href="/news">инстукция</a></h4>
+        }} href="/news">инструкция</a></h4>
         <label className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-[#A3C55A] h-12 px-5 py-5">
           <Button type="button" onClick={handleButtonClick}>
             Загрузить заказ из файла Excel

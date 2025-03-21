@@ -114,6 +114,20 @@ export function OrderTable() {
       });
       return;
     }
+    if (!user.bank_account) {
+      if (!user.bank_account) {
+        toast("Заполните реквизиты расчетного счета", {
+          description: (
+            <a href="/edit-profile#bank-account" style={{ color: "#007bff", textDecoration: "underline" }}>
+              Перейти в профиль
+            </a>
+          ),
+          position: "top-center",
+          duration: Infinity,
+        });
+      }
+      return;
+    }
     Pending(true);
     toast("Создание документа началось", {
       description: "Накладные создаются...",
