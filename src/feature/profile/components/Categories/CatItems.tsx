@@ -36,7 +36,7 @@ import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
 import { LibItem } from "@/feature/types";
 import { categoriesAtom } from "@/feature/common/admin";
-import { sortByName } from "@/utils";
+import { sortByParam } from "@/utils";
 import { toast } from "sonner";
 import { CategoryCreateDialog } from "./AddModal";
 
@@ -66,14 +66,10 @@ export const menuColumns: ColumnDef<LibItem>[] = [
       const DeleteItem = () => {
         backendInstance
           .dropCategory(row.original.id)
-          .then(async (res) => {
-            if (res.success) {
+          .then(async () => {
               const newList = await backendInstance.getCategories();
               setCategories(newList.categories);
               toast("Категории обновлены");
-            } else {
-              toast("Не удалось обновить");
-            }
           })
           .catch((e) => {
             console.log(e);
@@ -131,7 +127,7 @@ export function CatItemEditor() {
 
   const fetchCts = async () => {
     if (user && user.user_role === "ADMIN") {
-      const cts = (await backendInstance.getCategories())?.categories.sort(sortByName);
+      const cts = (await backendInstance.getCategories())?.categories.sort(sortByParam("id"));
       setCategories(cts);
     }
   };
@@ -165,7 +161,7 @@ export function CatItemEditor() {
           <TableBody>
             {table
               .getRowModel()
-              .rows.sort(sortByName)
+              .rows
               .map((row) => (
                 <TableRow
                   key={row.id}

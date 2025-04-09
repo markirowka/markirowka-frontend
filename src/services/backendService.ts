@@ -173,8 +173,6 @@ class BackendService {
 		}, "POST")
 	}
 
-	
-
 	// Загрузка блоков контента для новостей
 
 	async getPageContentBlocks(url: string): Promise<{blocks: ContentBlock[] }> {
@@ -211,7 +209,7 @@ class BackendService {
 	}
 
 	async dropCategory(id: number): Promise<BoolResponse> {
-		return await this.post("/api/deletecategory", { id }, "POST");
+		return await this.post("/api/deletecategory", { category_id: id }, "POST");
 	}
 
 	// Общие методы

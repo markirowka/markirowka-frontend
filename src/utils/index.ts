@@ -78,9 +78,9 @@ export const sortMenuByIndex = (a: any, b: any): number => {
   return 0;
 };
 
-export const sortByName = (a: any, b: any): number => {
-  const nameA = a.original?.name || a.name;
-  const nameB = b.original?.name || b.name;
+export const sortByParam = (param: string) => (a: any, b: any): number => {
+  const nameA = a[param] || a[param];
+  const nameB = b[param] || b[param];
 
   // Handle case where names are undefined or null
   if (!nameA && !nameB) return 0;
