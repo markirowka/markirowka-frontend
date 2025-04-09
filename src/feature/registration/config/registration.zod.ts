@@ -46,7 +46,7 @@ export const RegistrationFormSchema = z.object({
 	bank_account: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
 	bank_code: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
 	bank_name: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
-	corr_account: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
+	corr_account: z.string().optional(),
 	gln: z.string().max(64, { message: "Максимум 64 символа"}),
     cargo_recevier: z.string().refine(
 	(value) => {

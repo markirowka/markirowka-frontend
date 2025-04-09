@@ -248,10 +248,10 @@ export const EditProfileForm = () => {
             name="bank_code"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Банковский код</FormLabel>
+                <FormLabel>БИК</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Введите банковский код"
+                    placeholder="БИК"
                     {...field}
                     value={field.value ?? ""}
                   />

@@ -42,7 +42,7 @@ export const EditProfileFormSchema = z.object({
 	law_address: z.string().min(6, { message: 'Поле должно содержать не менее 6-ти символов' }),
 	inn: z.coerce.number().optional(),
 	gln: z.string().max(64, { message: 'Не более 64 символов' }),
-  cargo_recevier: z.string().refine(
+    cargo_recevier: z.string().refine(
 	(value) => {
 	  return value.indexOf(" ") > 0 ? true : false;
 	},
@@ -53,7 +53,7 @@ export const EditProfileFormSchema = z.object({
   bank_account: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
   bank_code: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
   bank_name: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
-  corr_account: z.string().min(6, { message: "Поле должно содержать не менее 6-ти символов" }),
+  corr_account: z.string().optional(),
   cargo_city: z.string().min(3, { message: 'Поле должно содержать не менее 3-х символов' }),
 })
 

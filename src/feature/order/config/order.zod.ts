@@ -1,22 +1,34 @@
+// import { hasCommonElement, markableCategories } from "@/utils";
 import { z } from "zod"
 
 export const OrderFormSchema = z.object({
 	category: z.string(),
-	name: z.string().min(3, {message: 'Название должно содержать не менее 6-ти символов'}),
+	name: z.string().min(3, { message: 'Название должно содержать не менее 3-х символов' }),
 	quantity: z.coerce.number(),
 	price: z.coerce.number(),
-	date:  z.coerce.string().refine((value) => {
-		const dt = new Date(value);
-		const today = new Date();
-        const thirtyDaysAgo = new Date(today);
-              thirtyDaysAgo.setDate(today.getDate() - 30);
-        const tomorrow = new Date(today);
-              tomorrow.setDate(today.getDate() + 1);
-		return !isNaN(dt.getTime()) && dt >= thirtyDaysAgo && dt <= tomorrow
-	}, {
-        message: 'Дата должна быть не больше чем за 30 дней до и на 1 день после сегодняшнего'
-    })
-})
+	date: z.string(),
+	tnved: z.string().optional(),
+  }).superRefine((data, ctx) => {
+	const dt = new Date(data.date);
+	const today = new Date();
+	const tomorrow = new Date(today);
+	tomorrow.setDate(today.getDate() + 1);
+
+	// const hasMarkableCategory = hasCommonElement(markableCategories, [data.category]);
+	const daysBack = 30 // hasMarkableCategory ? 7 : 30;
+  
+	const startDate = new Date(today);
+	startDate.setDate(today.getDate() - daysBack);
+  
+	if (isNaN(dt.getTime()) || dt < startDate || dt > tomorrow) {
+	  ctx.addIssue({
+		code: z.ZodIssueCode.custom,
+		message: `Для категории "${data.category}" дата должна быть в 
+		не более ${daysBack} дней до или 1 дня после`,
+		path: ['date'],
+	  });
+	}
+  });
 
 export type OrderFormSchemaType = z.infer<typeof OrderFormSchema>
 

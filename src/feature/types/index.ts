@@ -69,3 +69,12 @@ export interface ItemDataClothes {
   composition?: string;
   tnved: string;
 }
+
+export interface LibItem {
+  id: number;
+  name: string;
+}
+
+export interface BoolResponse { 
+  success: boolean 
+}

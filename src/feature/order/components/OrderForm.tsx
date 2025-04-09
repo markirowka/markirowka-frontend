@@ -26,10 +26,12 @@ import { orderRowLimit } from "@/config/env";
 import { getOrderFromExcelFile, saveOrderToExcel } from "../sheet";
 import { CMRDeliveryDialog } from "./OrderTable/OrderTableCmrData";
 import { userAtom } from "@/feature/common";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { backendInstance } from "@/services/backendService";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
+  const [categories, setCategories] = useState<string[]>([])
   const [user] = useAtom(userAtom);
 
   useEffect(() => {
@@ -37,6 +39,16 @@ export const OrderForm = () => {
      if (user && !user.bank_account) {
        alert("Заполните реквизиты расчетного счета в настройках профиля!")
      }
+     backendInstance.getCategories().then((res) => {
+        if (res.categories) {
+          setCategories(res.categories.map(item => item.name))
+        } else {
+          setCategories(ORDER_PRODUCTS_CATEGORY)
+        }
+     }).catch((e) => {
+        console.log(e);
+        setCategories(ORDER_PRODUCTS_CATEGORY)
+     })
   }, [user])
 
   const form = useForm<OrderFormSchemaType>({
@@ -126,7 +138,7 @@ export const OrderForm = () => {
               name="category"
               label="Категория товара"
               placeholder="Выберите категорию товара"
-              options={ORDER_PRODUCTS_CATEGORY}
+              options={categories}
             />
 
             <FormField
@@ -199,6 +211,22 @@ export const OrderForm = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="tnved"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Код ТНВЭД</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Укажите код, если требуется"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button
               type="submit"
               disabled={orderProducts.length >= orderRowLimit}
@@ -229,8 +257,8 @@ export const OrderForm = () => {
         <h4>Загрузка из файла, <a style={{
           color: "hsl(var(--primary))"
         }} href="/news">инструкция</a></h4>
-        <label className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-[#A3C55A] h-12 px-5 py-5">
-          <Button type="button" onClick={handleButtonClick}>
+        <label className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 shadow focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-[#A3C55A] h-12 px-5 py-5">
+          <Button type="button" variant="defaultNoShadow" onClick={handleButtonClick}>
             Загрузить заказ из файла Excel
           </Button>
           <input

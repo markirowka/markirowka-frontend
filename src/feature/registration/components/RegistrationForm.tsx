@@ -256,9 +256,9 @@ export const RegistrationForm = () => {
             name="bank_code"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Банковский код</FormLabel>
+                <FormLabel>БИК</FormLabel>
                 <FormControl>
-                  <Input placeholder="Введите банковский код" {...field} />
+                  <Input placeholder="Введите БИК" {...field} />
                 </FormControl>
                 <FormDescription>
                   Этот код будет использоваться для заполнения документов

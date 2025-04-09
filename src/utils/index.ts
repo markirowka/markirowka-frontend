@@ -1,5 +1,7 @@
 import { backendInstance } from "@/services/backendService";
 
+export const markableCategories = ["Обувь", "Одежда", "Медицинские изделия"]
+
 export function ObjectToKVArray(
   obj: Record<string, any>
 ): { key: string; value: any }[] {
@@ -75,3 +77,24 @@ export const sortMenuByIndex = (a: any, b: any): number => {
   }
   return 0;
 };
+
+export const sortByName = (a: any, b: any): number => {
+  const nameA = a.original?.name || a.name;
+  const nameB = b.original?.name || b.name;
+
+  // Handle case where names are undefined or null
+  if (!nameA && !nameB) return 0;
+  if (!nameA && nameB) return 1;
+  if (nameA && !nameB) return -1;
+
+  // If both names are present, compare alphabetically
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  
+  return 0;
+};
+
+export function hasCommonElement(arr1: any[], arr2: any[]): boolean {
+  return arr1.some(item => arr2.includes(item)) || arr2.some(item => arr1.includes(item));
+}
+

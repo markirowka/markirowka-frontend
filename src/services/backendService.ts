@@ -6,7 +6,7 @@ import { CMRDeliveryData } from "@/feature/order"
 import { PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
-import { ContentBlock, ItemDataClothes, ItemDataShoes, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
+import { BoolResponse, ContentBlock, ItemDataClothes, ItemDataShoes, LibItem, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -173,6 +173,8 @@ class BackendService {
 		}, "POST")
 	}
 
+	
+
 	// Загрузка блоков контента для новостей
 
 	async getPageContentBlocks(url: string): Promise<{blocks: ContentBlock[] }> {
@@ -189,15 +191,27 @@ class BackendService {
 		return await this.post("/api/contentblock/create", body, "POST");
 	}
 
-	async updateContentBlock(data: ContentBlock): Promise<{ success: boolean }> {
+	async updateContentBlock(data: ContentBlock): Promise<BoolResponse> {
 		return await this.post("/api/contentblock/update", data, "POST");
 	}
 	
-	async deleteContentBlock(id: number): Promise<{ success: boolean }> {
+	async deleteContentBlock(id: number): Promise<BoolResponse> {
         const body = {
 			id
 		}
 		return await this.post("/api/contentblock/delete", body, "POST");
+	}
+
+	async getCategories(): Promise<{ categories: LibItem[] }> {
+		return await this.get("/api/categories");
+	}
+
+	async addCategory(name: string): Promise<BoolResponse> {
+		return await this.post("/api/addcategory", {name}, "POST");
+	}
+
+	async dropCategory(id: number): Promise<BoolResponse> {
+		return await this.post("/api/deletecategory", { id }, "POST");
 	}
 
 	// Общие методы
