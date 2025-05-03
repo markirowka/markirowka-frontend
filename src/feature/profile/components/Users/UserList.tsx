@@ -10,7 +10,6 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -41,8 +40,8 @@ import { userListAtom } from "@/feature/common/admin";
 export const userColumns: ColumnDef<UserDisplayData>[] = [
   {
     accessorKey: "Id",
-    header: "Id",
-    cell: ({ row }) => <div className="capitalize">{row.original.id}</div>,
+    header: "Номер",
+    cell: ({ row }) => <div className="capitalize">{row.original.user_id}</div>,
   },
   {
     accessorKey: "email",
@@ -103,14 +102,17 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
       };
 
       const deleteUser = () => {
-        backendInstance.deleteUser(row.original.id).then(async () => {
-          const newData = await backendInstance.getAllUsers();
-              setDisplayUsers(newData);
-        }).catch((e) => {
-          console.log(e);
-        })
-      }
-      
+        backendInstance
+          .deleteUser(row.original.id)
+          .then(async () => {
+            const newData = await backendInstance.getAllUsers();
+            setDisplayUsers(newData);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -128,15 +130,15 @@ export const userColumns: ColumnDef<UserDisplayData>[] = [
             <DropdownMenuItem onClick={UpdateUserRole("USER")}>
               Убрать из администраторов
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={deleteUser}>
-              Удалить
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={deleteUser}>Удалить</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
 ];
+
+const defaultPageLimit = 20;
 
 export function UserList() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -148,6 +150,9 @@ export function UserList() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [user] = useAtom(userAtom);
   const [displayUsers, setDisplayUsers] = useAtom(userListAtom);
+  const [usersCount, setUsersCount] = React.useState<Number>(0);
+  const [pageOffset, setPageOffset] = React.useState<Number>(0);
+  const [pageLimit, setPageLimit] = React.useState<Number>(defaultPageLimit);
 
   const table = useReactTable({
     data: displayUsers,
@@ -155,7 +160,6 @@ export function UserList() {
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -164,21 +168,34 @@ export function UserList() {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
-      pagination: {
-        pageIndex: 0,
-        pageSize: 49,
-      }
+      rowSelection
     },
   });
 
   React.useEffect(() => {
-    if (user && user?.user_role === "ADMIN") {
-      backendInstance.getAllUsers().then((users) => {
-        setDisplayUsers(users);
-      });
-    }
+    setPageLimit(defaultPageLimit);
+    backendInstance.getAllUsersCount().then((c) => {
+      setUsersCount(c);
+    });
   }, []);
+
+  React.useEffect(() => {
+    if (user && user?.user_role === "ADMIN") {
+      backendInstance
+        .getAllUsers(Number(pageOffset), Number(pageLimit))
+        .then((users) => {
+          setDisplayUsers(prevUsers => [...prevUsers, ...users]);
+        });
+    }
+  }, [pageOffset]);
+
+  const displayNum = Math.min((Number(pageOffset) + Number(pageLimit)), Number(usersCount));
+
+  const displayLoadMore = Number(displayNum) < Number(usersCount);
+
+  const paginateHandler = () => {
+    setPageOffset((offset) => Number(offset) + Number(pageLimit));
+  };
 
   return (
     <div className="w-full m-auto my-4 p-12 bg-white rounded-xl shadow-lg">
@@ -231,6 +248,19 @@ export function UserList() {
             )}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4 max-[1200px]:flex-col max-[1200px]:gap-2">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {`Показано ${displayNum} из ${usersCount} пользователей`}
+        </div>
+        <Button
+          size="sm"
+          className="flex flex-row items-center gap-2 profile-edit-button"
+          onClick={paginateHandler}
+          disabled={!displayLoadMore}
+        >
+          Загрузить ещё
+        </Button>
       </div>
     </div>
   );

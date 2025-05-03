@@ -1343,3 +1343,13 @@ h4 {
     font-size: 40px;
   }
 }
+
+.orderTableEditable {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.orderTableEditable input,
+.orderTableEditable select {
+  max-width: 120px;
+}

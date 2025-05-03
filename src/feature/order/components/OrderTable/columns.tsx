@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ORDER_PRODUCTS_CATEGORY, OrderFormSchemaType } from "../../config";
-import { OrderTableViewProduct } from "./OrderTableViewProduct";
+// import { OrderTableViewProduct } from "./OrderTableViewProduct";
 import { OrderTableDeleteProduct } from "./OrderTableRemoveProduct";
 import { OrderTableDuplicateProduct } from "./OrderTableDuplicateProduct";
 import { orderProductsStoreAtom } from "../../store";
@@ -124,6 +124,58 @@ export const columns: ColumnDef<OrderFormSchemaType>[] = [
 		);
 	  },
   },
+  {
+    accessorKey: "tnved",
+    header: "Код ТНВЭД",
+    cell: ({ row }) => {
+      const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
+      const updateParam = (event: React.ChangeEvent<HTMLInputElement>) => {
+        orderProducts;
+        setOrderProducts((prevMenu) =>
+          prevMenu.map((item, idx) =>
+            idx === row.index
+              ? { ...item, tnved: event.target.value, toUpdate: true }
+              : item
+          )
+        );
+      };
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("tnved")}
+            onChange={updateParam}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "country",
+    header: "Страна",
+    cell: ({ row }) => {
+      const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
+      const updateParam = (event: React.ChangeEvent<HTMLInputElement>) => {
+        orderProducts;
+        setOrderProducts((prevMenu) =>
+          prevMenu.map((item, idx) =>
+            idx === row.index
+              ? { ...item, country: event.target.value, toUpdate: true }
+              : item
+          )
+        );
+      };
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("country")}
+            onChange={updateParam}
+          />
+        </div>
+      );
+    },
+  },
   /* {
 		accessorKey: "date",
 		header: "Дата",
@@ -137,7 +189,7 @@ export const columns: ColumnDef<OrderFormSchemaType>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row gap-2 items-center justify-end">
-          <OrderTableViewProduct product={row.original} id={row.index} />
+        {/*  <OrderTableViewProduct product={row.original} id={row.index} /> */}
           <OrderTableDeleteProduct id={row.index} />
           <OrderTableDuplicateProduct id={row.index} />
         </div>

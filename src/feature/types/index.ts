@@ -8,6 +8,7 @@ export interface OrderData {
 
 export interface UserDisplayData {
   id: number;
+  user_id: number;
   email: string;
   full_name: string;
   inn: number;
@@ -70,9 +71,11 @@ export interface ItemDataClothes {
   tnved: string;
 }
 
-export interface LibItem {
+export interface CatItem {
   id: number;
   name: string;
+  metrik?: string;
+  okei_code?: string;
 }
 
 export interface BoolResponse { 

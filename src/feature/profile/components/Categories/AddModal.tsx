@@ -20,9 +20,11 @@ import { toast } from "sonner";
   export const CategoryCreateDialog: FC<EmptyDialogProps> = ({ }) => {
 	const [, setCategories] = useAtom(categoriesAtom);
 	const [name, setName] = useState<string>("");
+	const [metrik, setMetrik] = useState<string>("");
+	const [okei, setOkei] = useState<string>("");
 
     const saveAction = () => {
-        backendInstance.addCategory(name).then(async () => {
+        backendInstance.addCategory(name, metrik, okei).then(async () => {
             const cts = (await backendInstance.getCategories())?.categories || []
             setCategories(cts)
         }).catch(e => {
@@ -47,6 +49,24 @@ import { toast } from "sonner";
 				  type="text"
 				  value={name}
 				  onChange={(event) => setName(event.target.value)}
+				  className="text-base input-text-right"
+				/>
+			  </div>
+			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
+				<span className="font-semibold text-base">Единица измерения</span>
+				<input
+				  type="text"
+				  value={metrik}
+				  onChange={(event) => setMetrik(event.target.value)}
+				  className="text-base input-text-right"
+				/>
+			  </div>
+			  <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
+				<span className="font-semibold text-base">Код ОКЕИ</span>
+				<input
+				  type="text"
+				  value={okei}
+				  onChange={(event) => setOkei(event.target.value)}
 				  className="text-base input-text-right"
 				/>
 			  </div>

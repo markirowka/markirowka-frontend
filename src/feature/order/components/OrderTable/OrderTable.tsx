@@ -60,6 +60,8 @@ export function OrderTable() {
       quantity: item.quantity || 0, // Если нет значения, ставим 0
       price: item.price || 0, // Если нет значения, ставим 0
       date: item.date || "", // Если нет значения, ставим пустую строку
+      tnved: item.tnved,
+      country: item.country
     }));
     
     setOrder(savedOrders); // Устанавливаем состояние заказов
@@ -171,7 +173,7 @@ export function OrderTable() {
           <div>Добавлено {orderProducts.length} шт</div>
         </div>
         <div className="rounded-md border">
-          <Table>
+          <Table className="orderTableEditable">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

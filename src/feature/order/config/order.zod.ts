@@ -8,6 +8,7 @@ export const OrderFormSchema = z.object({
 	price: z.coerce.number(),
 	date: z.string(),
 	tnved: z.string().optional(),
+	country: z.string().optional()
   }).superRefine((data, ctx) => {
 	const dt = new Date(data.date);
 	const today = new Date();

@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { RegistrationFormSchema, RegistrationFormSchemaType } from "..";
+import { isBelarusNumber, RegistrationFormSchema, RegistrationFormSchemaType } from "..";
 import { Separator } from "@/components/ui/separator";
 import { backendInstance } from "@/services/backendService";
 import { toast } from "sonner";
@@ -101,6 +101,9 @@ export const RegistrationForm = () => {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>
+                  Страна: {field.value && isBelarusNumber(field.value) ? "Беларусь" : "Россия"}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

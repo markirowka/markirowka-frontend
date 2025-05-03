@@ -6,7 +6,7 @@ import { CMRDeliveryData } from "@/feature/order"
 import { PasswordRecoveryFormSchemaType } from "@/feature/password-recovery/config"
 import { IRegistrationResponse, RegistrationFormSchemaType } from "@/feature/registration"
 import { ShoesFormSchemaType } from "@/feature/shoes/config"
-import { BoolResponse, ContentBlock, ItemDataClothes, ItemDataShoes, LibItem, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
+import { BoolResponse, ContentBlock, ItemDataClothes, ItemDataShoes, CatItem, MenuItem, OrderItemData, PageContentData, UserDisplayData } from "@/feature/types"
 import { ObjectToKVArray } from "@/utils"
 
 class BackendService {
@@ -58,8 +58,12 @@ class BackendService {
 		return (await this.get(`/api/orderhistory/${page}`))?.orders || []
 	}
 
-	async getAllUsers() : Promise<UserDisplayData[]> {
-		return (await this.get(`/api/admin/allusers`))?.users.sort(
+	async validateUnpBelarus(unp: number): Promise<boolean> {
+		return (await this.get(`/api/external/validateunp/${unp}`))?.ok || false
+	}
+
+	async getAllUsers(offset?: number, limit?: number) : Promise<UserDisplayData[]> {
+		return (await this.get(offset === undefined ? `/api/admin/allusers` : `/api/admin/allusers/${offset}/${limit || 10}`))?.users.sort(
 			(a: UserDisplayData, b: UserDisplayData) => {
 			const p1 = a.id;
 			const p2 = b.id;
@@ -67,6 +71,10 @@ class BackendService {
 			if (p1 === p2) return 0;
 			if (p1 > p2) return -1
 		}) || []
+	}
+
+	async getAllUsersCount() : Promise<number> {
+		return (await this.get("/api/admin/alluserscount"))?.count || 0
 	}
 
 	async getUserOrderCount() : Promise<number> {
@@ -200,12 +208,12 @@ class BackendService {
 		return await this.post("/api/contentblock/delete", body, "POST");
 	}
 
-	async getCategories(): Promise<{ categories: LibItem[] }> {
+	async getCategories(): Promise<{ categories: CatItem[] }> {
 		return await this.get("/api/categories");
 	}
 
-	async addCategory(name: string): Promise<BoolResponse> {
-		return await this.post("/api/addcategory", {name}, "POST");
+	async addCategory(name: string, metrik?: string, okei_code?: string): Promise<BoolResponse> {
+		return await this.post("/api/addcategory", {name, metrik, okei_code}, "POST");
 	}
 
 	async dropCategory(id: number): Promise<BoolResponse> {

@@ -34,13 +34,13 @@ import {
 import { useAtom } from "jotai";
 import { userAtom } from "@/feature/common";
 import { backendInstance } from "@/services/backendService";
-import { LibItem } from "@/feature/types";
+import { CatItem } from "@/feature/types";
 import { categoriesAtom } from "@/feature/common/admin";
 import { sortByParam } from "@/utils";
 import { toast } from "sonner";
 import { CategoryCreateDialog } from "./AddModal";
 
-export const menuColumns: ColumnDef<LibItem>[] = [
+export const menuColumns: ColumnDef<CatItem>[] = [
   {
     accessorKey: "Id",
     header: "Id",
@@ -55,6 +55,20 @@ export const menuColumns: ColumnDef<LibItem>[] = [
     header: "Название",
     cell: ({ row }) => {
       return <div className="">{row.original.name}</div>;
+    },
+  },
+  {
+    accessorKey: "metrik",
+    header: "Единица измерения",
+    cell: ({ row }) => {
+      return <div className="">{row.original.metrik}</div>;
+    },
+  },
+  {
+    accessorKey: "okei_code",
+    header: "Код ОКЕИ",
+    cell: ({ row }) => {
+      return <div className="">{row.original.okei_code}</div>;
     },
   },
   {

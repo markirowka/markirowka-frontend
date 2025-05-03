@@ -14,6 +14,7 @@ import { FormSelect } from "../../../components/ui/form-select";
 import { Separator } from "@/components/ui/separator";
 import { PackageSearch } from "lucide-react";
 import {
+  COUNTRIES,
   ORDER_PRODUCTS_CATEGORY,
   OrderFormSchema,
   OrderFormSchemaType,
@@ -139,6 +140,16 @@ export const OrderForm = () => {
               label="Категория товара"
               placeholder="Выберите категорию товара"
               options={categories}
+            />
+
+            <FormSelect
+              className="flex-1"
+              form={form}
+              name="country"
+              label="Страна происхождения"
+              placeholder="Выберите из списка"
+              hasFilter={true}
+              options={COUNTRIES}
             />
 
             <FormField
