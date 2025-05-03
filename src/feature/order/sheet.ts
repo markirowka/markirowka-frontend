@@ -4,7 +4,7 @@ import { OrderFormSchema, OrderFormSchemaType } from "./config";
 import { ShoesFormSchema, ShoesFormSchemaType } from "../shoes";
 import { ClothesFormSchema, ClothesFormSchemaType } from "../clothes";
 
-const headers = ["Категория", "Название", "Количество", "Цена", "Дата документа"];
+const headers = ["Категория", "Название", "Количество", "Цена", "Дата документа", "Код ТНВЭД", "Страна происхождения"];
 
 export function transformDataOrder(input: Record<string, any>[]): OrderFormSchemaType[] {
   return input.map((obj) => {
@@ -18,6 +18,8 @@ export function transformDataOrder(input: Record<string, any>[]): OrderFormSchem
       name: String(values[1]),
       quantity: Number(values[2]),
       price: Number(values[3]),
+      tnved: String(values[5]),
+      country: String(values[6])
     };
 
     try {
@@ -106,6 +108,8 @@ export async function saveOrderToExcel (data: OrderFormSchemaType[]) {
       item.quantity,
       item.price,
       item.date,
+      item.tnved || " ",
+      item.country || " "
     ]);
 
    // Создание рабочего листа и книги
