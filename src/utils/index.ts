@@ -98,3 +98,15 @@ export function hasCommonElement(arr1: any[], arr2: any[]): boolean {
   return arr1.some(item => arr2.includes(item)) || arr2.some(item => arr1.includes(item));
 }
 
+export const isSystemIOS = () => {
+  const userAgent =
+    navigator.userAgent || navigator.vendor || (window as any).opera;
+  return /iPad|iPhone|iPod/.test(userAgent);
+};
+
+export const isSystemAndroid = () => {
+  const userAgent =
+    navigator.userAgent || navigator.vendor || (window as any).opera;
+  return /Android/i.test(userAgent);
+};
+

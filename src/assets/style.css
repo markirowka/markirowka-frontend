@@ -67,7 +67,7 @@ h6 {
 }
 
 .intro__title {
-  font-size: 72px;
+  font-size: 64px;
   font-weight: 400;
   line-height: 72px;
   text-align: left;
@@ -1081,7 +1081,7 @@ h4 {
   }
 
   .intro__title {
-    font-size: 60px;
+    font-size: 56px;
   }
   p {
     max-width: 100%;
@@ -1197,7 +1197,7 @@ h4 {
     flex-wrap: wrap;
   }
   .intro__title {
-    font-size: 45px;
+    font-size: 40px;
     line-height: 115%;
   }
   p {

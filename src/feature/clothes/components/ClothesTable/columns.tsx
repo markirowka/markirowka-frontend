@@ -51,7 +51,7 @@ export const columns: ColumnDef<ClothesFormSchemaType>[] = [
     id: "id",
     header: "#",
     cell: ({ row }) => {
-      return <div className="capitalize font-medium">{row.index + 1}</div>;
+      return <div className="lowercase">{row.index + 1}</div>;
     },
     enableSorting: false,
     enableHiding: false,
@@ -63,7 +63,7 @@ export const columns: ColumnDef<ClothesFormSchemaType>[] = [
       const [clothes, setClothes] = useAtom(clothesAtom);
       clothes;
       return (
-        <div className="capitalize font-medium">
+        <div className="lowercase">
           <input
             type="text"
             value={row.getValue("articleName")}
@@ -80,11 +80,96 @@ export const columns: ColumnDef<ClothesFormSchemaType>[] = [
       const [clothes, setClothes] = useAtom(clothesAtom);
       clothes;
       return (
-        <div className="capitalize font-medium">
+        <div className="lowercase">
           <input
             type="text"
             value={row.getValue("tradeMark")}
             onChange={updateParamClothes(setClothes, row.index, "tradeMark")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "clothesType",
+    header: "Вид одежды",
+    cell: ({ row }) => {
+      const [clothes, setClothes] = useAtom(clothesAtom);
+      clothes;
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("clothesType")}
+            onChange={updateParamClothes(setClothes, row.index, "clothesType")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "color",
+    header: "Цвет",
+    cell: ({ row }) => {
+      const [clothes, setClothes] = useAtom(clothesAtom);
+      clothes;
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("color")}
+            onChange={updateParamClothes(setClothes, row.index, "color")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "size",
+    header: "Размер",
+    cell: ({ row }) => {
+      const [clothes, setClothes] = useAtom(clothesAtom);
+      clothes;
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("size")}
+            onChange={updateParamClothes(setClothes, row.index, "size")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "composition",
+    header: "Состав",
+    cell: ({ row }) => {
+      const [clothes, setClothes] = useAtom(clothesAtom);
+      clothes;
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("composition")}
+            onChange={updateParamClothes(setClothes, row.index, "composition")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "tnved",
+    header: "Код ТНВЭД",
+    cell: ({ row }) => {
+      const [clothes, setClothes] = useAtom(clothesAtom);
+      clothes;
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("tnved")}
+            onChange={updateParamClothes(setClothes, row.index, "tnved")}
           />
         </div>
       );

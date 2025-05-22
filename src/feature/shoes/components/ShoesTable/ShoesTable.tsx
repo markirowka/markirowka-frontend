@@ -123,7 +123,7 @@ export function ShoesTable(props: { withBtn: boolean }) {
         <div>Добавлено {shoes.length} шт</div>
       </div>
       <div className="rounded-md border">
-        <Table>
+        <Table className="orderTableEditable">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

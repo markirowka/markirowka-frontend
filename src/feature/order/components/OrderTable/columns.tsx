@@ -11,7 +11,7 @@ export const columns: ColumnDef<OrderFormSchemaType>[] = [
     id: "id",
     header: "#",
     cell: ({ row }) => {
-      return <div className="capitalize font-medium">#{row.index + 1}</div>;
+      return <div className="lowercase">#{row.index + 1}</div>;
     },
     enableSorting: false,
     enableHiding: false,

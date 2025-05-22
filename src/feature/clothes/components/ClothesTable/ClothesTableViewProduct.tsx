@@ -19,6 +19,7 @@ import { FC } from "react";
 import { clothesAtom } from "../../store";
 import { useAtom } from "jotai";
 import { updateParamClothes } from "./columns";
+import { Edit } from "lucide-react";
 
 interface IClothesTableViewProductProps {
   id: number;
@@ -34,12 +35,14 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"ghost"}>Править</Button>
+        <Button variant={"outline"} size={"icon"}>
+          <Edit className="w-4" />
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="p-1">Продукт №{id + 1}</AlertDialogTitle>
-		  <p className="dialogHint">Нажмите на поле для редактирования</p>
+          <p className="dialogHint">Нажмите на поле для редактирования</p>
           <AlertDialogDescription>
             <div className="flex justify-between mb-2 p-1 border-b border-gray-200">
               <span className="font-semibold text-base">Товарный Бренд</span>
@@ -48,6 +51,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.tradeMark}
                 onChange={updateParamClothes(setClothes, id, "tradeMark")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               />
             </div>
 
@@ -57,6 +61,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.articleType}
                 onChange={updateParamClothes(setClothes, id, "articleType")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               >
                 <option value="Модель">Модель</option>
                 <option value="Артикул">Артикул</option>
@@ -72,6 +77,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.articleName}
                 onChange={updateParamClothes(setClothes, id, "articleName")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               />
             </div>
 
@@ -81,17 +87,16 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.clothesType}
                 onChange={updateParamClothes(setClothes, id, "clothesType")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               >
-                {CLOTHES_TYPES.map((value, index) => {
-                  return (
-                    <option
-                      key={`op_size_sh_shtype_${index * 1.21}`}
-                      value={value}
-                    >
-                      {value}
-                    </option>
-                  );
-                })}
+                {CLOTHES_TYPES.map((value, index) => (
+                  <option
+                    key={`op_size_sh_shtype_${index * 1.21}`}
+                    value={value}
+                  >
+                    {value}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -101,17 +106,16 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.color}
                 onChange={updateParamClothes(setClothes, id, "color")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               >
-                {CLOTHES_COLORS.map((value, index) => {
-                  return (
-                    <option
-                      key={`op_size_sh_shsize_${index * 1.21}`}
-                      value={value}
-                    >
-                      {value}
-                    </option>
-                  );
-                })}
+                {CLOTHES_COLORS.map((value, index) => (
+                  <option
+                    key={`op_size_sh_shsize_${index * 1.21}`}
+                    value={value}
+                  >
+                    {value}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -123,17 +127,16 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.size}
                 onChange={updateParamClothes(setClothes, id, "size")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               >
-                {CLOTHES_SIZES.map((value, index) => {
-                  return (
-                    <option
-                      key={`op_size_sh_shsize_${index * 1.21}`}
-                      value={value}
-                    >
-                      {value}
-                    </option>
-                  );
-                })}
+                {CLOTHES_SIZES.map((value, index) => (
+                  <option
+                    key={`op_size_sh_shsize_${index * 1.21}`}
+                    value={value}
+                  >
+                    {value}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -144,6 +147,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.composition}
                 onChange={updateParamClothes(setClothes, id, "composition")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               />
             </div>
 
@@ -154,6 +158,7 @@ export const ClothesTableViewProduct: FC<IClothesTableViewProductProps> = ({
                 value={product.tnved}
                 onChange={updateParamClothes(setClothes, id, "tnved")}
                 className="text-base input-text-right"
+                style={{ textTransform: "lowercase" }}
               />
             </div>
           </AlertDialogDescription>

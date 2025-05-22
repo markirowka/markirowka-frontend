@@ -19,6 +19,8 @@ const defaultContent = {
   content: "<p>Текст</p>",
 };
 
+const BASE_EMBED_URL = "https://markirowka.ru/embed";
+
 class Clipboard extends Quill.import("modules/clipboard") {
   async onPaste(e: any) {
     e.preventDefault();
@@ -44,6 +46,9 @@ export const ContentPage = () => {
   const quillRef = useRef<any>(null);
   const path = useLocation();
   const [pending, Pending] = useState(true);
+  const [videoUploading, setIsVideoUp] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [embedUrl, setEmbedUrl] = useState("");
   const [readStats, setReadStats] = useAtom(statsAtom);
   const [heading, setHeading] = useState(defaultContent.heading);
   const [content, setContent] = useState(defaultContent.content);
@@ -137,7 +142,7 @@ export const ContentPage = () => {
             label: "Скрыть",
             onClick: () => console.log("Прочитано"),
           },
-        }); 
+        });
         await refreshContentBlocks();
         switchEditState(false);
       })
@@ -147,7 +152,7 @@ export const ContentPage = () => {
   };
 
   const deleteBlock = async (id: number) => {
-    console.log("Deleted, id:", id)
+    console.log("Deleted, id:", id);
     backendInstance
       .deleteContentBlock(id)
       .then(async () => {
@@ -173,6 +178,36 @@ export const ContentPage = () => {
   if (pending) {
     return <div className="contentPage">Loading...</div>;
   }
+
+  const onFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  console.log("Selected file:", selectedFile);
+
+  const uploadVideo = async () => {
+    if (!selectedFile) return;
+    console.log("Selected file to upload:", selectedFile);
+    setIsVideoUp(true);
+    try {
+      const response = await backendInstance.uploadFreeVideoByAdmin(
+        selectedFile
+      );
+      const fileName = encodeURIComponent(response.fileName);
+      const url = `${BASE_EMBED_URL}/${fileName}`;
+      setEmbedUrl(url);
+      return url;
+    } catch (err: any) {
+      console.log(err);
+      toast(err.message || "Upload failed");
+      return "";
+    } finally {
+      setIsVideoUp(false);
+    }
+  };
   // bg-white rounded-xl shadow-lg
   return (
     <>
@@ -242,9 +277,29 @@ export const ContentPage = () => {
         </div>
       </div>
       {!editState && user && user.user_role === ADMIN_ROLE ? (
-        <div className="buttonPageCtnr">
-          <Button onClick={createBlock}>+ Добавить новость</Button>
-        </div>
+        <>
+          <div className="buttonPageCtnr">
+            <Button onClick={createBlock}>+ Добавить новость</Button>
+          </div>
+          <div className="buttonPageCtnr">
+            <div>
+              <p>Загрузить видео</p>
+              <input type="file" onChange={onFileUpload} />
+            </div>
+            <div>
+              <Button onClick={uploadVideo} disabled={videoUploading}>
+                {!videoUploading
+                  ? "Получить ссылку на видео"
+                  : "Загружается..."}
+              </Button>
+              {embedUrl && (
+                <p>
+                  Ссылка для вставки видео: <span>{embedUrl}</span>
+                </p>
+              )}
+            </div>
+          </div>
+        </>
       ) : null}
       {additionalContentBlocks.map((block, index) => {
         return !editState ? (

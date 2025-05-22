@@ -51,20 +51,34 @@ export const columns: ColumnDef<ShoesFormSchemaType>[] = [
     id: "id",
     header: "#",
     cell: ({ row }) => {
-      console.log(row);
-      return <div className="capitalize font-medium">{row.index + 1}</div>;
+      return <div className="lowercase">{row.index + 1}</div>;
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "articleName",
-    header: "Номер Артикула/Модели",
+    accessorKey: "tradeMark",
+    header: "Товарный Бренд",
     cell: ({ row }) => {
-      const [shoes, setShoes] = useAtom(shoesAtom);
-      shoes;
+      const [, setShoes] = useAtom(shoesAtom);
       return (
-        <div className="capitalize font-medium">
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("tradeMark")}
+            onChange={updateParamShoes(setShoes, row.index, "tradeMark")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "articleName",
+    header: "Артикул",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
           <input
             type="text"
             value={row.getValue("articleName")}
@@ -75,17 +89,112 @@ export const columns: ColumnDef<ShoesFormSchemaType>[] = [
     },
   },
   {
-    accessorKey: "tradeMark",
-    header: "Товарный Бренд",
+    accessorKey: "shoesType",
+    header: "Тип обуви",
     cell: ({ row }) => {
-      const [shoes, setShoes] = useAtom(shoesAtom);
-      shoes;
+      const [, setShoes] = useAtom(shoesAtom);
       return (
-        <div className="capitalize font-medium">
+        <div className="lowercase">
           <input
             type="text"
-            value={row.getValue("tradeMark")}
-            onChange={updateParamShoes(setShoes, row.index, "tradeMark")}
+            value={row.getValue("shoesType")}
+            onChange={updateParamShoes(setShoes, row.index, "shoesType")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "color",
+    header: "Цвет",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("color")}
+            onChange={updateParamShoes(setShoes, row.index, "color")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "size",
+    header: "Размер",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("size")}
+            onChange={updateParamShoes(setShoes, row.index, "size")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "upperMaterial",
+    header: "Материал верха",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("upperMaterial")}
+            onChange={updateParamShoes(setShoes, row.index, "upperMaterial")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "liningMaterial",
+    header: "Материал подкладки",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("liningMaterial")}
+            onChange={updateParamShoes(setShoes, row.index, "liningMaterial")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "bottomMaterial",
+    header: "Материал низа",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("bottomMaterial")}
+            onChange={updateParamShoes(setShoes, row.index, "bottomMaterial")}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "tnved",
+    header: "Код ТНВЭД",
+    cell: ({ row }) => {
+      const [, setShoes] = useAtom(shoesAtom);
+      return (
+        <div className="lowercase">
+          <input
+            type="text"
+            value={row.getValue("tnved")}
+            onChange={updateParamShoes(setShoes, row.index, "tnved")}
           />
         </div>
       );

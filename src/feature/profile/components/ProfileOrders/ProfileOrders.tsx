@@ -201,6 +201,8 @@ export const columns: ColumnDef<OrderData>[] = [
   },
 ];
 
+const defaultDODC = 60;
+
 export function ProfileOrders() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -218,6 +220,7 @@ export function ProfileOrders() {
   const [ordersPage, setOrdersPage] = useAtom(ordersPageAtom);
   const [displayPaginator, setDisplayPaginator] = useState(true);
   const [defaultPageSize, setDefaultPageSize] = useState(5);
+  const [deleteOldDaysCount, setDODC] = useState(defaultDODC);
 
   const table = useReactTable({
     data: displayOrders,
@@ -300,6 +303,18 @@ export function ProfileOrders() {
             onClick: () => console.log("Прочитано"),
           },
         });
+      });
+  };
+
+  const deleteOld = () => {
+    backendInstance
+      .deleteOldFiles(deleteOldDaysCount)
+      .then((res) => {
+        toast(`Удалено старых заказов: ${res.deleted}`);
+      })
+      .catch((e) => {
+        console.log(e);
+        toast("Ошибка удаления");
       });
   };
 
@@ -408,6 +423,32 @@ export function ProfileOrders() {
           ) : null}
         </div>
       </div>
+      {/* old orders deletion interface */}
+      {user && user.user_role === "ADMIN" && (
+        <div className="space-y-2 flex-1">
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            Удалить заказы старше (дней), от
+          </label>
+          <input
+            className="flex h-12 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            placeholder="Введите количество дней"
+            name="quantity"
+            type="number"
+            id=":r5:-form-item"
+            aria-describedby=":r5:-form-item-description"
+            aria-invalid="false"
+            value={deleteOldDaysCount}
+            onChange={(event) => setDODC(Number(event.target.value))}
+          />
+          <button
+            onClick={deleteOld}
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-[#A3C55A] h-12 px-5 py-5"
+            type="submit"
+          >
+            Удалить всё
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -126,7 +126,7 @@ export function ClothesTable(props: {withBtn: boolean}) {
         <div>Добавлено {clothes.length} шт</div>
       </div>
       <div className="rounded-md border">
-        <Table>
+        <Table className="orderTableEditable">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -147,10 +147,11 @@ export function ClothesTable(props: {withBtn: boolean}) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, index) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  style={index === 0 ? { width: '40px' } : {}}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

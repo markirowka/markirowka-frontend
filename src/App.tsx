@@ -14,6 +14,7 @@ import { MainPage } from "./pages/MainPage";
 import { MainLayout } from "./components/layouts/MainLayout";
 import { TextPage } from "./pages/TextPage";
 import { useEffect } from "react";
+import { VideoPage } from "./pages/VideoPage";
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
 			<Route path="*" element={<Layout><TextPage /></Layout>} />
 
 			<Route path="/" element={<MainLayout><MainPage /></MainLayout>} />
+			<Route path="/embed/:filename" element={<VideoPage />} />
 		</Routes>
 	)
 }

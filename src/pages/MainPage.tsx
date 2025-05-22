@@ -9,7 +9,7 @@ export const MainPage = () => {
           <div className="intro__inner">
             <div className="left">
               <h1 className="intro__title mb-4 font-medium">
-                Технологии для эффективной маркировки
+                Документация и маркировка для ваших товаров
               </h1>
               <p className="mb-6">
                 Наши инновации делают ваш бизнес процветающим и надежным, давая
@@ -47,14 +47,14 @@ export const MainPage = () => {
                 Как это работает
               </h3>
               <h2 className="section__title font-medium mb-6">
-                Как получить маркировку?
+                Как оформить документы и маркировку?
               </h2>
               <div className="section__text mb-8">
                 <p>
-                  Для начала вам необходимо быть зарегистрированным в системе
-                  Честный Знак <span>"Беларусь" </span>, а так же получить GLN
-                  номер организации
+                  *Вам необходимо быть зарегистрированным в "Электронный знак" -
+                  https://datamark.by/{" "}
                 </p>
+                <p> *Получить GLN номер организации - https://gs1by.by/</p>
               </div>
               <div className="section__stage">
                 <h4 className="flex flex-row text-xl font-medium mb-4 gap-2">
@@ -63,10 +63,10 @@ export const MainPage = () => {
                     src="images/icons/service/star.png"
                     alt="#"
                   />
-                  Этап 1: Оформить накладную
+                  #Этап 1: Пройти регистрацию 
                 </h4>
                 <p className="stage font-normal mb-8">
-                    Для начала во вкладке "Накладные" оформить все документы и скачать их к себе.
+                   Для начала необходимо пройти регистрацию на платформе
                 </p>
 
                 <h4 className="flex flex-row text-xl font-medium mb-4 gap-2">
@@ -75,10 +75,21 @@ export const MainPage = () => {
                     src="images/icons/service/star.png"
                     alt="#"
                   />
-                  Этап 2: Оформление заказа
+                  #Этап 2: Обучение
                 </h4>
                 <p className="stage font-normal mb-8">
-                  Нужно во вкладке "Маркировка" заполнить все данные по товару и нажать готово.
+                  Во вкладке "Обучение" просмотреть видео обучение по работе с платформой
+                </p>
+                <h4 className="flex flex-row text-xl font-medium mb-4 gap-2">
+                  <img
+                    className="w-[24px]"
+                    src="images/icons/service/star.png"
+                    alt="#"
+                  />
+                  #Этап 3: Оформление заказа
+                </h4>
+                <p className="stage font-normal mb-8">
+                  Офофрмить заказ, и скачать готовую документацию
                 </p>
 
                 <h4 className="flex flex-row text-xl font-medium mb-4 gap-2">
@@ -87,10 +98,11 @@ export const MainPage = () => {
                     src="images/icons/service/star.png"
                     alt="#"
                   />
-                  Этап 3: Обработка заявки
+                  #Этап 4: Оприходывание
                 </h4>
-                <p className="stage font-normal">
-                  В течении 2-х рабочих дней ваша заявка будет обработана нашими менеджерами и с вами свяжутся для уточнения деталей.
+                <p className="stage font-normal mb-8">
+                  В течение 3-4 рабочих дней Маркировка поступит к вам в Электронный знак, 
+                  где нужно выполнить оприходование кодов
                 </p>
 
                 <h4 className="flex flex-row text-xl font-medium mb-4 gap-2">
@@ -99,22 +111,11 @@ export const MainPage = () => {
                     src="images/icons/service/star.png"
                     alt="#"
                   />
-                  Этап 4: Оприходывание
+                  #Этап 5: Оплата
                 </h4>
                 <p className="stage font-normal">
-                  После обработки заказа и его подтверждения втечение 3-4 рабочих дней Маркировка поступит к вам в Электронный знак, где вам будет необходимо ее оприходывать для дальнейшей работы
-                </p>
-
-                <h4 className="flex flex-row text-xl font-medium mb-4 gap-2">
-                  <img
-                    className="w-[24px]"
-                    src="images/icons/service/star.png"
-                    alt="#"
-                  />
-                  Этап 5: Документы
-                </h4>
-                <p className="stage font-normal">
-                  После того как вы скачали/получили подкументы необходимо прислать подписанную накладную. Без нее отправка маркировки не производится
+                  После того как вы получили всю документацию и маркировку, 
+                  необходимо произвести оплату заказа
                 </p>
               </div>
             </div>
@@ -141,8 +142,7 @@ export const MainPage = () => {
                     style={{ height: 24, marginTop: 4 }}
                     alt="#"
                   />
-                  По состоянию на 2024 год маркировка обязательна для семи
-                  товарных категорий
+                  По состоянию на 2025 год маркировка обязательна для восьми товарных категорий
                 </h4>
                 <div style={{ marginLeft: 30 }}>
                   <p className="stage font-normal mb-8">1. Игрушки</p>
@@ -151,9 +151,10 @@ export const MainPage = () => {
                     3. Духи и туалетная вода
                   </p>
                   <p className="stage font-normal mb-8">4. Обувь</p>
-                  <p className="stage font-normal mb-8">5. Постельно белье</p>
+                  <p className="stage font-normal mb-8">5. Постельное белье</p>
                   <p className="stage font-normal mb-8">6. Шубы</p>
                   <p className="stage font-normal mb-8">7. Шины и покрышки</p>
+                  <p className="stage font-normal mb-8">8. Чулочно-носочные изделия</p>
                 </div>
               </div>
             </div>
@@ -320,11 +321,10 @@ export const MainPage = () => {
             <div className="order__content">
               <div className="order__item order__item--transparent">
                 <h6 className="text__orders font-medium mb-4">
-                  3. Заполните накладную
+                  3. Заполните документацию
                 </h6>
                 <p>
-                  Пожалуйста, заполните соответствующую накладную и нажмите
-                  кнопку "Оформить".
+                  Пожалуйста, заполните соответствующую документацию и нажмите кнопку "Оформить".
                 </p>
               </div>
 
@@ -333,8 +333,7 @@ export const MainPage = () => {
                   4. Обработка заказа
                 </h6>
                 <p>
-                  Менеджер проверит вашу накладну и свяжется c Вами, чтобы
-                  уточнить заказ!
+                  Менеджер проверит ваш заказ и свяжется c вами, чтобы уточнить заказ! (при необходимости)
                 </p>
               </div>
             </div>
@@ -344,8 +343,7 @@ export const MainPage = () => {
                   5. Оплатите заказ после проверки
                 </h6>
                 <p>
-                  Оплатите заказ только после тщательной проверки товаров нашим
-                  менеджером!
+                  Оплатите заказ после полной проверки всех документов.
                 </p>
               </div>
               <div className="right__payment">

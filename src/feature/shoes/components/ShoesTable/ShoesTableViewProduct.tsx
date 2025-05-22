@@ -14,6 +14,7 @@ import { FC } from "react";
 import { shoesAtom } from "../../store";
 import { useAtom } from "jotai";
 import { updateParamShoes } from "./columns";
+import { Edit } from "lucide-react";
 
 interface IShoesTableViewProductProps {
   id: number;
@@ -30,7 +31,9 @@ export const ShoesTableViewProduct: FC<IShoesTableViewProductProps> = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"ghost"}>Править</Button>
+        <Button variant={"outline"} size={"icon"}>
+          <Edit className="w-4" />
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
