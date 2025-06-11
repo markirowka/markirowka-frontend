@@ -26,7 +26,7 @@ import { TypographyH3 } from "@/components/ui/typography";
 import { useAtom } from "jotai";
 import { columns } from "./columns";
 import { PackageSearch } from "lucide-react";
-import { cmrDeliveryAtom, orderProductsStoreAtom } from "../../store";
+import { cmrDeliveryAtom, hasSpecifyAtom, orderProductsStoreAtom } from "../../store";
 import { userAtom } from "@/feature/common";
 // import { useNavigate } from "react-router-dom"
 import { backendInstance } from "@/services/backendService";
@@ -51,19 +51,19 @@ export function OrderTable() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [markFormEnabled, setMarkFormEnabled] = useState(false);
+  const [markFormEnabled, setMarkFormEnabled] = useAtom(hasSpecifyAtom);
 
   useEffect(() => {
-    const savedOrders = localStorageService.getSavedOrder().map(item => ({
+    const savedOrders = localStorageService.getSavedOrder().map((item) => ({
       category: item.category || "", // Если нет значения, ставим пустую строку
       name: item.name || "", // Если нет значения, ставим пустую строку
       quantity: item.quantity || 0, // Если нет значения, ставим 0
       price: item.price || 0, // Если нет значения, ставим 0
       date: item.date || "", // Если нет значения, ставим пустую строку
       tnved: item.tnved,
-      country: item.country
+      country: item.country,
     }));
-    
+
     setOrder(savedOrders); // Устанавливаем состояние заказов
   }, []);
 
@@ -120,7 +120,10 @@ export function OrderTable() {
       if (!user.bank_account) {
         toast("Заполните реквизиты расчетного счета", {
           description: (
-            <a href="/edit-profile#bank-account" style={{ color: "#007bff", textDecoration: "underline" }}>
+            <a
+              href="/edit-profile#bank-account"
+              style={{ color: "#007bff", textDecoration: "underline" }}
+            >
               Перейти в профиль
             </a>
           ),
@@ -137,13 +140,14 @@ export function OrderTable() {
         label: "Скрыть",
         onClick: () => console.log("Прочитано"),
       },
-    }); 
-    const { files } = await backendInstance.createOrder(
-      orderProducts,
-      delivery,
-      shoes.length > 0 ? shoes : undefined,
-      clothes.length > 0 ? clothes : undefined
-    );
+    });
+    const { files } = await backendInstance.createOrder({
+      items: orderProducts,
+      cmr_data: delivery,
+      shoes: shoes.length > 0 ? shoes : undefined,
+      clothes: clothes.length > 0 ? clothes : undefined,
+      has_specify: markFormEnabled
+    });
     files.forEach((file: any) => {
       if (user && user.id) backendInstance.downloadFile(file.name, user.id);
     });
@@ -154,12 +158,19 @@ export function OrderTable() {
     setMarkFormEnabled(!!event.target?.checked);
   };
 
+  const clearAll = () => {
+    setOrder([])
+  }
+
   return (
     <>
       <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
-        <div className="flex gap-2 items-center">
-          <PackageSearch />
-          <TypographyH3>Список товаров для поставки</TypographyH3>
+        <div className="bottom-row">
+          <div className="flex gap-2 items-center">
+            <PackageSearch />
+            <TypographyH3>Список товаров для поставки</TypographyH3>
+          </div>
+          <Button onClick={clearAll}>Удалить всё</Button>
         </div>
         <div className="flex items-center py-4 justify-between max-[1024px]:flex-col max-[1024px]:items-start max-[1024px]:gap-2">
           <Input

@@ -15,9 +15,11 @@ import { Separator } from "@/components/ui/separator";
 import { PackageSearch } from "lucide-react";
 import {
   COUNTRIES,
+  createOrderFormSchema,
   ORDER_PRODUCTS_CATEGORY,
-  OrderFormSchema,
+//  OrderFormSchema,
   OrderFormSchemaType,
+  //  ValidationContext,
 } from "../config";
 import { useAtom } from "jotai";
 import { orderProductsStoreAtom } from "../store";
@@ -32,30 +34,34 @@ import { backendInstance } from "@/services/backendService";
 
 export const OrderForm = () => {
   const [orderProducts, setOrderProducts] = useAtom(orderProductsStoreAtom);
-  const [categories, setCategories] = useState<string[]>([])
+  const [categories, setCategories] = useState<string[]>([]);
   const [user] = useAtom(userAtom);
+  // const [hasSpecify] = useAtom(hasSpecifyAtom);
 
   useEffect(() => {
-     console.log("User data:", user);
-     if (user && !user.bank_account) {
-       alert("Заполните реквизиты расчетного счета в настройках профиля!")
-     }
-     backendInstance.getCategories().then((res) => {
+    console.log("User data:", user);
+    if (user && !user.bank_account) {
+      alert("Заполните реквизиты расчетного счета в настройках профиля!");
+    }
+    backendInstance
+      .getCategories()
+      .then((res) => {
         if (res.categories) {
-          setCategories(res.categories.map(item => item.name))
+          setCategories(res.categories.map((item) => item.name));
         } else {
-          setCategories(ORDER_PRODUCTS_CATEGORY)
+          setCategories(ORDER_PRODUCTS_CATEGORY);
         }
-     }).catch((e) => {
+      })
+      .catch((e) => {
         console.log(e);
-        setCategories(ORDER_PRODUCTS_CATEGORY)
-     })
-  }, [user])
+        setCategories(ORDER_PRODUCTS_CATEGORY);
+      });
+  }, [user]);
 
   const form = useForm<OrderFormSchemaType>({
-    resolver: zodResolver(OrderFormSchema),
+    resolver: zodResolver(createOrderFormSchema()),
     defaultValues: {
-      date: new Date().toISOString().split("T")[0], // Задаем значение по умолчанию для даты
+      date: new Date().toISOString().split("T")[0],
     },
   });
 
@@ -252,7 +258,7 @@ export const OrderForm = () => {
         style={{
           justifyContent: "space-between",
           width: "100%",
-          marginTop: 20
+          marginTop: 20,
         }}
       >
         <CMRDeliveryDialog />
@@ -262,14 +268,26 @@ export const OrderForm = () => {
         style={{
           justifyContent: "space-between",
           width: "100%",
-          marginTop: 20
+          marginTop: 20,
         }}
       >
-        <h4>Загрузка из файла, <a style={{
-          color: "hsl(var(--primary))"
-        }} href="/news">инструкция</a></h4>
+        <h4>
+          Загрузка из файла,{" "}
+          <a
+            style={{
+              color: "hsl(var(--primary))",
+            }}
+            href="/news"
+          >
+            инструкция
+          </a>
+        </h4>
         <label className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 shadow focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-[#A3C55A] h-12 px-5 py-5">
-          <Button type="button" variant="defaultNoShadow" onClick={handleButtonClick}>
+          <Button
+            type="button"
+            variant="defaultNoShadow"
+            onClick={handleButtonClick}
+          >
             Загрузить заказ из файла Excel
           </Button>
           <input

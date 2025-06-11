@@ -103,11 +103,18 @@ export function ShoesTable(props: { withBtn: boolean }) {
     Pending(false);
   };
 
+  const clearAll = () => {
+    setShoes([]);
+  };
+
   return (
     <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
-      <div className="flex gap-2 items-center">
-        <PackageSearch />
-        <TypographyH3>Список товаров</TypographyH3>
+      <div className="bottom-row">
+        <div className="flex gap-2 items-center">
+          <PackageSearch />
+          <TypographyH3>Список товаров</TypographyH3>
+        </div>
+        <Button onClick={clearAll}>Удалить всё</Button>
       </div>
       <div className="flex items-center py-4 justify-between max-[1024px]:flex-col max-[1024px]:items-start max-[1024px]:gap-2">
         <Input

@@ -231,15 +231,18 @@ class BackendService {
     return await this.post("/api/createSpecify/clothes", { items }, "POST");
   }
 
-  async createOrder(
+  async createOrder(data: {
     items: OrderItemData[],
     cmr_data: CMRDeliveryData,
     shoes?: ItemDataShoes[],
-    clothes?: ItemDataClothes[]
+    clothes?: ItemDataClothes[],
+    has_specify?: boolean
+  }
   ) {
+    const { items, cmr_data, shoes, clothes, has_specify } = data;
     return await this.post(
       "/api/createpayments",
-      { items, cmr_data, shoes, clothes },
+      { items, cmr_data, shoes, clothes, has_specify },
       "POST"
     );
   }

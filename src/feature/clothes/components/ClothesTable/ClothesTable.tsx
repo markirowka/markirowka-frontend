@@ -36,7 +36,7 @@ import { toast } from "sonner";
 import { markRowLimit } from "@/config/env";
 import { localStorageService } from "@/services/localStorage";
 
-export function ClothesTable(props: {withBtn: boolean}) {
+export function ClothesTable(props: { withBtn: boolean }) {
   const [user] = useAtom(userAtom);
   const [clothes, setClothes] = useAtom(clothesAtom);
   const [pending, Pending] = useState(false);
@@ -47,24 +47,24 @@ export function ClothesTable(props: {withBtn: boolean}) {
   const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
-    const savedClothes = localStorageService.getSavedClothes().map(item => ({
-      fullName: item.fullName || "", 
-      tradeMark: item.tradeMark || "", 
-      articleType: item.articleType || "", 
-      articleName: item.articleName || "", 
-      clothesType: item.clothesType || "", 
+    const savedClothes = localStorageService.getSavedClothes().map((item) => ({
+      fullName: item.fullName || "",
+      tradeMark: item.tradeMark || "",
+      articleType: item.articleType || "",
+      articleName: item.articleName || "",
+      clothesType: item.clothesType || "",
       color: item.color || "",
-      size: item.size || "", 
-      composition: item.composition || "", 
-      tnved: item.tnved || ""
+      size: item.size || "",
+      composition: item.composition || "",
+      tnved: item.tnved || "",
     }));
-  
+
     setClothes(savedClothes);
   }, []);
 
   useEffect(() => {
     localStorageService.saveClothes(clothes);
- }, [clothes])
+  }, [clothes]);
 
   const table = useReactTable({
     data: clothes,
@@ -85,7 +85,7 @@ export function ClothesTable(props: {withBtn: boolean}) {
       pagination: {
         pageIndex: 0,
         pageSize: markRowLimit,
-      }
+      },
     },
   });
 
@@ -106,11 +106,18 @@ export function ClothesTable(props: {withBtn: boolean}) {
     Pending(false);
   };
 
+  const clearAll = () => {
+    setClothes([]);
+  };
+
   return (
     <div className="w-full m-auto my-12 p-12 bg-white rounded-xl shadow-lg max-[1024px]:p-6">
-      <div className="flex gap-2 items-center">
-        <PackageSearch />
-        <TypographyH3>Список товаров</TypographyH3>
+      <div className="bottom-row">
+        <div className="flex gap-2 items-center">
+          <PackageSearch />
+          <TypographyH3>Список товаров</TypographyH3>
+        </div>
+        <Button onClick={clearAll}>Удалить всё</Button>
       </div>
       <div className="flex items-center py-4 justify-between max-[1024px]:flex-col max-[1024px]:items-start max-[1024px]:gap-2">
         <Input
@@ -151,7 +158,7 @@ export function ClothesTable(props: {withBtn: boolean}) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  style={index === 0 ? { width: '40px' } : {}}
+                  style={index === 0 ? { width: "40px" } : {}}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -178,19 +185,20 @@ export function ClothesTable(props: {withBtn: boolean}) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          Всего {" "}
-          {table.getFilteredRowModel().rows.length} строк.
+          Всего {table.getFilteredRowModel().rows.length} строк.
         </div>
-        {props.withBtn ? <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={saveClothesAction}
-            disabled={clothes.length === 0 || pending}
-          >
-            Сформировать список
-          </Button>
-        </div> : null}
+        {props.withBtn ? (
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={saveClothesAction}
+              disabled={clothes.length === 0 || pending}
+            >
+              Сформировать список
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

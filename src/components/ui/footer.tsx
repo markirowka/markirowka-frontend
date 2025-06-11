@@ -4,6 +4,7 @@ import { topMenu } from "@/feature/common/content";
 import { useAtom } from "jotai";
 import { sortMenuByIndex } from "@/utils";
 import { Link } from "react-router-dom";
+import { version } from "@/config/env";
 
 export const Footer = () => {
   const [menu] = useAtom(topMenu);
@@ -49,7 +50,7 @@ export const Footer = () => {
             </Link>
           </div>
           <div className="copyright">
-            Copyright 2024 Markirowka.ru все права защищены
+           {`v${version} Copyright 2024 Markirowka.ru все права защищены`}
           </div>
         </div>
       </div>

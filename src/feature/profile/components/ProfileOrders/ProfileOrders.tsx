@@ -78,8 +78,21 @@ export const columns: ColumnDef<OrderData>[] = [
       return (
         <div className="lowercase text-red">
           {row.original.order_status !== "paid"
-            ? formatTimestampWithOffset(row.original.order_date, 30)
+            ? !row.original.paid_date
+              ? formatTimestampWithOffset(row.original.order_date, 30)
+              : formatTimestampWithOffset(row.original.paid_date, 0)
             : ""}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: "Маркировка",
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase">
+          {row.original.has_specify ? "Да" : "Нет"}
         </div>
       );
     },

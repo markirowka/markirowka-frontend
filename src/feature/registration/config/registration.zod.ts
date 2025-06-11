@@ -1,4 +1,4 @@
-import { backendInstance } from "@/services/backendService";
+// import { backendInstance } from "@/services/backendService";
 import { z } from "zod"
 
 export function isBelarusNumber (numberStr: string) {
@@ -56,16 +56,16 @@ export const RegistrationFormSchema = z.object({
 		}
 	),
 	cargo_city: z.string().min(3, { message: 'Поле должно содержать не менее 3-х символов' }),
-}).superRefine(async (data, ctx) => {
+}).superRefine(async (data) => {
 	if (isBelarusNumber(data.phone) && data.inn) {
-		const isValid = await backendInstance.validateUnpBelarus(data.inn);
+		/* const isValid = await backendInstance.validateUnpBelarus(data.inn);
 		if (!isValid) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: "УНП не найден или неправильно указан",
 				path: ['inn'],
 			});
-		}
+		} */
 	}
 });
 
